@@ -1,0 +1,36 @@
+Known problems:
+
+ - Reference manual isn't written.
+
+Tests to write:
+
+(Incomplete list of untested functionality)
+
+ - test that supplying non US-ASCII unicode data as header keys or values
+   raises exceptions at the time the header is set.
+ - test parameter validation for jsonreturning and jsonpreturning decorators.
+ - get coverage report for runtests up to 100% for all modules.
+ - parameter display in autodoc documentation pages.
+ - parameter display in autodoc documentation pages for decorated methods (does
+   the decoration confuse it)
+ - parameter display in autodoc documentation pages for bound methods (does the
+   "self" parameter confuse it?)
+ - check that loggers don't get double-called when a request fails
+
+Investigate:
+
+ - Use wsgiref.headers.Headers instead of our own implementation (but possibly
+   decorate it with some nicer accessors, too).
+ - Possible bug in cherrypy: in cpwsgiserver: WSGIPathInfoDispatcher, it says:
+   "Sort the apps by len(path), descending" but then sorts into lexicographic
+   order.
+
+Features to add:
+
+ - Decorator / default function implementation to re-route calls to multiple
+   different HTTP methods to different callables.
+ - Add automatic character set setting for return type (perhaps only if body is
+   unicode).
+ - Validation error handlers - should be able to set these for a particular
+   method (with a decorator).
+ - Automatic WSDL or similar generation.

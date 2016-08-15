@@ -1,0 +1,14 @@
+include MANIFEST.in
+include ChangeLog
+include README
+include LICENSE
+include setup.py
+include runtests.py
+include docs/*.html
+include docs/epydoc/*
+include docs/examples/*.py
+include docs/media/*
+include wsgiwebapi/*.py
+include wsgiwebapi/cpwsgiserver/*.py
+include wsgiwebapi/testsupport/*.py
+include wsgiwebapi/unittests/*.py

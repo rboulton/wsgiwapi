@@ -1,0 +1,5 @@
+Things to do when making a release:
+
+ - generate the documentation for the release.
+ - update docs/index.html to list the version number of the release (instead of
+   "development version").
