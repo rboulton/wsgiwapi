@@ -1,4 +1,4 @@
-WSGIWebAPI License
+WSGIWAPI License
 ==================
 
 This project (apart from a few specific exceptions, detailed below) is
@@ -28,7 +28,7 @@ SOFTWARE.
 Exceptions
 ----------
 
-The CherryPy WSGI server (ie, the file "wsgiwebapi/cpwsgiserver/__init__.py")
+The CherryPy WSGI server (ie, the file "wsgiwapi/cpwsgiserver/__init__.py")
 is distributed under the following license (BSD):
 
 Copyright (c) 2002-2008, CherryPy Team (team@cherrypy.org)
@@ -58,7 +58,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-The coverage.py module in "wsgiwebapi/testsupport/" is distributed under the
+The coverage.py module in "wsgiwapi/testsupport/" is distributed under the
 following license (essentially, BSD):
 
 Copyright 2001 Gareth Rees.  All rights reserved.

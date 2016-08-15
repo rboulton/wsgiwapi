@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-"""Setup script for WSGIWebAPI.
+"""Setup script for WSGIWAPI.
 
 """
 
@@ -27,28 +27,28 @@ from distutils.core import setup
 
 long_description="""
 
-WSGIWebAPI makes it easy to build web APIs, without dealing with the details of
+WSGIWAPI makes it easy to build web APIs, without dealing with the details of
 HTTP. You simply define a hierarchical tree of URL components, with callables
-as the leaves of the tree, and WSGIWebAPI does the work of making this into a
+as the leaves of the tree, and WSGIWAPI does the work of making this into a
 WSGI application.
 
-WSGIWebAPI also provides some additional features, such as automatic
+WSGIWAPI also provides some additional features, such as automatic
 documentation support for your API and parameter validation, and includes
 support for easily running your application as a standalone server.
 
 """
 
-setup(name = "WSGIWebAPI",
-      version = "0.1.1",
+setup(name = "WSGIWAPI",
+      version = "0.2",
       description = "Framework for building web APIs",
       long_description = long_description,
       author = "Richard Boulton",
       author_email = "richard@tartarus.org",
       maintainer = "Richard Boulton",
       maintainer_email = "richard@tartarus.org",
-      url = "http://wsgiwebapi.tartarus.org/",
-      #test_suite = "wsgiwebapi.testsupport.makesuite.make_suite",
-      download_url = "http://wsgiwebapi.googlecode.com/files/WSGIWebAPI-0.1.tar.gz",
+      url = "http://wsgiwapi.tartarus.org/",
+      #test_suite = "wsgiwapi.testsupport.makesuite.make_suite",
+      download_url = "http://wsgiwapi.googlecode.com/files/WSGIWAPI-0.2.tar.gz",
 
       classifiers = [
           'Development Status :: 3 - Alpha',
@@ -65,7 +65,7 @@ setup(name = "WSGIWebAPI",
       license = 'MIT',
       platforms = 'Any',
 
-      packages = ['wsgiwebapi'],
-      package_dir = {'wsgiwebapi': 'wsgiwebapi'},
+      packages = ['wsgiwapi'],
+      package_dir = {'wsgiwapi': 'wsgiwapi'},
       package_data = {'docs': ['docs/*.html']}
 )

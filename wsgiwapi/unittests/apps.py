@@ -28,32 +28,32 @@ from harness import *
 
 def simple():
     def staticreturn(request):
-        return wsgiwebapi.Response('Static')
-    @wsgiwebapi.allow_GET
-    @wsgiwebapi.allow_HEAD
+        return wsgiwapi.Response('Static')
+    @wsgiwapi.allow_GET
+    @wsgiwapi.allow_HEAD
     def staticreturn2(request):
-        return wsgiwebapi.Response('Static2')
-    @wsgiwebapi.allow_POST
+        return wsgiwapi.Response('Static2')
+    @wsgiwapi.allow_POST
     def staticreturn3(request):
-        return wsgiwebapi.Response('Static3')
-    @wsgiwebapi.allow_method('GET', 'POST')
+        return wsgiwapi.Response('Static3')
+    @wsgiwapi.allow_method('GET', 'POST')
     def staticreturn4(request):
-        return wsgiwebapi.Response('Static4')
-    @wsgiwebapi.jsonreturning
+        return wsgiwapi.Response('Static4')
+    @wsgiwapi.jsonreturning
     def staticreturn5(request):
         return 'Static5'
 
-    @wsgiwebapi.noparams
+    @wsgiwapi.noparams
     def staticreturn6(request):
-        return wsgiwebapi.Response('Static6')
+        return wsgiwapi.Response('Static6')
 
-    @wsgiwebapi.param('foo', 2, 2, None, None)
+    @wsgiwapi.param('foo', 2, 2, None, None)
     def staticreturn7(request):
-        return wsgiwebapi.Response('Static7')
+        return wsgiwapi.Response('Static7')
 
-    @wsgiwebapi.param('foo', 2, 2, None, ['bar'])
+    @wsgiwapi.param('foo', 2, 2, None, ['bar'])
     def mirror8(request):
-        return wsgiwebapi.Response(u','.join(request.params['foo']))
+        return wsgiwapi.Response(u','.join(request.params['foo']))
     return {
                 '': staticreturn,
                 '2': staticreturn2,

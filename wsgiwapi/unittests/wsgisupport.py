@@ -25,7 +25,7 @@ r"""Test wsgisupport.py.
 __docformat__ = "restructuredtext en"
 
 from harness import *
-from wsgiwebapi import wsgisupport
+from wsgiwapi import wsgisupport
 
 class ResponseTest(TestCase):
     """Test Response class.

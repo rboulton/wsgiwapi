@@ -26,7 +26,7 @@ __docformat__ = "restructuredtext en"
 
 from harness import *
 import apps
-import wsgiwebapi
+import wsgiwapi
 
 class ValidationTest(TestCase):
     """Test validation support.
@@ -36,8 +36,8 @@ class ValidationTest(TestCase):
         """Test basic use of the simple API.
 
         """
-        app = wsgiwebapi.make_application(apps.simple(),
-                                          logger = wsgiwebapi.SilentLogger)
+        app = wsgiwapi.make_application(apps.simple(),
+                                        logger = wsgiwapi.SilentLogger)
         r = simulate_get(app, '/6')
         self.assertEqual(r.status, u'200 OK')
         self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
@@ -64,8 +64,8 @@ class ValidationTest(TestCase):
         """Test behaviour of default parameters.
 
         """
-        app = wsgiwebapi.make_application(apps.simple(),
-                                          logger = wsgiwebapi.SilentLogger)
+        app = wsgiwapi.make_application(apps.simple(),
+                                        logger = wsgiwapi.SilentLogger)
         r = simulate_get(app, '/8')
         self.assertEqual(r.status, u'200 OK')
         self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
@@ -92,18 +92,18 @@ class ValidationTest(TestCase):
 
         """
         def fn():
-            @wsgiwebapi.noparams
-            @wsgiwebapi.param('foo', 1, 2, None, None)
+            @wsgiwapi.noparams
+            @wsgiwapi.param('foo', 1, 2, None, None)
             def tmp(request):
-                return wsgiwebapi.Response('static')
+                return wsgiwapi.Response('static')
         self.assertRaisesMessage(RuntimeError,
             "Can't decorate with param and noparams", fn)
 
         def fn():
-            @wsgiwebapi.param('foo', 2, 2, None, None)
-            @wsgiwebapi.param('foo', 1, 2, None, None)
+            @wsgiwapi.param('foo', 2, 2, None, None)
+            @wsgiwapi.param('foo', 1, 2, None, None)
             def tmp(request):
-                return wsgiwebapi.Response('static')
+                return wsgiwapi.Response('static')
         self.assertRaises(RuntimeError, fn)
 
 if __name__ == '__main__': main()

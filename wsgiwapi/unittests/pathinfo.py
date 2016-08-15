@@ -26,7 +26,7 @@ __docformat__ = "restructuredtext en"
 
 from harness import *
 import apps
-import wsgiwebapi
+import wsgiwapi
 
 class PathComponentTest(TestCase):
     """Test handling of extra path components.
@@ -87,19 +87,19 @@ class PathComponentTest(TestCase):
         def foo(request):
             return "foo()"
 
-        @wsgiwebapi.pathinfo(
-                             ('arg1',),            # No default specified - required.
-                             ('arg2', None, None), # Default specified (None)
-                            )
+        @wsgiwapi.pathinfo(
+                           ('arg1',),            # No default specified - required.
+                           ('arg2', None, None), # Default specified (None)
+                          )
         def bar(request):
             return "bar(%s,%s)" % (request.pathinfo.get('arg1'),
                                    request.pathinfo.get('arg2'))
 
-        @wsgiwebapi.pathinfo(
-                             ('arg1',),            # No default specified - required.
-                             ('arg2', None, None), # Default specified (None)
-                             tail=(None, None, None, None, "Trailing args"),
-                            )
+        @wsgiwapi.pathinfo(
+                           ('arg1',),            # No default specified - required.
+                           ('arg2', None, None), # Default specified (None)
+                           tail=(None, None, None, None, "Trailing args"),
+                          )
         def baz(request):
             return "baz(%s)" % (u','.join(request.pathinfo))
 
@@ -107,13 +107,13 @@ class PathComponentTest(TestCase):
             # This is mainly for a regression test.
             return foo(request, "invalid_extra_arg")
 
-        app = wsgiwebapi.make_application({
-                                          'foo': foo,
-                                          'bar': bar,
-                                          'baz': baz,
-                                          'invalid': invalid,
-                                          },
-                                          logger = wsgiwebapi.SilentLogger)
+        app = wsgiwapi.make_application({
+                                        'foo': foo,
+                                        'bar': bar,
+                                        'baz': baz,
+                                        'invalid': invalid,
+                                        },
+                                        logger = wsgiwapi.SilentLogger)
         self.check_path_components(app)
 
     def test_members(self):
@@ -124,19 +124,19 @@ class PathComponentTest(TestCase):
             def foo(self, request):
                 return "foo"
 
-            @wsgiwebapi.pathinfo(
-                                 ('arg1',),            # No default specified - required.
-                                 ('arg2', None, None), # Default specified (None)
-                                )
+            @wsgiwapi.pathinfo(
+                               ('arg1',),            # No default specified - required.
+                               ('arg2', None, None), # Default specified (None)
+                              )
             def bar(self, request):
                 return "bar(%s,%s)" % (request.pathinfo.get('arg1'),
                                        request.pathinfo.get('arg2'))
 
-            @wsgiwebapi.pathinfo(
-                                 ('arg1',),            # No default specified - required.
-                                 ('arg2', None, None), # Default specified (None)
-                                 tail=(None, None, None, None, "Trailing args"),
-                                )
+            @wsgiwapi.pathinfo(
+                               ('arg1',),            # No default specified - required.
+                               ('arg2', None, None), # Default specified (None)
+                               tail=(None, None, None, None, "Trailing args"),
+                              )
             def baz(self, request):
                 return "baz(%s)" % (u','.join(request.pathinfo))
 
@@ -144,13 +144,13 @@ class PathComponentTest(TestCase):
                 return self.foo(request, "invalid_extra_arg")
 
         zabobj = zab()
-        app = wsgiwebapi.make_application({
-                                          'foo': zabobj.foo,
-                                          'bar': zabobj.bar,
-                                          'baz': zabobj.baz,
-                                          'invalid': zabobj.invalid,
-                                          },
-                                          logger = wsgiwebapi.SilentLogger)
+        app = wsgiwapi.make_application({
+                                        'foo': zabobj.foo,
+                                        'bar': zabobj.bar,
+                                        'baz': zabobj.baz,
+                                        'invalid': zabobj.invalid,
+                                        },
+                                        logger = wsgiwapi.SilentLogger)
         self.check_path_components(app)
 
     def test_oldclass_members(self):
@@ -161,19 +161,19 @@ class PathComponentTest(TestCase):
             def foo(self, request):
                 return "foo"
 
-            @wsgiwebapi.pathinfo(
-                                 ('arg1',),            # No default specified - required.
-                                 ('arg2', None, None), # Default specified (None)
-                                )
+            @wsgiwapi.pathinfo(
+                               ('arg1',),            # No default specified - required.
+                               ('arg2', None, None), # Default specified (None)
+                              )
             def bar(self, request):
                 return "bar(%s,%s)" % (request.pathinfo.get('arg1'),
                                        request.pathinfo.get('arg2'))
 
-            @wsgiwebapi.pathinfo(
-                                 ('arg1',),            # No default specified - required.
-                                 ('arg2', None, None), # Default specified (None)
-                                 tail=(None, None, None, None, "Trailing args"),
-                                )
+            @wsgiwapi.pathinfo(
+                               ('arg1',),            # No default specified - required.
+                               ('arg2', None, None), # Default specified (None)
+                               tail=(None, None, None, None, "Trailing args"),
+                              )
             def baz(self, request):
                 return "baz(%s)" % (u','.join(request.pathinfo))
 
@@ -181,13 +181,13 @@ class PathComponentTest(TestCase):
                 return self.foo(request, "invalid_extra_arg")
 
         zabobj = zab()
-        app = wsgiwebapi.make_application({
-                                          'foo': zabobj.foo,
-                                          'bar': zabobj.bar,
-                                          'baz': zabobj.baz,
-                                          'invalid': zabobj.invalid,
-                                          },
-                                          logger = wsgiwebapi.SilentLogger)
+        app = wsgiwapi.make_application({
+                                        'foo': zabobj.foo,
+                                        'bar': zabobj.bar,
+                                        'baz': zabobj.baz,
+                                        'invalid': zabobj.invalid,
+                                        },
+                                        logger = wsgiwapi.SilentLogger)
         self.check_path_components(app)
 
     def test_decorated_functions(self):
@@ -203,7 +203,7 @@ class PathComponentTest(TestCase):
         def deco(fn):
             def res(*args):
                 return fn(*args)
-            wsgiwebapi.copyprops(fn, res)
+            wsgiwapi.copyprops(fn, res)
             return res
 
         @deco
@@ -211,29 +211,29 @@ class PathComponentTest(TestCase):
             return "foo()"
 
         @deco
-        @wsgiwebapi.pathinfo(
-                             ('arg1',),            # No default specified - required.
-                             ('arg2', None, None), # Default specified (None)
-                            )
+        @wsgiwapi.pathinfo(
+                           ('arg1',),            # No default specified - required.
+                           ('arg2', None, None), # Default specified (None)
+                          )
         def bar(request):
             return "bar(%s,%s)" % (request.pathinfo.get('arg1'),
                                    request.pathinfo.get('arg2'))
 
         @baddeco
-        @wsgiwebapi.pathinfo(
-                             ('arg1',),            # No default specified - required.
-                             ('arg2', None, None), # Default specified (None)
-                            )
+        @wsgiwapi.pathinfo(
+                           ('arg1',),            # No default specified - required.
+                           ('arg2', None, None), # Default specified (None)
+                          )
         def bar2(request):
             return "bar2(%s,%s)" % (request.pathinfo.get('arg1'),
                                     request.pathinfo.get('arg2'))
 
-        @wsgiwebapi.decorate(baddeco)
-        @wsgiwebapi.pathinfo(
-                             ('arg1',),            # No default specified - required.
-                             ('arg2', None, None), # Default specified (None)
-                             tail=(None, None, None, None, "Trailing args"),
-                            )
+        @wsgiwapi.decorate(baddeco)
+        @wsgiwapi.pathinfo(
+                           ('arg1',),            # No default specified - required.
+                           ('arg2', None, None), # Default specified (None)
+                           tail=(None, None, None, None, "Trailing args"),
+                          )
         def baz(request):
             return "baz(%s)" % (u','.join(request.pathinfo))
 
@@ -242,14 +242,14 @@ class PathComponentTest(TestCase):
             # This is mainly for a regression test.
             return foo(request, "invalid_extra_arg")
 
-        app = wsgiwebapi.make_application({
-                                          'foo': foo,
-                                          'bar': bar,
-                                          'bar2': bar2,
-                                          'baz': baz,
-                                          'invalid': invalid,
-                                          },
-                                          logger = wsgiwebapi.SilentLogger)
+        app = wsgiwapi.make_application({
+                                        'foo': foo,
+                                        'bar': bar,
+                                        'bar2': bar2,
+                                        'baz': baz,
+                                        'invalid': invalid,
+                                        },
+                                        logger = wsgiwapi.SilentLogger)
         self.check_path_components(app)
 
         r = simulate_get(app, '/bar2')
@@ -257,7 +257,7 @@ class PathComponentTest(TestCase):
         self.assertEqual(r.body, u'500 Internal Server Error\n'
                          'Handler properties do not match decorated '
                          'properties.  Probably missing call to '
-                         'wsgiwebapi.copyprops.')
+                         'wsgiwapi.copyprops.')
 
 if __name__ == '__main__': main()
 # vim: set fileencoding=utf-8 :

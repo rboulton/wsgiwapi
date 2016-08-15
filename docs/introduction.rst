@@ -1,24 +1,25 @@
-Introduction to WSGIWebAPI
-==========================
+========================
+Introduction to WSGIWAPI
+========================
 
-WSGIWebAPI is intended to make it extremely easy to make web APIs based on
-Python programs.  With WSIGWebAPI, it should take only a few minutes to
+WSGIWAPI is intended to make it extremely easy to make web APIs based on
+Python programs.  With WSGIWAPI, it should take only a few minutes to
 produce a working, and documented, API for your code.
 
-Here's a simple WSGIWebAPI application::
+Here's a simple WSGIWAPI application::
 
-    import wsgiwebapi
-    app = wsgiwebapi.make_application({
-        '': lambda x: wsgiwebapi.Response('My First WSGIWebAPI application!'),
+    import wsgiwapi
+    app = wsgiwapi.make_application({
+        '': lambda x: wsgiwapi.Response('My First WSGIWAPI application!'),
     })
 
 The ``app`` object produced by this code is a class implementing the WSGI
 protocol, as defined by `PEP 333 <http://www.python.org/dev/peps/pep-0333/>`_.
 This can be passed to any WSGI web server to publish the API, but for
-convenience WSGIWebAPI includes a copy of the standalone WSGI server from
+convenience WSGIWAPI includes a copy of the standalone WSGI server from
 CherryPy.  A server for the application can be created and started by::
 
-    server = wsgiwebapi.make_server(app(), ('0.0.0.0', 8080))
+    server = wsgiwapi.make_server(app(), ('0.0.0.0', 8080))
     try:
         server.start()
     except KeyboardInterrupt:
@@ -30,7 +31,7 @@ needs to be passed an instance of that class.
 See `<examples/myfirstapp.py>`_ for a ready-to-run copy of the code so far.
 If you run this application, and then visit `<http://127.0.0.1:8080/>`_ you
 will see the output of the application: a text/plain page containing "My First
-WSGIWebAPI application!".
+WSGIWAPI application!".
 
 A more useful application
 =========================
@@ -39,14 +40,14 @@ Starting with myfirstapp.py, replace the lines which create the app object
 with the following to produce a more "useful" application (this can be found as
 `<examples/sumapp.py>`_)::
 
-    import wsgiwebapi
+    import wsgiwapi
     def calc_sum(request):
         """Return the sum of the values supplied in the `num` parameter.
 
         """
         res = sum(int(val) for val in request.params.get('num', []))
-        return wsgiwebapi.Response(str(res))
-    app = wsgiwebapi.make_application({
+        return wsgiwapi.Response(str(res))
+    app = wsgiwapi.make_application({
         'sum': calc_sum
     }, autodoc='doc')
 
@@ -58,10 +59,10 @@ passed.  Each query parameter may occur multiple times, so the params
 dictionary contains a list of values for each parameter which was specified,
 even if the parameter was only specified once.  Our application adds up the
 values in the `num` query parameter, and returns their sum, as a string wrapped
-in a `wsgiwebapi.Response` object.
+in a `wsgiwapi.Response` object.
 
 All the callables listed in the dict supplied to `make_application()` must
-return `wsgiwebapi.Response` objects.  These provide a rich set of methods
+return `wsgiwapi.Response` objects.  These provide a rich set of methods
 allowing the headers and status code of a response type to be controlled.
 However, here we're just setting the body of the response type, and leaving the
 response status as the default ("200 OK"), and the "Content Type" of the
@@ -86,9 +87,9 @@ up-to-date as the API changes.
 Decorating the methods
 ======================
 
-WSGIWebAPI provides a set of useful decorators, to make it easy to produce
+WSGIWAPI provides a set of useful decorators, to make it easy to produce
 certain types of API.  You don't need to use any of these, but they will often
-make it easier to produce a clean API.  The WSGIWebAPI decorators can be
+make it easier to produce a clean API.  The WSGIWAPI decorators can be
 applied in any order: they all operate by adding some extra properties to the
 API, and replacing the API method with a special wrapper which interprets these
 properties.
@@ -101,17 +102,17 @@ that the "num" parameter is valid and supplied at least once, and ensuring that
 the HTTP method used was GET or HEAD.  A complete ready-to-run script
 containing this example is available at `<examples/jsonsumapp.py>`_::
 
-    import wsgiwebapi
-    @wsgiwebapi.jsonreturning
-    @wsgiwebapi.param("num", 1, None, "^[0-9]+$", None, "A number to be added")
-    @wsgiwebapi.allow_GETHEAD
+    import wsgiwapi
+    @wsgiwapi.jsonreturning
+    @wsgiwapi.param("num", 1, None, "^[0-9]+$", None, "A number to be added")
+    @wsgiwapi.allow_GETHEAD
     def calc_sum(request):
         """Return the sum of the values supplied in the `num` parameter.
 
         """
         res = sum(int(val) for val in request.params.get('num', []))
         return res
-    app = wsgiwebapi.make_application({
+    app = wsgiwapi.make_application({
         'sum': calc_sum
     }, autodoc='doc')
 
@@ -119,10 +120,10 @@ Accessing path information
 ==========================
 
 With the previous example, a request to `<http://127.0.0.1:8080/sum/foo>` would
-return a "404 Not Found" error.  By default, WSGIWebAPI applications will raise
+return a "404 Not Found" error.  By default, WSGIWAPI applications will raise
 this error if there are any path components after a mapping to a callable has
 been found.  However, it is sometimes desirable to allow extra information to
-be passed on the URL path, so WSGIWebAPI provides a decorator (``pathinfo``)
+be passed on the URL path, so WSGIWAPI provides a decorator (``pathinfo``)
 which makes the path information available in ``request.pathinfo``.
 
 The ``pathinfo`` decorator has support for validating the path information, for
@@ -138,10 +139,10 @@ pathinfo decorator, which describes the validation pattern to apply to training
 path components, is very similar to the arguments applied to the ``param``
 decorator in the earlier example)::
 
-    import wsgiwebapi
-    @wsgiwebapi.jsonreturning
-    @wsgiwebapi.allow_GETHEAD
-    @wsgiwebapi.pathinfo(
+    import wsgiwapi
+    @wsgiwapi.jsonreturning
+    @wsgiwapi.allow_GETHEAD
+    @wsgiwapi.pathinfo(
                          ("op", '^[a-z]+$', None,),
                          tail=(1, None, "^[0-9]+$", None, "A number to be added")
                         )
@@ -156,9 +157,9 @@ decorator in the earlier example)::
         elif op == 'mul':
             res = reduce(lambda x, y: x * y, (int(val) for val in nums))
         else:
-            raise wsgiwebapi.HTTPNotFound(request.path)
+            raise wsgiwapi.HTTPNotFound(request.path)
         return res
-    app = wsgiwebapi.make_application({
+    app = wsgiwapi.make_application({
         'sum': calc_sum
     }, autodoc='doc')
 
@@ -168,23 +169,23 @@ With this code, `<http://127.0.0.1:8080/sum/add/2/3>`_ returns 5, and
 Returning errors
 ================
 
-The `wsgiwebapi.Response` object allows the HTTP status code to be set (and
+The `wsgiwapi.Response` object allows the HTTP status code to be set (and
 knows some standard reason messages for all the standard HTTP 1.1 status codes,
 so you can just set the numeric code if you're happy to use the standard reason
 messages).  This allows you to return any HTTP status code you like, to
 represent errors (or redirects, etc).
 
 However, it is often convenient to be able to use exceptions to report errors.
-To enable this, WSGIWebAPI provides `wsgiwebapi.HTTPError`, which is a subclass
-of `wsgiwebapi.Response`, and also of the standard `Exception` class.  This can
+To enable this, WSGIWAPI provides `wsgiwapi.HTTPError`, which is a subclass
+of `wsgiwapi.Response`, and also of the standard `Exception` class.  This can
 be thrown, and provided with whatever status code and message body you like.
 
 For even greater convenience, there are also some subclasses for specific
 error conditions:
 
- - `wsgiwebapi.HTTPServerError`: thrown to report "500 Server Error"
- - `wsgiwebapi.HTTPNotFound`: thrown to report a "404 Not Found" error.  
- - `wsgiwebapi.HTTPMethodNotAllowed`: thrown to report a disallowed method.
+ - `wsgiwapi.HTTPServerError`: thrown to report "500 Server Error"
+ - `wsgiwapi.HTTPNotFound`: thrown to report a "404 Not Found" error.  
+ - `wsgiwapi.HTTPMethodNotAllowed`: thrown to report a disallowed method.
    Takes the method which was requested, and a list of the allowed methods for
    this URL.
 
@@ -194,16 +195,16 @@ If your callable raises any other exception, the WSGI application will return a
 Unicode issues
 ==============
 
-Ideally, WSGIWebAPI would require all strings supplied to it to be unicode
+Ideally, WSGIWAPI would require all strings supplied to it to be unicode
 objects, so that users don't need to worry about character set issues.
 However, HTTP has various limitations on the character sets used, and it is
 sometimes desirable to pass through data which cannot be represented as valid
-unicode strings, so the API provided by WSGIWebAPI isn't quite as
+unicode strings, so the API provided by WSGIWAPI isn't quite as
 straightforward as this.
 
-WSGIWebAPI allows byte string objects (ie, "str" objects in Python 2.x, "bytes"
+WSGIWAPI allows byte string objects (ie, "str" objects in Python 2.x, "bytes"
 objects in Python 3.0 onwards) to be supplied in all places where a string is
-supplied by your application.  WSGIWebAPI will also accept unicode objects in
+supplied by your application.  WSGIWAPI will also accept unicode objects in
 all places where a string is supplied.  These unicode objects will be encoded
 appropriately for passing over HTTP: if this encoding is not possible due to
 restrictions in HTTP, an exception will be raised.  In particular:
@@ -216,7 +217,7 @@ restrictions in HTTP, an exception will be raised.  In particular:
    composed of such characters.
    Note - some HTTP clients now support encoding parameter values using
    RFC2231, which allows arbitrary unicode values to be supplied in parameters.
-   WSGIWebAPI doesn't yet support this.
+   WSGIWAPI doesn't yet support this.
 
 If a unicode object is supplied for the response body, it will be converted to
 UTF-8 for transmission.

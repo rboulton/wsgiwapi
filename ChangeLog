@@ -1,3 +1,34 @@
+Sat Feb 07 13:07:40 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/index.html: Update version number.
+
+Sat Feb 07 12:59:46 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* LICENSE,MANIFEST.in,README,docs/examples/,docs/index.html,
+	  docs/introduction.rst,docs/reference.rst,maintainer/make_docs.sh,
+	  runtests.py,setup.py,wsgiwapi/,wsgiwapi/testsupport/makesuite.py,
+	  wsgiwapi/unittests/,wsgiwapi/wsgisupport.py,wsgiwebapi/__init__.py,
+	  wsgiwebapi/application.py,wsgiwebapi/autodoc.py,
+	  wsgiwebapi/cpwsgiserver/__init__.py,wsgiwebapi/,
+	  wsgiwebapi/testsupport/coverage.py,
+	  wsgiwebapi/testsupport/makesuite.py,wsgiwebapi/unittests/,
+	  wsgiwebapi/validation.py,wsgiwebapi/wsgisupport.py: Change name
+	  from wsgiwebapi to wsgiwapi.
+
+Sat Feb 07 12:00:36 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwebapi/application.py,wsgiwebapi/autodoc.py,
+	  wsgiwebapi/validation.py: Fixes for autodoc support.
+
+Wed Feb 04 20:57:26 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/introduction.rst: Fix typo, spotted by James Aylett.
+
+Tue Feb 03 09:23:36 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* maintainer/release-checklist,setup.py: More things I missed
+	  making the release.
+
 Tue Feb 03 09:17:48 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
 
 	* docs/index.html,maintainer/release-checklist,setup.py: Update for

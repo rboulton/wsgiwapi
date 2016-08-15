@@ -144,7 +144,7 @@ def make_application(urls,
         for component in components[:-1]:
             suburls = suburls.setdefault(component, {})
         from autodoc import make_doc
-        suburls[components[-1]] = make_doc(urls)
+        suburls[components[-1]] = make_doc(urls, autodoc)
 
     return Application
 
@@ -154,7 +154,7 @@ def make_server(app, bind_addr, *args, **kwargs):
     This uses CherryPy's standalone WSGI server.  The first argument is the
     WSGI application to run; all subsequent arguments are passed directly to
     the server.  The CherryPyWSGIServer is accessible as
-    wsgiwebapi.cpwsgiserver: see the documentation in that module for calling
+    wsgiwapi.cpwsgiserver: see the documentation in that module for calling
     details.
 
     Note that you will always need to set the bind_addr parameter; this is a

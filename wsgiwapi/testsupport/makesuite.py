@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-r"""makesuite.py: Build a test suite for the wsgiwebapi tests.
+r"""makesuite.py: Build a test suite for the wsgiwapi tests.
 
 """
 __docformat__ = "restructuredtext en"
@@ -68,8 +68,8 @@ def make_suite(use_coverage=False):
 
     # Add unittests
     loader = unittest.TestLoader()
-    for testpath in find_unittests(os.path.join(topdir, "wsgiwebapi", "unittests")):
-        modpath = "wsgiwebapi.unittests." + testpath.replace('/', '.')[:-3]
+    for testpath in find_unittests(os.path.join(topdir, "wsgiwapi", "unittests")):
+        modpath = "wsgiwapi.unittests." + testpath.replace('/', '.')[:-3]
         mod = __import__(modpath, None, None, [''])
         test = loader.loadTestsFromModule(mod)
         suite.addTest(test)
@@ -99,7 +99,7 @@ def get_coverage():
     # Get the coverage statistics
     stats = []
     modules = []
-    for dirpath, dirnames, filenames in os.walk(os.path.join(get_topdir(), 'wsgiwebapi')):
+    for dirpath, dirnames, filenames in os.walk(os.path.join(get_topdir(), 'wsgiwapi')):
         for fname in filenames:
             if not fname.endswith('.py'):
                 continue

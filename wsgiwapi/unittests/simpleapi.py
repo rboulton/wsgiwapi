@@ -19,25 +19,25 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-r"""Test a simple API built with wsgiwebapi.
+r"""Test a simple API built with wsgiwapi.
 
 """
 __docformat__ = "restructuredtext en"
 
 from harness import *
 import apps
-import wsgiwebapi
+import wsgiwapi
 
 class SimpleApiTest(TestCase):
-    """Test a simple API build with wsgiwebapi.
+    """Test a simple API build with wsgiwapi.
 
     """
     def test_simple(self):
         """Test basic use of the simple API.
 
         """
-        app = wsgiwebapi.make_application(apps.simple(),
-                                          logger = wsgiwebapi.SilentLogger)
+        app = wsgiwapi.make_application(apps.simple(),
+                                        logger = wsgiwapi.SilentLogger)
         r = simulate_get(app, '/')
         self.assertEqual(r.status, u'200 OK')
         self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')

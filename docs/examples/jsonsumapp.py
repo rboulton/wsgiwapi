@@ -24,28 +24,28 @@ r"""Example application returning JSON data.
 """
 __docformat__ = "restructuredtext en"
 
-# First, ensure that wsgiwebapi is on the path
+# First, ensure that wsgiwapi is on the path
 import sys
 import os.path as osp
 sys.path.insert(0, osp.dirname(osp.dirname(osp.dirname(osp.abspath(__file__)))))
 
-# Make an application with wsgiwebapi.
-import wsgiwebapi
-@wsgiwebapi.jsonreturning
-@wsgiwebapi.param("num", 1, None, "^[0-9]+$", None, "A number to be added")
-@wsgiwebapi.allow_GETHEAD
+# Make an application with wsgiwapi.
+import wsgiwapi
+@wsgiwapi.jsonreturning
+@wsgiwapi.param("num", 1, None, "^[0-9]+$", None, "A number to be added")
+@wsgiwapi.allow_GETHEAD
 def calc_sum(request):
     """Return the sum of the values supplied in the `num` parameter.
 
     """
     res = sum(int(val) for val in request.params.get('num', []))
     return res
-app = wsgiwebapi.make_application({
+app = wsgiwapi.make_application({
     'sum': calc_sum
 }, autodoc='doc')
 
 # Use the built-in cherrypy WSGI server to run the application.
-server = wsgiwebapi.make_server(app(), ('0.0.0.0', 8080))
+server = wsgiwapi.make_server(app(), ('0.0.0.0', 8080))
 
 # Start the server.
 if __name__ == '__main__':

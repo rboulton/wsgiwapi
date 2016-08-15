@@ -148,6 +148,7 @@ def validate_pathinfo_tail(request, tail_rules):
         else:
             return
     minreps, maxreps, pattern, compiled_pattern, default, doc = tail_rules
+    # FIXME - validate pathinfo
 
 def check_pathinfo(request, props):
     """Check the pathinfo for validity, and populate the pathinfo dictionary.
@@ -195,9 +196,9 @@ def parse_pathinfo_rules(pathinfo_items, tail_rules):
 
     # Check the "tail" keyword argument.
     if not tail_rules is None:
-        if len(tail_rules) < 1 or len(tail_rules) > 5:
+        if len(tail_rules) > 5:
             raise TypeError("pathinfo tail argument must be "
-                            "sequence of length 1 to 5 items - got %d "
+                            "sequence of length 0 to 5 items - got %d "
                             "items" % len(tail_rules))
         tail_rules = _pad_none(tail_rules, 5)
         pattern = tail_rules[2]

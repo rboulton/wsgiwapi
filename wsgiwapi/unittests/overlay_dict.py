@@ -25,7 +25,7 @@ r"""Test OverlayDict class.
 __docformat__ = "restructuredtext en"
 
 from harness import *
-import wsgiwebapi.overlaydict
+import wsgiwapi.overlaydict
 
 class OverlayDictTest(TestCase):
     """Test OverlayDict support.
@@ -37,7 +37,7 @@ class OverlayDictTest(TestCase):
         """
         d1 = {}
         d2 = {}
-        d = wsgiwebapi.overlaydict.OverlayDict(d1, d2)
+        d = wsgiwapi.overlaydict.OverlayDict(d1, d2)
         def fn(): d[1] = 1
         self.assertRaises(AttributeError, fn)
         self.assertEqual(d.get(1), None)

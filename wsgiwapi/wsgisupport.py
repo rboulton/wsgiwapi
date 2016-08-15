@@ -92,7 +92,7 @@ class Request(object):
         self.params = overlaydict.OverlayDict(self.POST, self.GET)
 
     def _set_handler_props(self, handler_props):
-        """Set the WSGIWebAPI properties found on the handler.
+        """Set the WSGIWAPI properties found on the handler.
 
         This is used to warn when the properties on the handler do not match
         those used by the decorator - this is usually due to a second decorator

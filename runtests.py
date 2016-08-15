@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-r"""runtests.py: Run test wsgiwebapi tests.
+r"""runtests.py: Run test wsgiwapi tests.
 
 """
 __docformat__ = "restructuredtext en"
@@ -29,7 +29,7 @@ __docformat__ = "restructuredtext en"
 ########################
 
 import sys
-from wsgiwebapi.testsupport.makesuite import run
+from wsgiwapi.testsupport.makesuite import run
 
 if __name__ == '__main__':
     args = {

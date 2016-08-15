@@ -1,20 +1,20 @@
-===========================
-WSGIWebAPI Reference Manual
-===========================
+=========================
+WSGIWAPI Reference Manual
+=========================
 
 .. Warning:: This manual is not in any way complete - don't trust it for information yet!
 
 Design Philosophy
 =================
 
-WSGIWebAPI tries hard not to get in your way.  The intention is that it should
-be possible to use only those bits of WSGIWebAPI which are useful to you,
+WSGIWAPI tries hard not to get in your way.  The intention is that it should
+be possible to use only those bits of WSGIWAPI which are useful to you,
 without having to know about those parts which you are not using.  In addition,
-you shouldn't need to install dependencies for parts of WSGIWebAPI which you're
+you shouldn't need to install dependencies for parts of WSGIWAPI which you're
 not using - for example, if you're not using JSON, you don't need to have a
 python JSON library installed.
 
-It should be possible to make code using WSGIWebAPI concise and clear, so we've
+It should be possible to make code using WSGIWAPI concise and clear, so we've
 tried to embrace the "Don't Repeat Yourself" principle.  As an example, document
 
 
@@ -34,32 +34,32 @@ Response objects
 Redirection
 -----------
 
-WSGIWebAPI currently has no explicit support for HTTP redirects.  For
+WSGIWAPI currently has no explicit support for HTTP redirects.  For
 now, you can implement it yourself by setting the appropriate headers
 and returning the appropriate response code.
 
 Returning errors
 ----------------
 
-The `wsgiwebapi.Response` object allows the HTTP status code to be set
+The `wsgiwapi.Response` object allows the HTTP status code to be set
 (and knows some standard reason messages for all the standard HTTP 1.1
 status codes, so you can just set the numeric code if you're happy to
 use the standard reason messages).  This allows you to return any HTTP
 status code you like, to represent errors (or redirects, etc).
 
 However, it is often convenient to be able to use exceptions to report
-errors.  To enable this, WSGIWebAPI provides `wsgiwebapi.HTTPError`,
-which is a subclass of `wsgiwebapi.Response`, and also of the standard
+errors.  To enable this, WSGIWAPI provides `wsgiwapi.HTTPError`,
+which is a subclass of `wsgiwapi.Response`, and also of the standard
 `Exception` class.  This can be thrown, and provided with whatever
 status code and message body you like.
 
 For even greater convenience, there are also some subclasses for
 specific error conditions:
 
- - `wsgiwebapi.HTTPServerError`: thrown to report "500 Server Error"
- - `wsgiwebapi.HTTPNotFound`: thrown to report a "404 Not Found"
+ - `wsgiwapi.HTTPServerError`: thrown to report "500 Server Error"
+ - `wsgiwapi.HTTPNotFound`: thrown to report a "404 Not Found"
    error.  
- - `wsgiwebapi.HTTPMethodNotAllowed`: thrown to report a disallowed
+ - `wsgiwapi.HTTPMethodNotAllowed`: thrown to report a disallowed
    method.  Takes the method which was requested, and a list of the
    allowed methods for this URL.
 
@@ -70,36 +70,36 @@ return a "500 Server Error".
 Decorators
 ==========
 
-WSGIWebAPI provides a set of useful decorators, to make it easy to
+WSGIWAPI provides a set of useful decorators, to make it easy to
 produce certain types of API.  You don't need to use any of these, but
 they will often make it easier to produce a clean API.
 
-The WSGIWebAPI decorators can be applied in any order: they all
+The WSGIWAPI decorators can be applied in any order: they all
 operate by adding some extra properties to the API, and replacing the
 API method with a special wrapper which interprets these properties.
 
-If you are using other (non WSGIWebAPI) decorators which replace the
+If you are using other (non WSGIWAPI) decorators which replace the
 callable by a decorated callable, you need to ensure that the
-properties used by WSGIWebAPI are copied onto the decorated callable.
-If you do not do this, WSGIWebAPI will raise an exception at runtime,
+properties used by WSGIWAPI are copied onto the decorated callable.
+If you do not do this, WSGIWAPI will raise an exception at runtime,
 to ensure that inconsistent behaviour doesn't result.
 
 Well-behaved decorators will copy the properties by default (by coping
 the contents of __dict__ from the original callable to the decorated
 callable), but it's best to use one of two approaches provided by
-wsgiwebapi to ensure that 
+wsgiwapi to ensure that 
 
  - If you are writing the decorator yourself, include a call to
-   ``wsgiwebapi.copyprops`` at the end of the decorator: pass this the
+   ``wsgiwapi.copyprops`` at the end of the decorator: pass this the
    original callable, and the decorated callable, and it will copy all
    the appropriate properties across.
 
    FIXME - example.
 
  - If you are using an existing decorator, wrap it in the
-   ``wsgiwebapi.decorate`` decorator (ie, pass it as an argument to
+   ``wsgiwapi.decorate`` decorator (ie, pass it as an argument to
    this decorator).  This decorator first applies the decorator it is
-   given, and then applies ``wsgiwebapi.copyprops`` to fix up the
+   given, and then applies ``wsgiwapi.copyprops`` to fix up the
    properties.
 
    FIXME - example.
@@ -110,7 +110,7 @@ Validation
 Restricting HTTP methods
 ------------------------
 
-By default, WSGIWebAPI will allow any HTTP method to be used to call
+By default, WSGIWAPI will allow any HTTP method to be used to call
 your API.  It is often desirable to restrict the set of methods which
 are allowed at a particular path.  To do this, you can use the
 `allow_method` decorator.  This decorator takes one or more parameters
@@ -156,7 +156,7 @@ Pathinfo
 
 FIXME - document
 
-.. Warning:: if you've decorated with the @pathinfo decorator, and also decorated with another (non-WSGIWebAPI) decorator, you may find that the method still doesn't seem to accept trailing path information.  This is because ... to fix it call copyprops, or use the wsgiwebapi.decorate decorator.
+.. Warning:: if you've decorated with the @pathinfo decorator, and also decorated with another (non-WSGIWAPI) decorator, you may find that the method still doesn't seem to accept trailing path information.  This is because ... to fix it call copyprops, or use the wsgiwapi.decorate decorator.
 
 JSON output
 ===========
@@ -178,17 +178,17 @@ appropriately.
 Here's an example of this decorator (which you can see in a cherrypy wrapper at
 `<examples/jsonsumapp_cp.py>`_)::
 
-    import wsgiwebapi
-    @wsgiwebapi.jsonreturning
-    @wsgiwebapi.param("num", 1, None, "^[0-9]+$", None, "A number to be added")
-    @wsgiwebapi.allow_GETHEAD
+    import wsgiwapi
+    @wsgiwapi.jsonreturning
+    @wsgiwapi.param("num", 1, None, "^[0-9]+$", None, "A number to be added")
+    @wsgiwapi.allow_GETHEAD
     def calc_sum(request):
         """Return the sum of the values supplied in the `num` parameter.
 
         """
         res = sum(int(val) for val in request.params.get('num', []))
         return res
-    app = wsgiwebapi.make_application({
+    app = wsgiwapi.make_application({
         'sum': calc_sum
     }, autodoc='doc')
 
@@ -201,16 +201,16 @@ FIXME - document, and add notes on why JSONP might be a bad idea in some cases.
 Unicode issues
 ==============
 
-Ideally, WSGIWebAPI would require all strings supplied to it to be
+Ideally, WSGIWAPI would require all strings supplied to it to be
 unicode objects, so that users don't need to worry about character set
 issues.  However, HTTP has various limitations on the character sets
 used, and it is sometimes desirable to pass through data which cannot
 be represented as valid unicode strings, so the API provided by
-WSGIWebAPI isn't quite as straightforward as this.
+WSGIWAPI isn't quite as straightforward as this.
 
-WSGIWebAPI allows byte string objects (ie, "str" objects in Python
+WSGIWAPI allows byte string objects (ie, "str" objects in Python
 2.x, "bytes" objects in Python 3.0 onwards) to be supplied in all
-places where a string is supplied by your application.  WSGIWebAPI
+places where a string is supplied by your application.  WSGIWAPI
 will also accept unicode objects in all places where a string is
 supplied.  These unicode objects will be encoded appropriately for
 passing over HTTP: if this encoding is not possible due to
@@ -224,7 +224,7 @@ restrictions in HTTP, an exception will be raised.  In particular:
    currently also be composed of such characters.  Note - some HTTP
    clients now support encoding parameter values using RFC2231, which
    allows arbitrary unicode values to be supplied in parameters.
-   WSGIWebAPI doesn't yet support this.
+   WSGIWAPI doesn't yet support this.
 
 If a unicode object is supplied for the response body, it will be
 converted to UTF-8 for transmission.

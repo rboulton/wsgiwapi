@@ -17,10 +17,10 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-r"""Framework for wsgiwebapi unittests.
+r"""Framework for wsgiwapi unittests.
 
 Unittests should just start with "from harness import *", which will provide
-a convenient environment for writing tests of wsgiwebapi features.
+a convenient environment for writing tests of wsgiwapi features.
 
 """
 __docformat__ = "restructuredtext en"
@@ -35,9 +35,9 @@ import urllib
 import wsgiref.util
 import wsgiref.validate
 
-# Ensure that wsgiwebapi is on the path, when run uninstalled.
+# Ensure that wsgiwapi is on the path, when run uninstalled.
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-import wsgiwebapi
+import wsgiwapi
 
 class SimulationResult(object):
     """The result of a simulated call to the API.

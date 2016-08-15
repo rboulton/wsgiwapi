@@ -17,7 +17,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-r"""Decorators of WSGIWebAPI callables.
+r"""Decorators of WSGIWAPI callables.
 
 """
 __docformat__ = "restructuredtext en"
@@ -53,8 +53,8 @@ def _decorate_once(fn):
     """Decorate a function with the standard decorator pair, if not already decorated.
 
     """
-    if hasattr(fn, '_wsgiwebapi_props'):
-        props = fn._wsgiwebapi_props
+    if hasattr(fn, '_wsgiwapi_props'):
+        props = fn._wsgiwapi_props
         if props.get('decorated', False) == True:
             return fn, props
     props = {'decorated': True}
@@ -68,7 +68,7 @@ def _decorate_once(fn):
             have_self = True
 
         if request._handler_props is not props:
-            raise RuntimeError("Handler properties do not match decorated properties.  Probably missing call to wsgiwebapi.copyprops.")
+            raise RuntimeError("Handler properties do not match decorated properties.  Probably missing call to wsgiwapi.copyprops.")
 
         request = _apply_request_checks_and_transforms(request, props)
 
@@ -84,16 +84,16 @@ def _decorate_once(fn):
     res.__doc__ = fn.__doc__
     res.__name__ = fn.__name__
     res.__dict__.update(fn.__dict__)
-    res._wsgiwebapi_props = props
+    res._wsgiwapi_props = props
     return res, props
 
 def _get_props(fn):
-    """Get the WSGIWebAPI properties from an object.
+    """Get the WSGIWAPI properties from an object.
 
     """
-    if not hasattr(fn, '_wsgiwebapi_props'):
+    if not hasattr(fn, '_wsgiwapi_props'):
         return None
-    return fn._wsgiwebapi_props
+    return fn._wsgiwapi_props
 
 def jsonreturning(fn):
     """Decorator to wrap function's return value as JSON.
@@ -290,25 +290,25 @@ def pathinfo(*args, **kwargs):
     return deco
 
 def copyprops(original_fn, decorated_fn):
-    """Copy the WSGIWebAPI properties from a function to a decorated function.
+    """Copy the WSGIWAPI properties from a function to a decorated function.
 
-    If you write your own decorators and apply them to WSGIWebAPI decorated
+    If you write your own decorators and apply them to WSGIWAPI decorated
     functions, you should call this method in your decorator to copy the
-    WSGIWebAPI properties into your decorated function.  If you don't do this,
+    WSGIWAPI properties into your decorated function.  If you don't do this,
     you may get confusing failures, such as pathinfo not being allowed.
 
     """
-    if hasattr(original_fn, '_wsgiwebapi_props'):
-        decorated_fn._wsgiwebapi_props = original_fn._wsgiwebapi_props
+    if hasattr(original_fn, '_wsgiwapi_props'):
+        decorated_fn._wsgiwapi_props = original_fn._wsgiwapi_props
     if hasattr(original_fn, '__doc__'):
         decorated_fn.__doc__ = original_fn.__doc__
 
 def decorate(decorator):
-    """Apply a decorator, but also copy the WSGIWebAPI properties across.
+    """Apply a decorator, but also copy the WSGIWAPI properties across.
 
     To use this, pass the decorator you wish to apply as a parameter to this
     decorator.  The returned decorator will apply this decorator, and then copy
-    the WSGIWebAPI properties across.
+    the WSGIWAPI properties across.
 
     """
     def deco(fn):

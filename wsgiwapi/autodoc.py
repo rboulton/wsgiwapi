@@ -23,15 +23,15 @@ r"""Support for automatically documenting an API.
 __docformat__ = "restructuredtext en"
 
 import inspect
-from decorators import allow_GET
+from decorators import allow_GET, pathinfo
 from wsgisupport import Response, HTTPNotFound
 
-def get_property(obj, prop, default):
-    if not hasattr(obj, '_wsgiwebapi_props'):
-        return default
-    return obj._wsgiwebapi_props.get(prop, default)
+def get_properties(obj):
+    if not hasattr(obj, '_wsgiwapi_props'):
+        return {}
+    return obj._wsgiwapi_props
 
-def make_doc(appurls):
+def make_doc(appurls, base_doc_url):
     def build_link_tree(result, urls, leadingcomponents, thiscomponent):
         components = urls.keys()
         components.sort()
@@ -49,7 +49,8 @@ def make_doc(appurls):
                 else:
                     doc = doc.partition('\n')[0]
                 result.append(' ')
-                rettype = get_property(value, 'return_type', '')
+                props = get_properties(value)
+                rettype = props.get('return_type', '')
                 if rettype:
                     result.append("[%s] " % rettype)
                 result.append(doc)
@@ -107,12 +108,13 @@ def make_doc(appurls):
         return '\n'.join(result)
 
     @allow_GET
-    def doc(request, *args):
+    @pathinfo(tail=())
+    def doc(request):
         """Display documentation about the API.
 
         """
         urls = appurls
-        for arg in args:
+        for arg in request.pathinfo.tail:
             if arg not in urls:
                 raise HTTPNotFound(request.path)
             if hasattr(urls, '__call__'):
@@ -121,18 +123,19 @@ def make_doc(appurls):
 
         if hasattr(urls, '__call__'):
             body = '<pre>%s</pre>' % inspect.getdoc(urls)
-            rettype = get_property(urls, 'return_type', '')
+            props = get_properties(urls)
+            rettype = props.get('return_type', '')
             if rettype:
                 body += "<b>Return type: %s</b><br/>\n" % rettype
             body += "<b>Path items</b>\n<ul>"
             body += path_description(urls)
             body += "</ul><br/>\n"
-            constraints = get_property(urls, 'valid_params', None)
+            constraints = props.get('valid_params', None)
             if constraints != None:
                 body += "<b>Parameters:</b>\n<ul>"
                 body += param_descriptions(constraints)
                 body += "</ul><br/>\n"
-            methods = get_property(urls, 'allowed_methods', None)
+            methods = props.get('allowed_methods', None)
             if methods != None:
                 methods = list(methods)
                 methods.sort()
@@ -141,10 +144,10 @@ def make_doc(appurls):
                 body += "</li></ul><br/>\n"
         else:
             body = ['<ul>']
-            thiscomponent = 'doc'
-            if len(args):
-                thiscomponent = args[-1]
-            build_link_tree(body, urls, args, thiscomponent)
+            thiscomponent = base_doc_url
+            if len(request.pathinfo.tail):
+                thiscomponent = request.pathinfo.tail[-1]
+            build_link_tree(body, urls, request.pathinfo.tail, thiscomponent)
             body.append('</ul>')
             body = ''.join(body)
         return Response(
