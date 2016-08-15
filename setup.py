@@ -39,7 +39,7 @@ support for easily running your application as a standalone server.
 """
 
 setup(name = "WSGIWAPI",
-      version = "0.3",
+      version = "0.3.1",
       description = "Framework for building web APIs",
       long_description = long_description,
       author = "Richard Boulton",
@@ -48,7 +48,7 @@ setup(name = "WSGIWAPI",
       maintainer_email = "richard@tartarus.org",
       url = "http://wsgiwapi.tartarus.org/",
       #test_suite = "wsgiwapi.testsupport.makesuite.make_suite",
-      download_url = "http://wsgiwapi.googlecode.com/files/WSGIWAPI-0.3.tar.gz",
+      download_url = "http://wsgiwapi.googlecode.com/files/WSGIWAPI-0.3.1.tar.gz",
 
       classifiers = [
           'Development Status :: 3 - Alpha',

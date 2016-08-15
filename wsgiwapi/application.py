@@ -36,6 +36,15 @@ from wsgisupport import Request, \
          WSGIResponse, \
          Response
 
+class JsonResponse(object):
+    """A class used to return a JSON response with a specific status code.
+
+    """ 
+    def __init__(self, jsonobj, status_code=None, content_type=None):
+        self.jsonobj = jsonobj
+        self.status_code = status_code
+        self.content_type = content_type
+
 class ValidationError(Exception):
     """Exception used to indicate that parameters failed validation.
 
@@ -234,6 +243,11 @@ def make_application(urls,
             except ValidationError, e:
                 response = validation_error_handler(e)
                 return False, request, WSGIResponse(start_response, response)
+            except HTTPNotFound, e:
+                if e.path is None:
+                    e.path = request.path
+                e.body += '\nPath \'%s\' not found' % e.path
+                return False, request, WSGIResponse(start_response, e)
             except HTTPError, e:
                 return False, request, WSGIResponse(start_response, e)
             except Exception, e:

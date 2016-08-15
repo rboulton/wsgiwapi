@@ -386,8 +386,9 @@ class HTTPNotFound(HTTPError):
     """Raise this exception if a requested resource is not found.
 
     """
-    def __init__(self, path):
-        HTTPError.__init__(self, 404, 'Path \'%s\' not found' % path)
+    def __init__(self, path=None):
+        self.path = path
+        HTTPError.__init__(self, 404)
 
 class HTTPMethodNotAllowed(HTTPError):
     """Raise this exception if a method which is not allowed was used.

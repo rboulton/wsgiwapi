@@ -35,21 +35,32 @@ except ImportError:
 if not have_json:
     import simplejson as json
 
+from application import JsonResponse
 from wsgisupport import Response
 
 def convert_to_json(request, response, props):
     """Convert a response to JSON.
 
     """
-    return Response(json.dumps(response),
-                    content_type="text/javascript")
+    jsonobj = response
+    status = 200
+    content_type="text/javascript"
+
+    if isinstance(response, JsonResponse):
+        jsonobj = response.jsonobj
+        if response.status_code is not None:
+            status = response.status_code
+        if response.content_type is not None:
+            content_type = response.content_type
+
+    return Response(json.dumps(jsonobj), status, content_type)
 
 def convert_to_jsonp(request, response, props):
     """Convert a response to JSONP, according to the props.
 
     """
-    response = Response(json.dumps(response),
-                        content_type="text/javascript")
+    response = convert_to_json(request, response, props)
+
     paramname = props['return_JSONP_paramname']
     jsonp = request.validated.get(paramname)
     if jsonp != '':

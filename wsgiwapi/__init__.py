@@ -27,6 +27,7 @@ from application import (
                          make_server,
                          MethodSwitch,
                          ValidationError,
+                         JsonResponse
                         )
 from decorators import (
                         jsonreturning,

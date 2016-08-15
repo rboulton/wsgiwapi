@@ -48,14 +48,16 @@ class PostdataTest(TestCase):
         """Test use of the default postdata handler with JSON body.
 
         """
+        @wsgiwapi.jsonreturning
         def app_fn1(request):
-            return request.json[0] + request.json[1]
+            return wsgiwapi.JsonResponse(request.json[0] + request.json[1],
+                                         201, 'application/json')
 
         app = makeapp({'': app_fn1})
         r = simulate_post(app, '/', ['cat', 'dog'], 'text/json')
-        self.assertEqual(r.status, u'200 OK')
-        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
-        self.assertEqual(r.body, u'catdog')
+        self.assertEqual(r.status, u'201 Created')
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'application/json')
+        self.assertEqual(r.body, u'"catdog"')
 
     def test_stream(self):
         """Test the rawinput decorator.

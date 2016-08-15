@@ -25,6 +25,7 @@ __docformat__ = "restructuredtext en"
 import inspect
 from decorators import allow_GET, pathinfo
 from wsgisupport import Response, HTTPNotFound
+from application import MethodSwitch
 
 def get_properties(obj):
     if not hasattr(obj, '_wsgiwapi_props'):
@@ -37,8 +38,12 @@ def make_doc(appurls, base_doc_url):
         components.sort()
         for component in components:
             value = urls[component]
-            fullcomponents = leadingcomponents + (component, )
-            componentpath = thiscomponent + '/' + component
+            if component is None:
+                fullcomponents = leadingcomponents
+                componentpath = thiscomponent
+            else:
+                fullcomponents = leadingcomponents + (component, )
+                componentpath = thiscomponent + '/' + component
             result.append('<li><a href="%(component)s">/%(fullpath)s</a>' %
                           {'component': componentpath,
                           'fullpath': '/'.join(fullcomponents)})
@@ -64,7 +69,12 @@ def make_doc(appurls, base_doc_url):
         """Generate a description of the subsequent path items.
 
         """
-        args, varargs, varkw, defaults = inspect.getargspec(callable)
+        if isinstance(callable, MethodSwitch):
+            # Hack - this just returns the path description for the GET method.
+            args, varargs, varkw, defaults = inspect.getargspec(callable.methods['GET'])
+        else:
+            args, varargs, varkw, defaults = inspect.getargspec(callable)
+
         args = args[1:]
         if len(args) == 0 and varargs is None:
             return "<li>No extra path components allowed.</li>\n"

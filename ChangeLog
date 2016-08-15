@@ -1,3 +1,22 @@
+Sun Apr 19 22:19:39 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py,wsgiwapi/wsgisupport.py: Allow the path
+	  not to be supplied to HTTPNotFound - the request path will be
+	  used automatically in this case.
+
+Wed Apr 08 14:32:05 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/__init__.py,wsgiwapi/application.py,wsgiwapi/jsonsupport.py,
+	  wsgiwapi/unittests/postdata.py: Add JsonResponse object, which,
+	  when used inside a jsonreturning decorator, allows the response
+	  content type and status code to be set.
+
+Sun Mar 29 21:19:32 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/autodoc.py: Make autodoc not raise an exception with
+	  MethodSwitches; doesn't actually display useful information yet,
+	  though.
+
 Sat Mar 28 19:44:27 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
 
 	* docs/index.html,setup.py: Update version number for 0.3 release.
