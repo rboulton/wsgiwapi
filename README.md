@@ -1,5 +1,7 @@
-README
-======
+# README
+
+*This project has not been maintained since 2009*
+
 
 WSGIWAPI is intended to make it extremely easy to make web APIs based on
 Python programs.
@@ -11,8 +13,7 @@ You can run the testsuite by running "./runtests.py".
 
 All changes are logged in the ChangeLog.
 
-Prerequisites
-=============
+# Prerequisites
 
 WSGIWAPI should work with python versions 2.5 and 2.6.  Older versions (ie,
 2.4 or earlier) are not supported - the main obstacle is that the exception
