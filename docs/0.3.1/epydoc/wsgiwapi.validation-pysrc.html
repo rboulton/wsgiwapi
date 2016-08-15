@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>wsgiwapi.validation</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="wsgiwapi-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="../index.html">WSGIWAPI</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="wsgiwapi-module.html">Package&nbsp;wsgiwapi</a> ::
+        Module&nbsp;validation
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="wsgiwapi.validation-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="wsgiwapi.validation-module.html">Module wsgiwapi.validation</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2009 Richard Boulton</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Permission is hereby granted, free of charge, to any person obtaining a copy</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># of this software and associated documentation files (the "Software"), to deal</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># in the Software without restriction, including without limitation the rights</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># copies of the Software, and to permit persons to whom the Software is</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># furnished to do so, subject to the following conditions:</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># The above copyright notice and this permission notice shall be included in</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># all copies or substantial portions of the Software.</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># SOFTWARE.</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-docstring">r"""Support for validation of request parameters.</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext en"</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module wsgiwapi.wsgisupport=wsgiwapi.wsgisupport-module.html"><a title="wsgiwapi.wsgisupport" class="py-name" href="#" onclick="return doclink('link-0', 'wsgisupport', 'link-0');">wsgisupport</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Class wsgiwapi.wsgisupport.HTTPNotFound=wsgiwapi.wsgisupport.HTTPNotFound-class.html"><a title="wsgiwapi.wsgisupport.HTTPNotFound" class="py-name" href="#" onclick="return doclink('link-1', 'HTTPNotFound', 'link-1');">HTTPNotFound</a></tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Module wsgiwapi.application=wsgiwapi.application-module.html"><a title="wsgiwapi.application" class="py-name" href="#" onclick="return doclink('link-2', 'application', 'link-2');">application</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class wsgiwapi.application.ValidationError=wsgiwapi.application.ValidationError-class.html"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-3', 'ValidationError', 'link-3');">ValidationError</a></tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"> </tt>
+<a name="validate_param"></a><div id="validate_param-def"><a name="L29"></a><tt class="py-lineno"> 29</tt> <a class="py-toggle" href="#" id="validate_param-toggle" onclick="return toggle('validate_param');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.validation-module.html#validate_param">validate_param</a><tt class="py-op">(</tt><tt class="py-param">key</tt><tt class="py-op">,</tt> <tt class="py-param">vals</tt><tt class="py-op">,</tt> <tt class="py-param">minreps</tt><tt class="py-op">,</tt> <tt class="py-param">maxreps</tt><tt class="py-op">,</tt> <tt class="py-param">pattern</tt><tt class="py-op">,</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">                   <tt class="py-param">compiled_pattern</tt><tt class="py-op">,</tt> <tt class="py-param">default</tt><tt class="py-op">,</tt> <tt class="py-param">doc</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="validate_param-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="validate_param-expanded"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-docstring">"""Validate a particular parameter.</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">    <tt class="py-name">l</tt> <tt class="py-op">=</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">vals</tt><tt class="py-op">)</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">    <tt class="py-comment"># If not present, and there is a default, set vals to default</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">if</tt> <tt class="py-name">l</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt> <tt class="py-keyword">and</tt> <tt class="py-name">default</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">        <tt class="py-name">vals</tt> <tt class="py-op">=</tt> <tt class="py-name">default</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line"> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">    <tt class="py-comment"># Check we've got an acceptable number of values.</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">if</tt> <tt class="py-name">l</tt> <tt class="py-op">&lt;</tt> <tt class="py-name">minreps</tt><tt class="py-op">:</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-4" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-4', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">u"Too few instances of %r supplied "</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">                              <tt class="py-string">u"(needed %d, got %d)"</tt> <tt class="py-op">%</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">                              <tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">minreps</tt><tt class="py-op">,</tt> <tt class="py-name">l</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">maxreps</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt> <tt class="py-name">l</tt> <tt class="py-op">&gt;</tt> <tt class="py-name">maxreps</tt><tt class="py-op">:</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-5" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-5', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">u"Too many instances of %r supplied "</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line">                              <tt class="py-string">u"(maximum %d, got %d)"</tt> <tt class="py-op">%</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">                              <tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">maxreps</tt><tt class="py-op">,</tt> <tt class="py-name">l</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line"> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">compiled_pattern</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">        <tt class="py-comment"># Check the regexp pattern matches</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">for</tt> <tt class="py-name">val</tt> <tt class="py-keyword">in</tt> <tt class="py-name">vals</tt><tt class="py-op">:</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">compiled_pattern</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt class="py-name">val</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-6" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-6', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">u"Invalid parameter value for %r"</tt> <tt class="py-op">%</tt> <tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">vals</tt> </tt>
+</div><a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"> </tt>
+<a name="validate_params"></a><div id="validate_params-def"><a name="L58"></a><tt class="py-lineno"> 58</tt> <a class="py-toggle" href="#" id="validate_params-toggle" onclick="return toggle('validate_params');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.validation-module.html#validate_params">validate_params</a><tt class="py-op">(</tt><tt class="py-param">requestobj</tt><tt class="py-op">,</tt> <tt class="py-param">constraints</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="validate_params-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="validate_params-expanded"><a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-docstring">"""Validate parameters, raising ValidationError for problems.</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-docstring">    `constraints` is a dict of tuples, one for each field.  Unknown fields</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-docstring">    raise an error.</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">    <tt class="py-name">p</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">    <tt class="py-comment"># Check for missing parameters - add if they have a default, otherwise give</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># an error.</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-name">missing_params</tt> <tt class="py-op">=</tt> <tt id="link-7" class="py-name" targets="Method wsgiwapi.wsgisupport.Headers.set()=wsgiwapi.wsgisupport.Headers-class.html#set"><a title="wsgiwapi.wsgisupport.Headers.set" class="py-name" href="#" onclick="return doclink('link-7', 'set', 'link-7');">set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">constraint</tt> <tt class="py-keyword">in</tt> <tt class="py-name">constraints</tt><tt class="py-op">.</tt><tt class="py-name">iteritems</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">constraint</tt><tt class="py-op">[</tt><tt class="py-number">4</tt><tt class="py-op">]</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">key</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">requestobj</tt><tt class="py-op">:</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">                <tt class="py-name">p</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">constraint</tt><tt class="py-op">[</tt><tt class="py-number">4</tt><tt class="py-op">]</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">            <tt class="py-comment"># check for missing params</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-comment"></tt>            <tt class="py-keyword">if</tt> <tt class="py-name">constraint</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt> <tt class="py-keyword">and</tt> <tt class="py-name">key</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">requestobj</tt><tt class="py-op">:</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line">                <tt class="py-name">missing_params</tt><tt class="py-op">.</tt><tt id="link-8" class="py-name" targets="Method wsgiwapi.wsgisupport.Headers.add()=wsgiwapi.wsgisupport.Headers-class.html#add"><a title="wsgiwapi.wsgisupport.Headers.add" class="py-name" href="#" onclick="return doclink('link-8', 'add', 'link-8');">add</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">missing_params</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line">        <tt class="py-comment"># We trust the list of missing_params not to be trying to hack us.</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">raise</tt> <tt id="link-9" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-9', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">u"Missing required parameters %s"</tt> <tt class="py-op">%</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">                              <tt class="py-string">u', '</tt><tt class="py-op">.</tt><tt class="py-name">join</tt><tt class="py-op">(</tt><tt class="py-string">u"'%s'"</tt> <tt class="py-op">%</tt> <tt class="py-name">p</tt> <tt class="py-keyword">for</tt> <tt class="py-name">p</tt> <tt class="py-keyword">in</tt> <tt class="py-name">missing_params</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">key</tt> <tt class="py-keyword">in</tt> <tt class="py-name">requestobj</tt><tt class="py-op">:</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line">        <tt class="py-name">constraint</tt> <tt class="py-op">=</tt> <tt class="py-name">constraints</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">constraint</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt class="py-string">'\w+$'</tt><tt class="py-op">,</tt> <tt class="py-name">key</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line">                <tt class="py-comment"># No potentially dangerous characters</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-comment"></tt>                <tt class="py-keyword">raise</tt> <tt id="link-10" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-10', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">u"Unknown parameter %r supplied"</tt> <tt class="py-op">%</tt> <tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line">            <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-11" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-11', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">u"Unknown parameter supplied"</tt><tt class="py-op">)</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line">        <tt class="py-name">p</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-12" class="py-name" targets="Function wsgiwapi.validation.validate_param()=wsgiwapi.validation-module.html#validate_param"><a title="wsgiwapi.validation.validate_param" class="py-name" href="#" onclick="return doclink('link-12', 'validate_param', 'link-12');">validate_param</a></tt><tt class="py-op">(</tt><tt class="py-name">key</tt><tt class="py-op">,</tt> <tt class="py-name">requestobj</tt><tt class="py-op">[</tt><tt class="py-name">key</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-name">constraint</tt><tt class="py-op">)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">p</tt> </tt>
+</div><a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"> </tt>
+<a name="check_valid_params"></a><div id="check_valid_params-def"><a name="L96"></a><tt class="py-lineno"> 96</tt> <a class="py-toggle" href="#" id="check_valid_params-toggle" onclick="return toggle('check_valid_params');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.validation-module.html#check_valid_params">check_valid_params</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">props</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="check_valid_params-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="check_valid_params-expanded"><a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-name">constraints</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-string">'valid_params'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">constraints</tt> <tt class="py-op">!=</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line">        <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">params</tt> <tt class="py-op">=</tt> <tt id="link-13" class="py-name" targets="Function wsgiwapi.validation.validate_params()=wsgiwapi.validation-module.html#validate_params"><a title="wsgiwapi.validation.validate_params" class="py-name" href="#" onclick="return doclink('link-13', 'validate_params', 'link-13');">validate_params</a></tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">params</tt><tt class="py-op">,</tt> <tt class="py-name">constraints</tt><tt class="py-op">)</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">request</tt> </tt>
+</div><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"> </tt>
+<a name="check_no_params"></a><div id="check_no_params-def"><a name="L102"></a><tt class="py-lineno">102</tt> <a class="py-toggle" href="#" id="check_no_params-toggle" onclick="return toggle('check_no_params');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.validation-module.html#check_no_params">check_no_params</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">props</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="check_no_params-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="check_no_params-expanded"><a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">params</tt><tt class="py-op">)</tt> <tt class="py-op">!=</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-14" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-14', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">u"This resource does not accept parameters"</tt><tt class="py-op">)</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">request</tt> </tt>
+</div><a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"> </tt>
+<a name="validate_pathinfo_params"></a><div id="validate_pathinfo_params-def"><a name="L108"></a><tt class="py-lineno">108</tt> <a class="py-toggle" href="#" id="validate_pathinfo_params-toggle" onclick="return toggle('validate_pathinfo_params');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.validation-module.html#validate_pathinfo_params">validate_pathinfo_params</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">param_rules</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="validate_pathinfo_params-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="validate_pathinfo_params-expanded"><a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line">    <tt class="py-docstring">"""Check that the pathinfo satisfies the supplied rules.</tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line">    <tt class="py-name">index</tt> <tt class="py-op">=</tt> <tt class="py-number">0</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">pattern</tt><tt class="py-op">,</tt> <tt class="py-name">compiled_pattern</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">,</tt> <tt class="py-name">required</tt> <tt class="py-keyword">in</tt> <tt class="py-name">param_rules</tt><tt class="py-op">:</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-15" class="py-name" targets="Function wsgiwapi.decorators.pathinfo()=wsgiwapi.decorators-module.html#pathinfo,Module wsgiwapi.pathinfo=wsgiwapi.pathinfo-module.html"><a title="wsgiwapi.decorators.pathinfo
+wsgiwapi.pathinfo" class="py-name" href="#" onclick="return doclink('link-15', 'pathinfo', 'link-15');">pathinfo</a></tt><tt class="py-op">.</tt><tt class="py-name">tail</tt><tt class="py-op">)</tt> <tt class="py-op">&lt;=</tt> <tt class="py-name">index</tt><tt class="py-op">:</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-name">required</tt><tt class="py-op">:</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-16" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-16', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">"Required pathinfo component missing"</tt><tt class="py-op">)</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line">            <tt class="py-comment"># Put default value into dictionary.</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-comment"></tt>            <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="wsgiwapi.decorators.pathinfo
+wsgiwapi.pathinfo" class="py-name" href="#" onclick="return doclink('link-17', 'pathinfo', 'link-15');">pathinfo</a></tt><tt class="py-op">[</tt><tt class="py-name">name</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">default</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line">            <tt class="py-name">index</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line">            <tt class="py-keyword">continue</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">        <tt id="link-18" class="py-name" targets="Function wsgiwapi.decorators.param()=wsgiwapi.decorators-module.html#param"><a title="wsgiwapi.decorators.param" class="py-name" href="#" onclick="return doclink('link-18', 'param', 'link-18');">param</a></tt> <tt class="py-op">=</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-19" class="py-name"><a title="wsgiwapi.decorators.pathinfo
+wsgiwapi.pathinfo" class="py-name" href="#" onclick="return doclink('link-19', 'pathinfo', 'link-15');">pathinfo</a></tt><tt class="py-op">.</tt><tt class="py-name">tail</tt><tt class="py-op">[</tt><tt class="py-name">index</tt><tt class="py-op">]</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-name">index</tt> <tt class="py-op">+=</tt> <tt class="py-number">1</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-comment"># Validate the param, and put it into the dictionary.</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">if</tt> <tt class="py-name">compiled_pattern</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">compiled_pattern</tt><tt class="py-op">.</tt><tt class="py-name">match</tt><tt class="py-op">(</tt><tt id="link-20" class="py-name"><a title="wsgiwapi.decorators.param" class="py-name" href="#" onclick="return doclink('link-20', 'param', 'link-18');">param</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt id="link-21" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-21', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">"Pathinfo component does not match "</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">                                      <tt class="py-string">"allowed pattern"</tt><tt class="py-op">)</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-22" class="py-name"><a title="wsgiwapi.decorators.pathinfo
+wsgiwapi.pathinfo" class="py-name" href="#" onclick="return doclink('link-22', 'pathinfo', 'link-15');">pathinfo</a></tt><tt class="py-op">[</tt><tt class="py-name">name</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt id="link-23" class="py-name"><a title="wsgiwapi.decorators.param" class="py-name" href="#" onclick="return doclink('link-23', 'param', 'link-18');">param</a></tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">    <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-24" class="py-name"><a title="wsgiwapi.decorators.pathinfo
+wsgiwapi.pathinfo" class="py-name" href="#" onclick="return doclink('link-24', 'pathinfo', 'link-15');">pathinfo</a></tt><tt class="py-op">.</tt><tt class="py-name">tail</tt> <tt class="py-op">=</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-25" class="py-name"><a title="wsgiwapi.decorators.pathinfo
+wsgiwapi.pathinfo" class="py-name" href="#" onclick="return doclink('link-25', 'pathinfo', 'link-15');">pathinfo</a></tt><tt class="py-op">.</tt><tt class="py-name">tail</tt><tt class="py-op">[</tt><tt class="py-name">index</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"> </tt>
+<a name="validate_pathinfo_tail"></a><div id="validate_pathinfo_tail-def"><a name="L131"></a><tt class="py-lineno">131</tt> <a class="py-toggle" href="#" id="validate_pathinfo_tail-toggle" onclick="return toggle('validate_pathinfo_tail');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.validation-module.html#validate_pathinfo_tail">validate_pathinfo_tail</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">tail_rules</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="validate_pathinfo_tail-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="validate_pathinfo_tail-expanded"><a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line">    <tt class="py-docstring">"""Check that the pathinfo tail satisfies the supplied rules.</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">tail_rules</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt id="link-26" class="py-name"><a title="wsgiwapi.decorators.pathinfo
+wsgiwapi.pathinfo" class="py-name" href="#" onclick="return doclink('link-26', 'pathinfo', 'link-15');">pathinfo</a></tt><tt class="py-op">.</tt><tt class="py-name">tail</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">0</tt><tt class="py-op">:</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt id="link-27" class="py-name"><a title="wsgiwapi.application.ValidationError" class="py-name" href="#" onclick="return doclink('link-27', 'ValidationError', 'link-3');">ValidationError</a></tt><tt class="py-op">(</tt><tt class="py-string">"Unexpected trailing pathinfo"</tt><tt class="py-op">)</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line">    <tt class="py-name">minreps</tt><tt class="py-op">,</tt> <tt class="py-name">maxreps</tt><tt class="py-op">,</tt> <tt class="py-name">pattern</tt><tt class="py-op">,</tt> <tt class="py-name">compiled_pattern</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">,</tt> <tt class="py-name">doc</tt> <tt class="py-op">=</tt> <tt class="py-name">tail_rules</tt> </tt>
+</div><a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line">    <tt class="py-comment"># FIXME - validate pathinfo</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="check_pathinfo"></a><div id="check_pathinfo-def"><a name="L143"></a><tt class="py-lineno">143</tt> <a class="py-toggle" href="#" id="check_pathinfo-toggle" onclick="return toggle('check_pathinfo');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.validation-module.html#check_pathinfo">check_pathinfo</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">props</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="check_pathinfo-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="check_pathinfo-expanded"><a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line">    <tt class="py-docstring">"""Check the pathinfo for validity, and populate the pathinfo dictionary.</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line">    <tt class="py-name">param_rules</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'pathinfo_params_rules'</tt><tt class="py-op">]</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line">    <tt class="py-name">tail_rules</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'pathinfo_tail_rules'</tt><tt class="py-op">]</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line">    <tt id="link-28" class="py-name" targets="Function wsgiwapi.validation.validate_pathinfo_params()=wsgiwapi.validation-module.html#validate_pathinfo_params"><a title="wsgiwapi.validation.validate_pathinfo_params" class="py-name" href="#" onclick="return doclink('link-28', 'validate_pathinfo_params', 'link-28');">validate_pathinfo_params</a></tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">,</tt> <tt class="py-name">param_rules</tt><tt class="py-op">)</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line">    <tt id="link-29" class="py-name" targets="Function wsgiwapi.validation.validate_pathinfo_tail()=wsgiwapi.validation-module.html#validate_pathinfo_tail"><a title="wsgiwapi.validation.validate_pathinfo_tail" class="py-name" href="#" onclick="return doclink('link-29', 'validate_pathinfo_tail', 'link-29');">validate_pathinfo_tail</a></tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">,</tt> <tt class="py-name">tail_rules</tt><tt class="py-op">)</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">request</tt> </tt>
+</div><a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"> </tt>
+<a name="_pad_none"></a><div id="_pad_none-def"><a name="L155"></a><tt class="py-lineno">155</tt> <a class="py-toggle" href="#" id="_pad_none-toggle" onclick="return toggle('_pad_none');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.validation-module.html#_pad_none">_pad_none</a><tt class="py-op">(</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-param">length</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_pad_none-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_pad_none-expanded"><a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt class="py-docstring">"""Pad a list of arguments with None to specified length.</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-op">(</tt><tt class="py-name">list</tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">)</tt> <tt class="py-op">+</tt> <tt class="py-op">[</tt><tt class="py-name">None</tt><tt class="py-op">]</tt> <tt class="py-op">*</tt> <tt class="py-name">length</tt><tt class="py-op">)</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-name">length</tt><tt class="py-op">]</tt> </tt>
+</div><a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line"> </tt>
+<a name="parse_pathinfo_rules"></a><div id="parse_pathinfo_rules-def"><a name="L161"></a><tt class="py-lineno">161</tt> <a class="py-toggle" href="#" id="parse_pathinfo_rules-toggle" onclick="return toggle('parse_pathinfo_rules');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.validation-module.html#parse_pathinfo_rules">parse_pathinfo_rules</a><tt class="py-op">(</tt><tt class="py-param">pathinfo_items</tt><tt class="py-op">,</tt> <tt class="py-param">tail_rules</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="parse_pathinfo_rules-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="parse_pathinfo_rules-expanded"><a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">    <tt class="py-docstring">"""Parse pathinfo rules.</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">    <tt class="py-comment"># Build the parameter validation rules from the args.</tt> </tt>
+<a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-name">param_rules</tt> <tt class="py-op">=</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt> </tt>
+<a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line">    <tt class="py-name">previous_required</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line">    <tt class="py-keyword">for</tt> <tt class="py-name">pathinfo_item</tt> <tt class="py-keyword">in</tt> <tt class="py-name">pathinfo_items</tt><tt class="py-op">:</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">pathinfo_item</tt><tt class="py-op">)</tt> <tt class="py-op">&lt;</tt> <tt class="py-number">1</tt> <tt class="py-keyword">or</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">pathinfo_item</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">3</tt><tt class="py-op">:</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">TypeError</tt><tt class="py-op">(</tt><tt class="py-string">"pathinfo decorator arguments must be "</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line">                            <tt class="py-string">"sequences of length 1 to 3 items - got %d"</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line">                            <tt class="py-string">" items"</tt> <tt class="py-op">%</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">pathinfo_item</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line">        <tt class="py-name">required</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">pathinfo_item</tt><tt class="py-op">)</tt> <tt class="py-op">&lt;</tt> <tt class="py-number">3</tt><tt class="py-op">:</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line">            <tt class="py-comment"># No default specified, so a required parameter.</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt class="py-comment"></tt>            <tt class="py-name">required</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line">            <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">previous_required</tt><tt class="py-op">:</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line">                <tt class="py-keyword">raise</tt> <tt class="py-name">TypeError</tt><tt class="py-op">(</tt><tt class="py-string">"required parameter in pathinfo decorator"</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line">                                <tt class="py-string">" following non-required parameter"</tt><tt class="py-op">)</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L181"></a><tt class="py-lineno">181</tt>  <tt class="py-line">            <tt class="py-name">previous_required</tt> <tt class="py-op">=</tt> <tt class="py-name">False</tt> </tt>
+<a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">        <tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">pattern</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt> <tt class="py-op">=</tt> <tt class="py-name">_pad_none</tt><tt class="py-op">(</tt><tt class="py-name">pathinfo_item</tt><tt class="py-op">,</tt> <tt class="py-number">3</tt><tt class="py-op">)</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line">        <tt class="py-name">compiled_pattern</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">pattern</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line">            <tt class="py-name">compiled_pattern</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt><tt class="py-name">pattern</tt><tt class="py-op">,</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">UNICODE</tt><tt class="py-op">)</tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line">        <tt class="py-name">param_rules</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-op">(</tt><tt class="py-name">name</tt><tt class="py-op">,</tt> <tt class="py-name">pattern</tt><tt class="py-op">,</tt> <tt class="py-name">compiled_pattern</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">,</tt> <tt class="py-name">required</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line">    <tt class="py-comment"># Check the "tail" keyword argument.</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">tail_rules</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">tail_rules</tt><tt class="py-op">)</tt> <tt class="py-op">&gt;</tt> <tt class="py-number">5</tt><tt class="py-op">:</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">TypeError</tt><tt class="py-op">(</tt><tt class="py-string">"pathinfo tail argument must be "</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line">                            <tt class="py-string">"sequence of length 0 to 5 items - got %d "</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line">                            <tt class="py-string">"items"</tt> <tt class="py-op">%</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">tail_rules</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line">        <tt class="py-name">tail_rules</tt> <tt class="py-op">=</tt> <tt class="py-name">_pad_none</tt><tt class="py-op">(</tt><tt class="py-name">tail_rules</tt><tt class="py-op">,</tt> <tt class="py-number">5</tt><tt class="py-op">)</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line">        <tt class="py-name">pattern</tt> <tt class="py-op">=</tt> <tt class="py-name">tail_rules</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line">        <tt class="py-name">compiled_pattern</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">pattern</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line">            <tt class="py-name">compiled_pattern</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt><tt class="py-name">pattern</tt><tt class="py-op">,</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">UNICODE</tt><tt class="py-op">)</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line">        <tt class="py-name">tail_rules</tt> <tt class="py-op">=</tt> <tt class="py-name">tail_rules</tt><tt class="py-op">[</tt><tt class="py-op">:</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-op">[</tt><tt class="py-name">compiled_pattern</tt><tt class="py-op">]</tt> <tt class="py-op">+</tt> <tt class="py-name">tail_rules</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">:</tt><tt class="py-op">]</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">param_rules</tt><tt class="py-op">,</tt> <tt class="py-name">tail_rules</tt> </tt>
+</div><a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-comment"># vim: set fileencoding=utf-8 :</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="wsgiwapi-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="../index.html">WSGIWAPI</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sun May 10 00:22:20 2009
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

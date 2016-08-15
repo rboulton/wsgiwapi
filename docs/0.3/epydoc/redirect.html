@@ -1,0 +1,38 @@
+<html><head><title>Epydoc Redirect Page</title>
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="pragma" content="no-cache" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+<!--
+var pages = ["wsgiwapi.cpwsgiserver.WSGIPathInfoDispatcher-c", "wsgiwapi.wsgisupport.HTTPMethodNotAllowed-c", "wsgiwapi.cpwsgiserver.CherryPyWSGIServer-c", "wsgiwapi.cpwsgiserver.SizeCheckWrapper-c", "wsgiwapi.cpwsgiserver.MaxSizeExceeded-c", "wsgiwapi.application.ValidationError-c", "wsgiwapi.cpwsgiserver.HTTPConnection-c", "wsgiwapi.cpwsgiserver.SSL_fileobject-c", "wsgiwapi.wsgisupport.HTTPServerError-c", "wsgiwapi.cpwsgiserver.CP_fileobject-c", "wsgiwapi.cpwsgiserver.FatalSSLAlert-c", "wsgiwapi.cpwsgiserver.SSLConnection-c", "wsgiwapi.cpwsgiserver.WorkerThread-c", "wsgiwapi.application.MethodSwitch-c", "wsgiwapi.cpwsgiserver.HTTPRequest-c", "wsgiwapi.wsgisupport.HTTPNotFound-c", "wsgiwapi.wsgisupport.WSGIResponse-c", "wsgiwapi.cpwsgiserver.NoSSLError-c", "wsgiwapi.cpwsgiserver.ThreadPool-c", "wsgiwapi.overlaydict.OverlayDict-c", "wsgiwapi.logging.VerboseLogger-c", "wsgiwapi.wsgisupport.HTTPError-c", "wsgiwapi.logging.SilentLogger-c", "wsgiwapi.logging.StdoutLogger-c", "wsgiwapi.wsgisupport.Response-c", "wsgiwapi.wsgisupport.Headers-c", "wsgiwapi.wsgisupport.Request-c", "wsgiwapi.html_entity_names-m", "wsgiwapi.pathinfo.PathInfo-c", "wsgiwapi.reason_phrases-m", "wsgiwapi.cpwsgiserver-m", "wsgiwapi.application-m", "wsgiwapi.jsonsupport-m", "wsgiwapi.overlaydict-m", "wsgiwapi.wsgisupport-m", "wsgiwapi.decorators-m", "wsgiwapi.validation-m", "wsgiwapi.pathinfo-m", "wsgiwapi.postdata-m", "wsgiwapi.autodoc-m", "wsgiwapi.logging-m", "wsgiwapi-m"];
+var dottedName = get_anchor();
+if (dottedName) {
+    var target = redirect_url(dottedName);
+    if (target) window.location.replace(target);
+}
+// -->
+</script>
+
+<h3>Epydoc Auto-redirect page</h3>
+
+<p>When javascript is enabled, this page will redirect URLs of
+the form <tt>redirect.html#<i>dotted.name</i></tt> to the
+documentation for the object with the given fully-qualified
+dotted name.</p>
+<p><a id="message"> &nbsp; </a></p>
+
+<script type="text/javascript">
+<!--
+if (dottedName) {
+    var msg = document.getElementById("message");
+    msg.innerHTML = "No documentation found for <tt>"+
+                    dottedName+"</tt>";
+}
+// -->
+</script>
+
+</body>
+</html>

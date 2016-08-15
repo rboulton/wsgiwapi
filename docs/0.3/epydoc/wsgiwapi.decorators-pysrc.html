@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>wsgiwapi.decorators</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="wsgiwapi-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="../index.html">WSGIWAPI</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="wsgiwapi-module.html">Package&nbsp;wsgiwapi</a> ::
+        Module&nbsp;decorators
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="wsgiwapi.decorators-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="wsgiwapi.decorators-module.html">Module wsgiwapi.decorators</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment"># Copyright (c) 2009 Richard Boulton</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># Permission is hereby granted, free of charge, to any person obtaining a copy</tt> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># of this software and associated documentation files (the "Software"), to deal</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># in the Software without restriction, including without limitation the rights</tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># to use, copy, modify, merge, publish, distribute, sublicense, and/or sell</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># copies of the Software, and to permit persons to whom the Software is</tt> </tt>
+<a name="L8"></a><tt class="py-lineno">  8</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># furnished to do so, subject to the following conditions:</tt> </tt>
+<a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L10"></a><tt class="py-lineno"> 10</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># The above copyright notice and this permission notice shall be included in</tt> </tt>
+<a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># all copies or substantial portions of the Software.</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment">#</tt> </tt>
+<a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR</tt> </tt>
+<a name="L14"></a><tt class="py-lineno"> 14</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,</tt> </tt>
+<a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE</tt> </tt>
+<a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER</tt> </tt>
+<a name="L17"></a><tt class="py-lineno"> 17</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,</tt> </tt>
+<a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-comment"># SOFTWARE.</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line"><tt class="py-comment"></tt><tt class="py-docstring">r"""Decorators of WSGIWAPI callables.</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line"><tt class="py-name">__docformat__</tt> <tt class="py-op">=</tt> <tt class="py-string">"restructuredtext en"</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line"> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-0" class="py-name" targets="Module wsgiwapi.html_entity_names=wsgiwapi.html_entity_names-module.html"><a title="wsgiwapi.html_entity_names" class="py-name" href="#" onclick="return doclink('link-0', 'html_entity_names', 'link-0');">html_entity_names</a></tt> <tt class="py-keyword">import</tt> <tt id="link-1" class="py-name" targets="Variable wsgiwapi.html_entity_names.entities=wsgiwapi.html_entity_names-module.html#entities"><a title="wsgiwapi.html_entity_names.entities" class="py-name" href="#" onclick="return doclink('link-1', 'entities', 'link-1');">entities</a></tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">re</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">warnings</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt id="link-2" class="py-name" targets="Module wsgiwapi.wsgisupport=wsgiwapi.wsgisupport-module.html"><a title="wsgiwapi.wsgisupport" class="py-name" href="#" onclick="return doclink('link-2', 'wsgisupport', 'link-2');">wsgisupport</a></tt> <tt class="py-keyword">import</tt> <tt id="link-3" class="py-name" targets="Class wsgiwapi.wsgisupport.Request=wsgiwapi.wsgisupport.Request-class.html"><a title="wsgiwapi.wsgisupport.Request" class="py-name" href="#" onclick="return doclink('link-3', 'Request', 'link-3');">Request</a></tt><tt class="py-op">,</tt> <tt id="link-4" class="py-name" targets="Class wsgiwapi.wsgisupport.Response=wsgiwapi.wsgisupport.Response-class.html"><a title="wsgiwapi.wsgisupport.Response" class="py-name" href="#" onclick="return doclink('link-4', 'Response', 'link-4');">Response</a></tt><tt class="py-op">,</tt> <tt id="link-5" class="py-name" targets="Class wsgiwapi.wsgisupport.HTTPMethodNotAllowed=wsgiwapi.wsgisupport.HTTPMethodNotAllowed-class.html"><a title="wsgiwapi.wsgisupport.HTTPMethodNotAllowed" class="py-name" href="#" onclick="return doclink('link-5', 'HTTPMethodNotAllowed', 'link-5');">HTTPMethodNotAllowed</a></tt><tt class="py-op">,</tt> <tt id="link-6" class="py-name" targets="Class wsgiwapi.wsgisupport.HTTPError=wsgiwapi.wsgisupport.HTTPError-class.html"><a title="wsgiwapi.wsgisupport.HTTPError" class="py-name" href="#" onclick="return doclink('link-6', 'HTTPError', 'link-6');">HTTPError</a></tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line"> </tt>
+<a name="_decorate_once"></a><div id="_decorate_once-def"><a name="L30"></a><tt class="py-lineno"> 30</tt> <a class="py-toggle" href="#" id="_decorate_once-toggle" onclick="return toggle('_decorate_once');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#_decorate_once">_decorate_once</a><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_decorate_once-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_decorate_once-expanded"><a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">    <tt class="py-docstring">"""Ensure that a function is decorated with the standard decorator.</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line"><tt class="py-docstring">    Returns a tuple (decorated_function, properties), where decorated_function</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line"><tt class="py-docstring">    is the function with the decorator applied, and properties is the WSGIWAPI</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line"><tt class="py-docstring">    properties stored on the function.</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-string">'_wsgiwapi_props'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">        <tt class="py-name">props</tt> <tt class="py-op">=</tt> <tt class="py-name">fn</tt><tt class="py-op">.</tt><tt class="py-name">_wsgiwapi_props</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-string">'decorated'</tt><tt class="py-op">,</tt> <tt class="py-name">False</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-name">True</tt><tt class="py-op">:</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">            <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">props</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">    <tt class="py-name">props</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">'decorated'</tt><tt class="py-op">:</tt> <tt class="py-name">True</tt><tt class="py-op">}</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line"> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">    <tt class="py-comment"># Note: the following wrapper function just checks that the properties on</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># the callable passed to application match those set here.  I think this</tt> </tt>
+<a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># will always be true unless a later applied decorator has failed to copy</tt> </tt>
+<a name="L47"></a><tt class="py-lineno"> 47</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># the properties.</tt> </tt>
+<a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">    <tt class="py-comment"># It is tempting to remove this check, and just set the properties on the</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># original callable object, but there is a potential security issue in</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># doing so: if a later applied decorator _has_ failed to copy the</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># properties, this would lead to decorators getting lost, which could mean</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># that code which looks like it is validating parameters is actually</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># failing to do the validation.</tt> </tt>
+<a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line">    <tt class="py-comment"># Perhaps the best fix would be to make parameters unavailable unless</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-comment"># they've been validated.</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">    <tt class="py-comment"># FIXME - review this.</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">def</tt> <tt class="py-def-name">res</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line">        <tt class="py-comment"># Check that the decorator has not been applied and then the properties</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-comment"># have been lost (probably by a second decorator which doesn't copy the</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-comment"># properties being applied).</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">if</tt> <tt class="py-name">isinstance</tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt id="link-7" class="py-name"><a title="wsgiwapi.wsgisupport.Request" class="py-name" href="#" onclick="return doclink('link-7', 'Request', 'link-3');">Request</a></tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line">            <tt class="py-name">request</tt> <tt class="py-op">=</tt> <tt class="py-name">args</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line">        <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line">            <tt class="py-name">request</tt> <tt class="py-op">=</tt> <tt class="py-name">args</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">_handler_props</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">props</tt><tt class="py-op">:</tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">(</tt><tt class="py-string">"Handler properties do not match decorated properties.  Probably missing call to wsgiwapi.copyprops."</tt><tt class="py-op">)</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-name">kwargs</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line">    <tt class="py-name">res</tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> <tt class="py-op">=</tt> <tt class="py-name">fn</tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line">    <tt class="py-name">res</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> <tt class="py-op">=</tt> <tt class="py-name">fn</tt><tt class="py-op">.</tt><tt class="py-name">__name__</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line">    <tt class="py-name">res</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">.</tt><tt class="py-name">update</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">.</tt><tt class="py-name">__dict__</tt><tt class="py-op">)</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line">    <tt class="py-name">res</tt><tt class="py-op">.</tt><tt class="py-name">_wsgiwapi_props</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">res</tt><tt class="py-op">,</tt> <tt class="py-name">props</tt> </tt>
+</div><a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"> </tt>
+<a name="_get_props"></a><div id="_get_props-def"><a name="L77"></a><tt class="py-lineno"> 77</tt> <a class="py-toggle" href="#" id="_get_props-toggle" onclick="return toggle('_get_props');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#_get_props">_get_props</a><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_get_props-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_get_props-expanded"><a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line">    <tt class="py-docstring">"""Get the WSGIWAPI properties from an object.</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-keyword">not</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-string">'_wsgiwapi_props'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">None</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt><tt class="py-op">.</tt><tt class="py-name">_wsgiwapi_props</tt> </tt>
+</div><a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"> </tt>
+<a name="jsonreturning"></a><div id="jsonreturning-def"><a name="L85"></a><tt class="py-lineno"> 85</tt> <a class="py-toggle" href="#" id="jsonreturning-toggle" onclick="return toggle('jsonreturning');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#jsonreturning">jsonreturning</a><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="jsonreturning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="jsonreturning-expanded"><a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorator to wrap function's return value as JSON.</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-docstring">    Before the decorator is applied, the function should return a structure to</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-docstring">    be converted to JSON.  The decorator will set the content_type</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-docstring">    automatically (to text/javascript).</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line">    <tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">props</tt> <tt class="py-op">=</tt> <tt class="py-name">_decorate_once</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">)</tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line">    <tt class="py-keyword">import</tt> <tt id="link-8" class="py-name" targets="Module wsgiwapi.jsonsupport=wsgiwapi.jsonsupport-module.html"><a title="wsgiwapi.jsonsupport" class="py-name" href="#" onclick="return doclink('link-8', 'jsonsupport', 'link-8');">jsonsupport</a></tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line">    <tt class="py-name">response_filters</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">'response_filters'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line">    <tt class="py-name">response_filters</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-9" class="py-name"><a title="wsgiwapi.jsonsupport" class="py-name" href="#" onclick="return doclink('link-9', 'jsonsupport', 'link-8');">jsonsupport</a></tt><tt class="py-op">.</tt><tt id="link-10" class="py-name" targets="Function wsgiwapi.jsonsupport.convert_to_json()=wsgiwapi.jsonsupport-module.html#convert_to_json"><a title="wsgiwapi.jsonsupport.convert_to_json" class="py-name" href="#" onclick="return doclink('link-10', 'convert_to_json', 'link-10');">convert_to_json</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line">    <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'return_type'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'JSON'</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt> </tt>
+</div><a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"> </tt>
+<a name="jsonpreturning"></a><div id="jsonpreturning-def"><a name="L100"></a><tt class="py-lineno">100</tt> <a class="py-toggle" href="#" id="jsonpreturning-toggle" onclick="return toggle('jsonpreturning');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#jsonpreturning">jsonpreturning</a><tt class="py-op">(</tt><tt class="py-param">paramname</tt><tt class="py-op">=</tt><tt class="py-string">'jsonp'</tt><tt class="py-op">,</tt> <tt class="py-param">valid</tt><tt class="py-op">=</tt><tt class="py-string">r'^[a-zA-Z._\[\]]*$'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="jsonpreturning-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="jsonpreturning-expanded"><a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorator to add JSONP support to an API function.</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-docstring">    This adds a query parameter (by default, ``jsonp``, but this may be altered</tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-docstring">    with the `paramname` parameter) to the function.  If the parameter is not</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-docstring">    supplied, the return value is a plain JSON object, otherwise the return</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-docstring">    value is preceded by the value in the parameter and an open bracket, and</tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-docstring">    followed by a close bracket.  The parameter must not be specified multiple</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-docstring">    times in a single request.</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-docstring">    By default, the ``jsonp`` parameter may only contain upper and lowercase</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-docstring">    ASCII alphabetic characters (A-Z, a-z), numbers (0-9), full stops (.),</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-docstring">    underscores (_), and brackets ([ and ]), but this may be altered by setting</tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-docstring">    the `valid` parameter to a string containing a regular expression matching</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-docstring">    the valid parameter values.  To avoid performing any validation of the</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-docstring">    value of the ``jsonp`` parameter, set the `valid` parameter to None.</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-docstring">    See http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/ for</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-docstring">    some of the rationale behind JSONP support.</tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">deco</tt><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line">        <tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">props</tt> <tt class="py-op">=</tt> <tt class="py-name">_decorate_once</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">)</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line">        <tt class="py-keyword">import</tt> <tt id="link-11" class="py-name"><a title="wsgiwapi.jsonsupport" class="py-name" href="#" onclick="return doclink('link-11', 'jsonsupport', 'link-8');">jsonsupport</a></tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line">        <tt class="py-name">response_filters</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">'response_filters'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line">        <tt class="py-name">response_filters</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-12" class="py-name"><a title="wsgiwapi.jsonsupport" class="py-name" href="#" onclick="return doclink('link-12', 'jsonsupport', 'link-8');">jsonsupport</a></tt><tt class="py-op">.</tt><tt id="link-13" class="py-name" targets="Function wsgiwapi.jsonsupport.convert_to_jsonp()=wsgiwapi.jsonsupport-module.html#convert_to_jsonp"><a title="wsgiwapi.jsonsupport.convert_to_jsonp" class="py-name" href="#" onclick="return doclink('link-13', 'convert_to_jsonp', 'link-13');">convert_to_jsonp</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line">        <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'return_type'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-string">'JSONP'</tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line">        <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'return_JSONP_paramname'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">paramname</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line">        <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'return_JSONP_valid'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">valid</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt> </tt>
+</div><a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">deco</tt> </tt>
+</div><a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"> </tt>
+<a name="_check_allowed_methods"></a><div id="_check_allowed_methods-def"><a name="L132"></a><tt class="py-lineno">132</tt> <a class="py-toggle" href="#" id="_check_allowed_methods-toggle" onclick="return toggle('_check_allowed_methods');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#_check_allowed_methods">_check_allowed_methods</a><tt class="py-op">(</tt><tt class="py-param">request</tt><tt class="py-op">,</tt> <tt class="py-param">props</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="_check_allowed_methods-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="_check_allowed_methods-expanded"><a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line">    <tt class="py-docstring">"""Perform check that method is allowed.</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line">    <tt class="py-name">allowed_methods</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-string">'allowed_methods'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">allowed_methods</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt> <tt class="py-keyword">and</tt> <tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">method</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">allowed_methods</tt><tt class="py-op">:</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt id="link-14" class="py-name"><a title="wsgiwapi.wsgisupport.HTTPMethodNotAllowed" class="py-name" href="#" onclick="return doclink('link-14', 'HTTPMethodNotAllowed', 'link-5');">HTTPMethodNotAllowed</a></tt><tt class="py-op">(</tt><tt class="py-name">request</tt><tt class="py-op">.</tt><tt class="py-name">method</tt><tt class="py-op">,</tt> <tt class="py-name">allowed_methods</tt><tt class="py-op">)</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">request</tt> </tt>
+</div><a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"> </tt>
+<a name="allow_method"></a><div id="allow_method-def"><a name="L141"></a><tt class="py-lineno">141</tt> <a class="py-toggle" href="#" id="allow_method-toggle" onclick="return toggle('allow_method');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#allow_method">allow_method</a><tt class="py-op">(</tt><tt class="py-param">method_type</tt><tt class="py-op">,</tt> <tt class="py-op">*</tt><tt class="py-param">other_methods</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="allow_method-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="allow_method-expanded"><a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorator to restrict the methods allowed to a specific set.</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-docstring">    May be applied multiple times, to allow more than one method to be allowed.</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-docstring">    If applied at all, any methods other than those specified will result in a</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-docstring">    405 or 501 error (depending whether the exception is one of the standard</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-docstring">    known methods).</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-docstring">    (This stores the allowed methods in an attribute of the decorated function,</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-docstring">    so that repeated application of the decorator can add to the allowed</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"><tt class="py-docstring">    methods.)</tt> </tt>
+<a name="L153"></a><tt class="py-lineno">153</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L154"></a><tt class="py-lineno">154</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L155"></a><tt class="py-lineno">155</tt>  <tt class="py-line"> </tt>
+<a name="L156"></a><tt class="py-lineno">156</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">deco</tt><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L157"></a><tt class="py-lineno">157</tt>  <tt class="py-line">        <tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">props</tt> <tt class="py-op">=</tt> <tt class="py-name">_decorate_once</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">)</tt> </tt>
+<a name="L158"></a><tt class="py-lineno">158</tt>  <tt class="py-line">        <tt class="py-name">request_filters</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">'request_filters'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L159"></a><tt class="py-lineno">159</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">_check_allowed_methods</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">request_filters</tt><tt class="py-op">:</tt> </tt>
+<a name="L160"></a><tt class="py-lineno">160</tt>  <tt class="py-line">            <tt class="py-name">request_filters</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt class="py-name">_check_allowed_methods</tt><tt class="py-op">)</tt> </tt>
+<a name="L161"></a><tt class="py-lineno">161</tt>  <tt class="py-line">        <tt class="py-name">allowed</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">'allowed_methods'</tt><tt class="py-op">,</tt> <tt id="link-15" class="py-name" targets="Method wsgiwapi.wsgisupport.Headers.set()=wsgiwapi.wsgisupport.Headers-class.html#set"><a title="wsgiwapi.wsgisupport.Headers.set" class="py-name" href="#" onclick="return doclink('link-15', 'set', 'link-15');">set</a></tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">)</tt> </tt>
+<a name="L162"></a><tt class="py-lineno">162</tt>  <tt class="py-line">        <tt class="py-name">allowed</tt><tt class="py-op">.</tt><tt id="link-16" class="py-name" targets="Method wsgiwapi.wsgisupport.Headers.add()=wsgiwapi.wsgisupport.Headers-class.html#add"><a title="wsgiwapi.wsgisupport.Headers.add" class="py-name" href="#" onclick="return doclink('link-16', 'add', 'link-16');">add</a></tt><tt class="py-op">(</tt><tt class="py-name">method_type</tt><tt class="py-op">)</tt> </tt>
+<a name="L163"></a><tt class="py-lineno">163</tt>  <tt class="py-line">        <tt class="py-keyword">for</tt> <tt class="py-name">method</tt> <tt class="py-keyword">in</tt> <tt class="py-name">other_methods</tt><tt class="py-op">:</tt> </tt>
+<a name="L164"></a><tt class="py-lineno">164</tt>  <tt class="py-line">            <tt class="py-name">allowed</tt><tt class="py-op">.</tt><tt id="link-17" class="py-name"><a title="wsgiwapi.wsgisupport.Headers.add" class="py-name" href="#" onclick="return doclink('link-17', 'add', 'link-16');">add</a></tt><tt class="py-op">(</tt><tt class="py-name">method</tt><tt class="py-op">)</tt> </tt>
+<a name="L165"></a><tt class="py-lineno">165</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt> </tt>
+</div><a name="L166"></a><tt class="py-lineno">166</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">deco</tt> </tt>
+</div><a name="L167"></a><tt class="py-lineno">167</tt>  <tt class="py-line"> </tt>
+<a name="L168"></a><tt class="py-lineno">168</tt>  <tt class="py-line"><tt id="link-18" class="py-name" targets="Variable wsgiwapi.decorators.allow_GET=wsgiwapi.decorators-module.html#allow_GET"><a title="wsgiwapi.decorators.allow_GET" class="py-name" href="#" onclick="return doclink('link-18', 'allow_GET', 'link-18');">allow_GET</a></tt> <tt class="py-op">=</tt> <tt id="link-19" class="py-name" targets="Function wsgiwapi.decorators.allow_method()=wsgiwapi.decorators-module.html#allow_method"><a title="wsgiwapi.decorators.allow_method" class="py-name" href="#" onclick="return doclink('link-19', 'allow_method', 'link-19');">allow_method</a></tt><tt class="py-op">(</tt><tt class="py-string">'GET'</tt><tt class="py-op">)</tt> </tt>
+<a name="L169"></a><tt class="py-lineno">169</tt>  <tt class="py-line"><tt id="link-20" class="py-name"><a title="wsgiwapi.decorators.allow_GET" class="py-name" href="#" onclick="return doclink('link-20', 'allow_GET', 'link-18');">allow_GET</a></tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> <tt class="py-op">=</tt> <tt class="py-string">"""Directly equivalent to allow_method('GET')."""</tt> </tt>
+<a name="L170"></a><tt class="py-lineno">170</tt>  <tt class="py-line"><tt id="link-21" class="py-name" targets="Variable wsgiwapi.decorators.allow_HEAD=wsgiwapi.decorators-module.html#allow_HEAD"><a title="wsgiwapi.decorators.allow_HEAD" class="py-name" href="#" onclick="return doclink('link-21', 'allow_HEAD', 'link-21');">allow_HEAD</a></tt> <tt class="py-op">=</tt> <tt id="link-22" class="py-name"><a title="wsgiwapi.decorators.allow_method" class="py-name" href="#" onclick="return doclink('link-22', 'allow_method', 'link-19');">allow_method</a></tt><tt class="py-op">(</tt><tt class="py-string">'HEAD'</tt><tt class="py-op">)</tt> </tt>
+<a name="L171"></a><tt class="py-lineno">171</tt>  <tt class="py-line"><tt id="link-23" class="py-name"><a title="wsgiwapi.decorators.allow_HEAD" class="py-name" href="#" onclick="return doclink('link-23', 'allow_HEAD', 'link-21');">allow_HEAD</a></tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> <tt class="py-op">=</tt> <tt class="py-string">"""Directly equivalent to allow_method('HEAD')."""</tt> </tt>
+<a name="L172"></a><tt class="py-lineno">172</tt>  <tt class="py-line"><tt id="link-24" class="py-name" targets="Variable wsgiwapi.decorators.allow_GETHEAD=wsgiwapi.decorators-module.html#allow_GETHEAD"><a title="wsgiwapi.decorators.allow_GETHEAD" class="py-name" href="#" onclick="return doclink('link-24', 'allow_GETHEAD', 'link-24');">allow_GETHEAD</a></tt> <tt class="py-op">=</tt> <tt id="link-25" class="py-name"><a title="wsgiwapi.decorators.allow_method" class="py-name" href="#" onclick="return doclink('link-25', 'allow_method', 'link-19');">allow_method</a></tt><tt class="py-op">(</tt><tt class="py-string">'GET'</tt><tt class="py-op">,</tt> <tt class="py-string">'HEAD'</tt><tt class="py-op">)</tt> </tt>
+<a name="L173"></a><tt class="py-lineno">173</tt>  <tt class="py-line"><tt id="link-26" class="py-name"><a title="wsgiwapi.decorators.allow_GETHEAD" class="py-name" href="#" onclick="return doclink('link-26', 'allow_GETHEAD', 'link-24');">allow_GETHEAD</a></tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> <tt class="py-op">=</tt> <tt class="py-string">"Directly equivalent to allow_method('GET', 'HEAD')."</tt> </tt>
+<a name="L174"></a><tt class="py-lineno">174</tt>  <tt class="py-line"><tt id="link-27" class="py-name" targets="Variable wsgiwapi.decorators.allow_POST=wsgiwapi.decorators-module.html#allow_POST"><a title="wsgiwapi.decorators.allow_POST" class="py-name" href="#" onclick="return doclink('link-27', 'allow_POST', 'link-27');">allow_POST</a></tt> <tt class="py-op">=</tt> <tt id="link-28" class="py-name"><a title="wsgiwapi.decorators.allow_method" class="py-name" href="#" onclick="return doclink('link-28', 'allow_method', 'link-19');">allow_method</a></tt><tt class="py-op">(</tt><tt class="py-string">'POST'</tt><tt class="py-op">)</tt> </tt>
+<a name="L175"></a><tt class="py-lineno">175</tt>  <tt class="py-line"><tt id="link-29" class="py-name"><a title="wsgiwapi.decorators.allow_POST" class="py-name" href="#" onclick="return doclink('link-29', 'allow_POST', 'link-27');">allow_POST</a></tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> <tt class="py-op">=</tt> <tt class="py-string">"""Directly equivalent to allow_method('POST')."""</tt> </tt>
+<a name="L176"></a><tt class="py-lineno">176</tt>  <tt class="py-line"><tt id="link-30" class="py-name" targets="Variable wsgiwapi.decorators.allow_PUT=wsgiwapi.decorators-module.html#allow_PUT"><a title="wsgiwapi.decorators.allow_PUT" class="py-name" href="#" onclick="return doclink('link-30', 'allow_PUT', 'link-30');">allow_PUT</a></tt> <tt class="py-op">=</tt> <tt id="link-31" class="py-name"><a title="wsgiwapi.decorators.allow_method" class="py-name" href="#" onclick="return doclink('link-31', 'allow_method', 'link-19');">allow_method</a></tt><tt class="py-op">(</tt><tt class="py-string">'PUT'</tt><tt class="py-op">)</tt> </tt>
+<a name="L177"></a><tt class="py-lineno">177</tt>  <tt class="py-line"><tt id="link-32" class="py-name"><a title="wsgiwapi.decorators.allow_PUT" class="py-name" href="#" onclick="return doclink('link-32', 'allow_PUT', 'link-30');">allow_PUT</a></tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> <tt class="py-op">=</tt> <tt class="py-string">"""Directly equivalent to allow_method('PUT')."""</tt> </tt>
+<a name="L178"></a><tt class="py-lineno">178</tt>  <tt class="py-line"><tt id="link-33" class="py-name" targets="Variable wsgiwapi.decorators.allow_DELETE=wsgiwapi.decorators-module.html#allow_DELETE"><a title="wsgiwapi.decorators.allow_DELETE" class="py-name" href="#" onclick="return doclink('link-33', 'allow_DELETE', 'link-33');">allow_DELETE</a></tt> <tt class="py-op">=</tt> <tt id="link-34" class="py-name"><a title="wsgiwapi.decorators.allow_method" class="py-name" href="#" onclick="return doclink('link-34', 'allow_method', 'link-19');">allow_method</a></tt><tt class="py-op">(</tt><tt class="py-string">'DELETE'</tt><tt class="py-op">)</tt> </tt>
+<a name="L179"></a><tt class="py-lineno">179</tt>  <tt class="py-line"><tt id="link-35" class="py-name"><a title="wsgiwapi.decorators.allow_DELETE" class="py-name" href="#" onclick="return doclink('link-35', 'allow_DELETE', 'link-33');">allow_DELETE</a></tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> <tt class="py-op">=</tt> <tt class="py-string">"""Directly equivalent to allow_method('DELETE')."""</tt> </tt>
+<a name="L180"></a><tt class="py-lineno">180</tt>  <tt class="py-line"> </tt>
+<a name="param"></a><div id="param-def"><a name="L181"></a><tt class="py-lineno">181</tt> <a class="py-toggle" href="#" id="param-toggle" onclick="return toggle('param');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#param">param</a><tt class="py-op">(</tt><tt class="py-param">paramname</tt><tt class="py-op">,</tt> <tt class="py-param">minreps</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">maxreps</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">pattern</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">default</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">,</tt> <tt class="py-param">doc</tt><tt class="py-op">=</tt><tt class="py-name">None</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="param-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="param-expanded"><a name="L182"></a><tt class="py-lineno">182</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorator to add parameter validation.</tt> </tt>
+<a name="L183"></a><tt class="py-lineno">183</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L184"></a><tt class="py-lineno">184</tt>  <tt class="py-line"><tt class="py-docstring">    If this is used at all, the ``noparams`` decorator may not also be used.</tt> </tt>
+<a name="L185"></a><tt class="py-lineno">185</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L186"></a><tt class="py-lineno">186</tt>  <tt class="py-line"><tt class="py-docstring">    This decorator may only be used once for each parameter name.</tt> </tt>
+<a name="L187"></a><tt class="py-lineno">187</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L188"></a><tt class="py-lineno">188</tt>  <tt class="py-line"><tt class="py-docstring">     - `paramname` is required - the name of the parameter in</tt> </tt>
+<a name="L189"></a><tt class="py-lineno">189</tt>  <tt class="py-line"><tt class="py-docstring">       ``request.params``.</tt> </tt>
+<a name="L190"></a><tt class="py-lineno">190</tt>  <tt class="py-line"><tt class="py-docstring">     - `minreps`: the minimum number of times the parameter must be specified.</tt> </tt>
+<a name="L191"></a><tt class="py-lineno">191</tt>  <tt class="py-line"><tt class="py-docstring">       If omitted or None, the parameter need not be specified.  (Note that, if</tt> </tt>
+<a name="L192"></a><tt class="py-lineno">192</tt>  <tt class="py-line"><tt class="py-docstring">       default is specified, it is always valid to supply the parameter exactly</tt> </tt>
+<a name="L193"></a><tt class="py-lineno">193</tt>  <tt class="py-line"><tt class="py-docstring">       0 times, regardless of the setting of this parameter.)</tt> </tt>
+<a name="L194"></a><tt class="py-lineno">194</tt>  <tt class="py-line"><tt class="py-docstring">     - `maxreps`: the maximum number of times the parameter may be specified.</tt> </tt>
+<a name="L195"></a><tt class="py-lineno">195</tt>  <tt class="py-line"><tt class="py-docstring">       If omitted or None, there is no limit on the number of times the</tt> </tt>
+<a name="L196"></a><tt class="py-lineno">196</tt>  <tt class="py-line"><tt class="py-docstring">       parameter may be specified.</tt> </tt>
+<a name="L197"></a><tt class="py-lineno">197</tt>  <tt class="py-line"><tt class="py-docstring">     - `pattern`: a (python regular expression) pattern which the parameter</tt> </tt>
+<a name="L198"></a><tt class="py-lineno">198</tt>  <tt class="py-line"><tt class="py-docstring">       must match.  If None, no validation is performed.</tt> </tt>
+<a name="L199"></a><tt class="py-lineno">199</tt>  <tt class="py-line"><tt class="py-docstring">     - `default`: a default value for the parameter list.  Note - this is used</tt> </tt>
+<a name="L200"></a><tt class="py-lineno">200</tt>  <tt class="py-line"><tt class="py-docstring">       only if the parameter doesn't occur at all, and is simply entered into</tt> </tt>
+<a name="L201"></a><tt class="py-lineno">201</tt>  <tt class="py-line"><tt class="py-docstring">       ``request.params`` instead of the parameter (it should usually be a</tt> </tt>
+<a name="L202"></a><tt class="py-lineno">202</tt>  <tt class="py-line"><tt class="py-docstring">       sequence, to make the normal values placed into ``request.params``).</tt> </tt>
+<a name="L203"></a><tt class="py-lineno">203</tt>  <tt class="py-line"><tt class="py-docstring">     - `doc`: a documentation string for the parameter.</tt> </tt>
+<a name="L204"></a><tt class="py-lineno">204</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L205"></a><tt class="py-lineno">205</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L206"></a><tt class="py-lineno">206</tt>  <tt class="py-line">    <tt class="py-keyword">import</tt> <tt id="link-36" class="py-name" targets="Module wsgiwapi.validation=wsgiwapi.validation-module.html"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-36', 'validation', 'link-36');">validation</a></tt> </tt>
+<a name="L207"></a><tt class="py-lineno">207</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">deco</tt><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L208"></a><tt class="py-lineno">208</tt>  <tt class="py-line">        <tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">props</tt> <tt class="py-op">=</tt> <tt class="py-name">_decorate_once</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">)</tt> </tt>
+<a name="L209"></a><tt class="py-lineno">209</tt>  <tt class="py-line">        <tt class="py-name">request_filters</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">'request_filters'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L210"></a><tt class="py-lineno">210</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-37" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-37', 'validation', 'link-36');">validation</a></tt><tt class="py-op">.</tt><tt id="link-38" class="py-name" targets="Function wsgiwapi.validation.check_no_params()=wsgiwapi.validation-module.html#check_no_params"><a title="wsgiwapi.validation.check_no_params" class="py-name" href="#" onclick="return doclink('link-38', 'check_no_params', 'link-38');">check_no_params</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">request_filters</tt><tt class="py-op">:</tt> </tt>
+<a name="L211"></a><tt class="py-lineno">211</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">(</tt><tt class="py-string">"Can't decorate with param and noparams"</tt><tt class="py-op">)</tt> </tt>
+<a name="L212"></a><tt class="py-lineno">212</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-39" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-39', 'validation', 'link-36');">validation</a></tt><tt class="py-op">.</tt><tt id="link-40" class="py-name" targets="Function wsgiwapi.validation.check_valid_params()=wsgiwapi.validation-module.html#check_valid_params"><a title="wsgiwapi.validation.check_valid_params" class="py-name" href="#" onclick="return doclink('link-40', 'check_valid_params', 'link-40');">check_valid_params</a></tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">request_filters</tt><tt class="py-op">:</tt> </tt>
+<a name="L213"></a><tt class="py-lineno">213</tt>  <tt class="py-line">            <tt class="py-name">request_filters</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-41" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-41', 'validation', 'link-36');">validation</a></tt><tt class="py-op">.</tt><tt id="link-42" class="py-name"><a title="wsgiwapi.validation.check_valid_params" class="py-name" href="#" onclick="return doclink('link-42', 'check_valid_params', 'link-40');">check_valid_params</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L214"></a><tt class="py-lineno">214</tt>  <tt class="py-line">        <tt class="py-name">constraints</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">'valid_params'</tt><tt class="py-op">,</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt><tt class="py-op">)</tt> </tt>
+<a name="L215"></a><tt class="py-lineno">215</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">paramname</tt> <tt class="py-keyword">in</tt> <tt id="link-43" class="py-name"><a title="wsgiwapi.html_entity_names.entities" class="py-name" href="#" onclick="return doclink('link-43', 'entities', 'link-1');">entities</a></tt><tt class="py-op">:</tt> </tt>
+<a name="L216"></a><tt class="py-lineno">216</tt>  <tt class="py-line">            <tt class="py-name">warnings</tt><tt class="py-op">.</tt><tt class="py-name">warn</tt><tt class="py-op">(</tt><tt class="py-string">'Parameter name %s is also an HTML entity name.  '</tt> </tt>
+<a name="L217"></a><tt class="py-lineno">217</tt>  <tt class="py-line">                          <tt class="py-string">'This may lead to problems if resulting URLs are '</tt> </tt>
+<a name="L218"></a><tt class="py-lineno">218</tt>  <tt class="py-line">                          <tt class="py-string">'not correctly escaped when copied into HTML.  It '</tt> </tt>
+<a name="L219"></a><tt class="py-lineno">219</tt>  <tt class="py-line">                          <tt class="py-string">'may be better to use a different parameter name.'</tt> </tt>
+<a name="L220"></a><tt class="py-lineno">220</tt>  <tt class="py-line">                          <tt class="py-op">%</tt> <tt class="py-name">paramname</tt><tt class="py-op">,</tt> <tt class="py-name">UserWarning</tt><tt class="py-op">)</tt> </tt>
+<a name="L221"></a><tt class="py-lineno">221</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">paramname</tt> <tt class="py-keyword">in</tt> <tt class="py-name">constraints</tt><tt class="py-op">:</tt> </tt>
+<a name="L222"></a><tt class="py-lineno">222</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">(</tt><tt class="py-string">"Already set validation constraints for "</tt> </tt>
+<a name="L223"></a><tt class="py-lineno">223</tt>  <tt class="py-line">                               <tt class="py-string">"parameter '%s'"</tt> <tt class="py-op">%</tt> <tt class="py-name">paramname</tt><tt class="py-op">)</tt> </tt>
+<a name="L224"></a><tt class="py-lineno">224</tt>  <tt class="py-line">        <tt class="py-name">compiled_pattern</tt> <tt class="py-op">=</tt> <tt class="py-name">None</tt> </tt>
+<a name="L225"></a><tt class="py-lineno">225</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">pattern</tt> <tt class="py-keyword">is</tt> <tt class="py-keyword">not</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L226"></a><tt class="py-lineno">226</tt>  <tt class="py-line">            <tt class="py-name">compiled_pattern</tt> <tt class="py-op">=</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">compile</tt><tt class="py-op">(</tt><tt class="py-name">pattern</tt><tt class="py-op">,</tt> <tt class="py-name">re</tt><tt class="py-op">.</tt><tt class="py-name">UNICODE</tt><tt class="py-op">)</tt> </tt>
+<a name="L227"></a><tt class="py-lineno">227</tt>  <tt class="py-line">        <tt class="py-name">constraints</tt><tt class="py-op">[</tt><tt class="py-name">paramname</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">(</tt><tt class="py-name">minreps</tt><tt class="py-op">,</tt> <tt class="py-name">maxreps</tt><tt class="py-op">,</tt> <tt class="py-name">pattern</tt><tt class="py-op">,</tt> </tt>
+<a name="L228"></a><tt class="py-lineno">228</tt>  <tt class="py-line">                                  <tt class="py-name">compiled_pattern</tt><tt class="py-op">,</tt> <tt class="py-name">default</tt><tt class="py-op">,</tt> <tt class="py-name">doc</tt><tt class="py-op">)</tt> </tt>
+<a name="L229"></a><tt class="py-lineno">229</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt> </tt>
+</div><a name="L230"></a><tt class="py-lineno">230</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">deco</tt> </tt>
+</div><a name="L231"></a><tt class="py-lineno">231</tt>  <tt class="py-line"> </tt>
+<a name="noparams"></a><div id="noparams-def"><a name="L232"></a><tt class="py-lineno">232</tt> <a class="py-toggle" href="#" id="noparams-toggle" onclick="return toggle('noparams');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#noparams">noparams</a><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="noparams-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="noparams-expanded"><a name="L233"></a><tt class="py-lineno">233</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorator to indicate that no parameters may be supplied.</tt> </tt>
+<a name="L234"></a><tt class="py-lineno">234</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L235"></a><tt class="py-lineno">235</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L236"></a><tt class="py-lineno">236</tt>  <tt class="py-line">    <tt class="py-keyword">import</tt> <tt id="link-44" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-44', 'validation', 'link-36');">validation</a></tt> </tt>
+<a name="L237"></a><tt class="py-lineno">237</tt>  <tt class="py-line">    <tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">props</tt> <tt class="py-op">=</tt> <tt class="py-name">_decorate_once</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">)</tt> </tt>
+<a name="L238"></a><tt class="py-lineno">238</tt>  <tt class="py-line">    <tt class="py-name">request_filters</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">'request_filters'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L239"></a><tt class="py-lineno">239</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-45" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-45', 'validation', 'link-36');">validation</a></tt><tt class="py-op">.</tt><tt id="link-46" class="py-name"><a title="wsgiwapi.validation.check_valid_params" class="py-name" href="#" onclick="return doclink('link-46', 'check_valid_params', 'link-40');">check_valid_params</a></tt> <tt class="py-keyword">in</tt> <tt class="py-name">request_filters</tt><tt class="py-op">:</tt> </tt>
+<a name="L240"></a><tt class="py-lineno">240</tt>  <tt class="py-line">        <tt class="py-keyword">raise</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">(</tt><tt class="py-string">"Can't decorate with param and noparams"</tt><tt class="py-op">)</tt> </tt>
+<a name="L241"></a><tt class="py-lineno">241</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt id="link-47" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-47', 'validation', 'link-36');">validation</a></tt><tt class="py-op">.</tt><tt id="link-48" class="py-name"><a title="wsgiwapi.validation.check_no_params" class="py-name" href="#" onclick="return doclink('link-48', 'check_no_params', 'link-38');">check_no_params</a></tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">request_filters</tt><tt class="py-op">:</tt> </tt>
+<a name="L242"></a><tt class="py-lineno">242</tt>  <tt class="py-line">        <tt class="py-name">request_filters</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-49" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-49', 'validation', 'link-36');">validation</a></tt><tt class="py-op">.</tt><tt id="link-50" class="py-name"><a title="wsgiwapi.validation.check_no_params" class="py-name" href="#" onclick="return doclink('link-50', 'check_no_params', 'link-38');">check_no_params</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L243"></a><tt class="py-lineno">243</tt>  <tt class="py-line">    <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'valid_params'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-op">}</tt> </tt>
+<a name="L244"></a><tt class="py-lineno">244</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt> </tt>
+</div><a name="L245"></a><tt class="py-lineno">245</tt>  <tt class="py-line"> </tt>
+<a name="pathinfo"></a><div id="pathinfo-def"><a name="L246"></a><tt class="py-lineno">246</tt> <a class="py-toggle" href="#" id="pathinfo-toggle" onclick="return toggle('pathinfo');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#pathinfo">pathinfo</a><tt class="py-op">(</tt><tt class="py-op">*</tt><tt class="py-param">args</tt><tt class="py-op">,</tt> <tt class="py-op">**</tt><tt class="py-param">kwargs</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="pathinfo-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="pathinfo-expanded"><a name="L247"></a><tt class="py-lineno">247</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorator to indicate the parameter names allowed in pathinfo.</tt> </tt>
+<a name="L248"></a><tt class="py-lineno">248</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L249"></a><tt class="py-lineno">249</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L250"></a><tt class="py-lineno">250</tt>  <tt class="py-line">    <tt class="py-keyword">import</tt> <tt id="link-51" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-51', 'validation', 'link-36');">validation</a></tt> </tt>
+<a name="L251"></a><tt class="py-lineno">251</tt>  <tt class="py-line">    <tt class="py-name">tail</tt> <tt class="py-op">=</tt> <tt class="py-name">kwargs</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-string">'tail'</tt><tt class="py-op">,</tt> <tt class="py-name">None</tt><tt class="py-op">)</tt> </tt>
+<a name="L252"></a><tt class="py-lineno">252</tt>  <tt class="py-line">    <tt class="py-comment"># Check that there aren't any other keyword arguments.</tt> </tt>
+<a name="L253"></a><tt class="py-lineno">253</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-keyword">for</tt> <tt class="py-name">key</tt> <tt class="py-keyword">in</tt> <tt class="py-name">kwargs</tt><tt class="py-op">:</tt> </tt>
+<a name="L254"></a><tt class="py-lineno">254</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">key</tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-op">(</tt><tt class="py-string">'tail'</tt><tt class="py-op">,</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L255"></a><tt class="py-lineno">255</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">TypeError</tt><tt class="py-op">(</tt><tt class="py-string">"pathinfo decorator got an unexpected keyword"</tt> </tt>
+<a name="L256"></a><tt class="py-lineno">256</tt>  <tt class="py-line">                            <tt class="py-string">" argument '%s'"</tt> <tt class="py-op">%</tt> <tt class="py-name">key</tt><tt class="py-op">)</tt> </tt>
+<a name="L257"></a><tt class="py-lineno">257</tt>  <tt class="py-line"> </tt>
+<a name="L258"></a><tt class="py-lineno">258</tt>  <tt class="py-line">    <tt class="py-comment"># Parse the rules</tt> </tt>
+<a name="L259"></a><tt class="py-lineno">259</tt>  <tt class="py-line"><tt class="py-comment"></tt>    <tt class="py-name">param_rules</tt><tt class="py-op">,</tt> <tt class="py-name">tail_rules</tt> <tt class="py-op">=</tt> <tt id="link-52" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-52', 'validation', 'link-36');">validation</a></tt><tt class="py-op">.</tt><tt id="link-53" class="py-name" targets="Function wsgiwapi.validation.parse_pathinfo_rules()=wsgiwapi.validation-module.html#parse_pathinfo_rules"><a title="wsgiwapi.validation.parse_pathinfo_rules" class="py-name" href="#" onclick="return doclink('link-53', 'parse_pathinfo_rules', 'link-53');">parse_pathinfo_rules</a></tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">,</tt> <tt class="py-name">tail</tt><tt class="py-op">)</tt> </tt>
+<a name="L260"></a><tt class="py-lineno">260</tt>  <tt class="py-line"> </tt>
+<a name="L261"></a><tt class="py-lineno">261</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">deco</tt><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L262"></a><tt class="py-lineno">262</tt>  <tt class="py-line">        <tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">props</tt> <tt class="py-op">=</tt> <tt class="py-name">_decorate_once</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">)</tt> </tt>
+<a name="L263"></a><tt class="py-lineno">263</tt>  <tt class="py-line"> </tt>
+<a name="L264"></a><tt class="py-lineno">264</tt>  <tt class="py-line">        <tt class="py-comment"># Check that we only decorate once.</tt> </tt>
+<a name="L265"></a><tt class="py-lineno">265</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-keyword">if</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">get</tt><tt class="py-op">(</tt><tt class="py-string">'pathinfo_decorated'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L266"></a><tt class="py-lineno">266</tt>  <tt class="py-line">            <tt class="py-keyword">raise</tt> <tt class="py-name">RuntimeError</tt><tt class="py-op">(</tt><tt class="py-string">"Can't decorate with pathinfo twice"</tt><tt class="py-op">)</tt> </tt>
+<a name="L267"></a><tt class="py-lineno">267</tt>  <tt class="py-line">        <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'pathinfo_decorated'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L268"></a><tt class="py-lineno">268</tt>  <tt class="py-line"> </tt>
+<a name="L269"></a><tt class="py-lineno">269</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt class="py-name">len</tt><tt class="py-op">(</tt><tt class="py-name">args</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">0</tt> <tt class="py-keyword">and</tt> <tt class="py-name">tail_rules</tt> <tt class="py-keyword">is</tt> <tt class="py-name">None</tt><tt class="py-op">:</tt> </tt>
+<a name="L270"></a><tt class="py-lineno">270</tt>  <tt class="py-line">            <tt class="py-comment"># Don't set pathinfo_allow; use default behaviour of raising</tt> </tt>
+<a name="L271"></a><tt class="py-lineno">271</tt>  <tt class="py-line"><tt class="py-comment"></tt>            <tt class="py-comment"># HTTPNotFound if pathinfo is supplied.</tt> </tt>
+<a name="L272"></a><tt class="py-lineno">272</tt>  <tt class="py-line"><tt class="py-comment"></tt>            <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt> </tt>
+<a name="L273"></a><tt class="py-lineno">273</tt>  <tt class="py-line"> </tt>
+<a name="L274"></a><tt class="py-lineno">274</tt>  <tt class="py-line">        <tt class="py-comment"># Enable checking of path information (rather, disable automatic</tt> </tt>
+<a name="L275"></a><tt class="py-lineno">275</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-comment"># complaint).</tt> </tt>
+<a name="L276"></a><tt class="py-lineno">276</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'pathinfo_allow'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L277"></a><tt class="py-lineno">277</tt>  <tt class="py-line"> </tt>
+<a name="L278"></a><tt class="py-lineno">278</tt>  <tt class="py-line">        <tt class="py-comment"># Store the allowed parameters.</tt> </tt>
+<a name="L279"></a><tt class="py-lineno">279</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'pathinfo_params_rules'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">param_rules</tt> </tt>
+<a name="L280"></a><tt class="py-lineno">280</tt>  <tt class="py-line">        <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'pathinfo_tail_rules'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">tail_rules</tt> </tt>
+<a name="L281"></a><tt class="py-lineno">281</tt>  <tt class="py-line"> </tt>
+<a name="L282"></a><tt class="py-lineno">282</tt>  <tt class="py-line">        <tt class="py-comment"># Add validation filter to request_filters.</tt> </tt>
+<a name="L283"></a><tt class="py-lineno">283</tt>  <tt class="py-line"><tt class="py-comment"></tt>        <tt class="py-name">request_filters</tt> <tt class="py-op">=</tt> <tt class="py-name">props</tt><tt class="py-op">.</tt><tt class="py-name">setdefault</tt><tt class="py-op">(</tt><tt class="py-string">'request_filters'</tt><tt class="py-op">,</tt> <tt class="py-op">[</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L284"></a><tt class="py-lineno">284</tt>  <tt class="py-line">        <tt class="py-keyword">if</tt> <tt id="link-54" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-54', 'validation', 'link-36');">validation</a></tt><tt class="py-op">.</tt><tt id="link-55" class="py-name" targets="Function wsgiwapi.validation.check_pathinfo()=wsgiwapi.validation-module.html#check_pathinfo"><a title="wsgiwapi.validation.check_pathinfo" class="py-name" href="#" onclick="return doclink('link-55', 'check_pathinfo', 'link-55');">check_pathinfo</a></tt> <tt class="py-keyword">not</tt> <tt class="py-keyword">in</tt> <tt class="py-name">request_filters</tt><tt class="py-op">:</tt> </tt>
+<a name="L285"></a><tt class="py-lineno">285</tt>  <tt class="py-line">            <tt class="py-name">request_filters</tt><tt class="py-op">.</tt><tt class="py-name">append</tt><tt class="py-op">(</tt><tt id="link-56" class="py-name"><a title="wsgiwapi.validation" class="py-name" href="#" onclick="return doclink('link-56', 'validation', 'link-36');">validation</a></tt><tt class="py-op">.</tt><tt id="link-57" class="py-name"><a title="wsgiwapi.validation.check_pathinfo" class="py-name" href="#" onclick="return doclink('link-57', 'check_pathinfo', 'link-55');">check_pathinfo</a></tt><tt class="py-op">)</tt> </tt>
+<a name="L286"></a><tt class="py-lineno">286</tt>  <tt class="py-line"> </tt>
+<a name="L287"></a><tt class="py-lineno">287</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt> </tt>
+</div><a name="L288"></a><tt class="py-lineno">288</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">deco</tt> </tt>
+</div><a name="L289"></a><tt class="py-lineno">289</tt>  <tt class="py-line"> </tt>
+<a name="rawinput"></a><div id="rawinput-def"><a name="L290"></a><tt class="py-lineno">290</tt> <a class="py-toggle" href="#" id="rawinput-toggle" onclick="return toggle('rawinput');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#rawinput">rawinput</a><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="rawinput-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="rawinput-expanded"><a name="L291"></a><tt class="py-lineno">291</tt>  <tt class="py-line">    <tt class="py-docstring">"""Decorator to prevent POST/PUT data being read and parsed.</tt> </tt>
+<a name="L292"></a><tt class="py-lineno">292</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L293"></a><tt class="py-lineno">293</tt>  <tt class="py-line"><tt class="py-docstring">    If this is used, the request body will not be read by WSGIWAPI.  The</tt> </tt>
+<a name="L294"></a><tt class="py-lineno">294</tt>  <tt class="py-line"><tt class="py-docstring">    application code can read it from the `request.input` attribute.  This is</tt> </tt>
+<a name="L295"></a><tt class="py-lineno">295</tt>  <tt class="py-line"><tt class="py-docstring">    useful for handling large files.</tt> </tt>
+<a name="L296"></a><tt class="py-lineno">296</tt>  <tt class="py-line"><tt class="py-docstring">    </tt> </tt>
+<a name="L297"></a><tt class="py-lineno">297</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L298"></a><tt class="py-lineno">298</tt>  <tt class="py-line">    <tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">props</tt> <tt class="py-op">=</tt> <tt class="py-name">_decorate_once</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">)</tt> </tt>
+<a name="L299"></a><tt class="py-lineno">299</tt>  <tt class="py-line">    <tt class="py-name">props</tt><tt class="py-op">[</tt><tt class="py-string">'postdata_is_processed'</tt><tt class="py-op">]</tt> <tt class="py-op">=</tt> <tt class="py-name">True</tt> </tt>
+<a name="L300"></a><tt class="py-lineno">300</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">fn</tt> </tt>
+</div><a name="L301"></a><tt class="py-lineno">301</tt>  <tt class="py-line"> </tt>
+<a name="copyprops"></a><div id="copyprops-def"><a name="L302"></a><tt class="py-lineno">302</tt> <a class="py-toggle" href="#" id="copyprops-toggle" onclick="return toggle('copyprops');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#copyprops">copyprops</a><tt class="py-op">(</tt><tt class="py-param">original_fn</tt><tt class="py-op">,</tt> <tt class="py-param">decorated_fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="copyprops-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="copyprops-expanded"><a name="L303"></a><tt class="py-lineno">303</tt>  <tt class="py-line">    <tt class="py-docstring">"""Copy the WSGIWAPI properties from a function to a decorated function.</tt> </tt>
+<a name="L304"></a><tt class="py-lineno">304</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L305"></a><tt class="py-lineno">305</tt>  <tt class="py-line"><tt class="py-docstring">    If you write your own decorators and apply them to WSGIWAPI decorated</tt> </tt>
+<a name="L306"></a><tt class="py-lineno">306</tt>  <tt class="py-line"><tt class="py-docstring">    functions, you should call this method in your decorator to copy the</tt> </tt>
+<a name="L307"></a><tt class="py-lineno">307</tt>  <tt class="py-line"><tt class="py-docstring">    WSGIWAPI properties into your decorated function.  If you don't do this,</tt> </tt>
+<a name="L308"></a><tt class="py-lineno">308</tt>  <tt class="py-line"><tt class="py-docstring">    you may get confusing failures, such as pathinfo not being allowed.</tt> </tt>
+<a name="L309"></a><tt class="py-lineno">309</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L310"></a><tt class="py-lineno">310</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L311"></a><tt class="py-lineno">311</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">original_fn</tt><tt class="py-op">,</tt> <tt class="py-string">'_wsgiwapi_props'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L312"></a><tt class="py-lineno">312</tt>  <tt class="py-line">        <tt class="py-name">decorated_fn</tt><tt class="py-op">.</tt><tt class="py-name">_wsgiwapi_props</tt> <tt class="py-op">=</tt> <tt class="py-name">original_fn</tt><tt class="py-op">.</tt><tt class="py-name">_wsgiwapi_props</tt> </tt>
+<a name="L313"></a><tt class="py-lineno">313</tt>  <tt class="py-line">    <tt class="py-keyword">if</tt> <tt class="py-name">hasattr</tt><tt class="py-op">(</tt><tt class="py-name">original_fn</tt><tt class="py-op">,</tt> <tt class="py-string">'__doc__'</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L314"></a><tt class="py-lineno">314</tt>  <tt class="py-line">        <tt class="py-name">decorated_fn</tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> <tt class="py-op">=</tt> <tt class="py-name">original_fn</tt><tt class="py-op">.</tt><tt class="py-name">__doc__</tt> </tt>
+</div><a name="L315"></a><tt class="py-lineno">315</tt>  <tt class="py-line"> </tt>
+<a name="decorate"></a><div id="decorate-def"><a name="L316"></a><tt class="py-lineno">316</tt> <a class="py-toggle" href="#" id="decorate-toggle" onclick="return toggle('decorate');">-</a><tt class="py-line"><tt class="py-keyword">def</tt> <a class="py-def-name" href="wsgiwapi.decorators-module.html#decorate">decorate</a><tt class="py-op">(</tt><tt class="py-param">decorator</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="decorate-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="decorate-expanded"><a name="L317"></a><tt class="py-lineno">317</tt>  <tt class="py-line">    <tt class="py-docstring">"""Apply a decorator, but also copy the WSGIWAPI properties across.</tt> </tt>
+<a name="L318"></a><tt class="py-lineno">318</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L319"></a><tt class="py-lineno">319</tt>  <tt class="py-line"><tt class="py-docstring">    To use this, pass the decorator you wish to apply as a parameter to this</tt> </tt>
+<a name="L320"></a><tt class="py-lineno">320</tt>  <tt class="py-line"><tt class="py-docstring">    decorator.  The returned decorator will apply this decorator, and then copy</tt> </tt>
+<a name="L321"></a><tt class="py-lineno">321</tt>  <tt class="py-line"><tt class="py-docstring">    the WSGIWAPI properties across.</tt> </tt>
+<a name="L322"></a><tt class="py-lineno">322</tt>  <tt class="py-line"><tt class="py-docstring"></tt> </tt>
+<a name="L323"></a><tt class="py-lineno">323</tt>  <tt class="py-line"><tt class="py-docstring">    """</tt> </tt>
+<a name="L324"></a><tt class="py-lineno">324</tt>  <tt class="py-line">    <tt class="py-keyword">def</tt> <tt class="py-def-name">deco</tt><tt class="py-op">(</tt><tt class="py-param">fn</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+<a name="L325"></a><tt class="py-lineno">325</tt>  <tt class="py-line">        <tt class="py-name">newfn</tt> <tt class="py-op">=</tt> <tt class="py-name">decorator</tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">)</tt> </tt>
+<a name="L326"></a><tt class="py-lineno">326</tt>  <tt class="py-line">        <tt id="link-58" class="py-name" targets="Function wsgiwapi.decorators.copyprops()=wsgiwapi.decorators-module.html#copyprops"><a title="wsgiwapi.decorators.copyprops" class="py-name" href="#" onclick="return doclink('link-58', 'copyprops', 'link-58');">copyprops</a></tt><tt class="py-op">(</tt><tt class="py-name">fn</tt><tt class="py-op">,</tt> <tt class="py-name">newfn</tt><tt class="py-op">)</tt> </tt>
+<a name="L327"></a><tt class="py-lineno">327</tt>  <tt class="py-line">        <tt class="py-keyword">return</tt> <tt class="py-name">newfn</tt> </tt>
+</div><a name="L328"></a><tt class="py-lineno">328</tt>  <tt class="py-line">    <tt class="py-keyword">return</tt> <tt class="py-name">deco</tt> </tt>
+</div><a name="L329"></a><tt class="py-lineno">329</tt>  <tt class="py-line"> </tt>
+<a name="L330"></a><tt class="py-lineno">330</tt>  <tt class="py-line"><tt class="py-comment"># vim: set fileencoding=utf-8 :</tt> </tt>
+<a name="L331"></a><tt class="py-lineno">331</tt>  <tt class="py-line"><tt class="py-comment"></tt> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="wsgiwapi-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="../index.html">WSGIWAPI</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sun Mar 29 00:41:59 2009
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

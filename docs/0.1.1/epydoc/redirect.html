@@ -1,0 +1,38 @@
+<html><head><title>Epydoc Redirect Page</title>
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="pragma" content="no-cache" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+<!--
+var pages = ["wsgiwebapi.cpwsgiserver.WSGIPathInfoDispatcher-c", "wsgiwebapi.wsgisupport.HTTPMethodNotAllowed-c", "wsgiwebapi.cpwsgiserver.CherryPyWSGIServer-c", "wsgiwebapi.cpwsgiserver.SizeCheckWrapper-c", "wsgiwebapi.cpwsgiserver.MaxSizeExceeded-c", "wsgiwebapi.cpwsgiserver.HTTPConnection-c", "wsgiwebapi.cpwsgiserver.SSL_fileobject-c", "wsgiwebapi.wsgisupport.HTTPServerError-c", "wsgiwebapi.cpwsgiserver.CP_fileobject-c", "wsgiwebapi.cpwsgiserver.FatalSSLAlert-c", "wsgiwebapi.cpwsgiserver.SSLConnection-c", "wsgiwebapi.validation.ValidationError-c", "wsgiwebapi.cpwsgiserver.WorkerThread-c", "wsgiwebapi.cpwsgiserver.HTTPRequest-c", "wsgiwebapi.wsgisupport.HTTPNotFound-c", "wsgiwebapi.wsgisupport.WSGIResponse-c", "wsgiwebapi.cpwsgiserver.NoSSLError-c", "wsgiwebapi.cpwsgiserver.ThreadPool-c", "wsgiwebapi.overlaydict.OverlayDict-c", "wsgiwebapi.logging.VerboseLogger-c", "wsgiwebapi.wsgisupport.HTTPError-c", "wsgiwebapi.logging.SilentLogger-c", "wsgiwebapi.logging.StdoutLogger-c", "wsgiwebapi.wsgisupport.Response-c", "wsgiwebapi.wsgisupport.Request-c", "wsgiwebapi.pathinfo.PathInfo-c", "wsgiwebapi.reason_phrases-m", "wsgiwebapi.cpwsgiserver-m", "wsgiwebapi.application-m", "wsgiwebapi.jsonsupport-m", "wsgiwebapi.overlaydict-m", "wsgiwebapi.wsgisupport-m", "wsgiwebapi.decorators-m", "wsgiwebapi.validation-m", "wsgiwebapi.pathinfo-m", "wsgiwebapi.autodoc-m", "wsgiwebapi.logging-m", "wsgiwebapi-m"];
+var dottedName = get_anchor();
+if (dottedName) {
+    var target = redirect_url(dottedName);
+    if (target) window.location.replace(target);
+}
+// -->
+</script>
+
+<h3>Epydoc Auto-redirect page</h3>
+
+<p>When javascript is enabled, this page will redirect URLs of
+the form <tt>redirect.html#<i>dotted.name</i></tt> to the
+documentation for the object with the given fully-qualified
+dotted name.</p>
+<p><a id="message"> &nbsp; </a></p>
+
+<script type="text/javascript">
+<!--
+if (dottedName) {
+    var msg = document.getElementById("message");
+    msg.innerHTML = "No documentation found for <tt>"+
+                    dottedName+"</tt>";
+}
+// -->
+</script>
+
+</body>
+</html>

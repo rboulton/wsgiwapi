@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>wsgiwebapi.decorators</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="wsgiwebapi-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="../index.html">WSGIWebAPI</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="wsgiwebapi-module.html">Package&nbsp;wsgiwebapi</a> ::
+        Module&nbsp;decorators
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="wsgiwebapi.decorators-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== MODULE DESCRIPTION ==================== -->
+<h1 class="epydoc">Module decorators</h1><p class="nomargin-top"><span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html">source&nbsp;code</a></span></p>
+Decorators of WSGIWebAPI callables.
+
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="wsgiwebapi.decorators-module.html#jsonreturning" class="summary-sig-name">jsonreturning</a>(<span class="summary-sig-arg">fn</span>)</span><br />
+      Decorator to wrap function's return value as JSON.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#jsonreturning">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="wsgiwebapi.decorators-module.html#jsonpreturning" class="summary-sig-name">jsonpreturning</a>(<span class="summary-sig-arg">paramname</span>=<span class="summary-sig-default">'jsonp'</span>,
+        <span class="summary-sig-arg">valid</span>=<span class="summary-sig-default">r'^[a-zA-Z._\[\]]*$'</span>)</span><br />
+      Decorator to add JSONP support to an API function.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#jsonpreturning">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="wsgiwebapi.decorators-module.html#allow_method" class="summary-sig-name">allow_method</a>(<span class="summary-sig-arg">method_type</span>,
+        <span class="summary-sig-arg">*other_methods</span>)</span><br />
+      Decorator to restrict the methods allowed to a specific set.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#allow_method">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="wsgiwebapi.decorators-module.html#param" class="summary-sig-name">param</a>(<span class="summary-sig-arg">paramname</span>,
+        <span class="summary-sig-arg">minreps</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">maxreps</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">pattern</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">default</span>=<span class="summary-sig-default">None</span>,
+        <span class="summary-sig-arg">doc</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Decorator to add parameter validation.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#param">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="noparams"></a><span class="summary-sig-name">noparams</span>(<span class="summary-sig-arg">fn</span>)</span><br />
+      Decorator to indicate that no parameters may be supplied.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#noparams">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="pathinfo"></a><span class="summary-sig-name">pathinfo</span>(<span class="summary-sig-arg">*args</span>,
+        <span class="summary-sig-arg">**kwargs</span>)</span><br />
+      Decorator to indicate the parameter names allowed in pathinfo.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#pathinfo">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="wsgiwebapi.decorators-module.html#copyprops" class="summary-sig-name">copyprops</a>(<span class="summary-sig-arg">original_fn</span>,
+        <span class="summary-sig-arg">decorated_fn</span>)</span><br />
+      Copy the WSGIWebAPI properties from a function to a decorated function.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#copyprops">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="wsgiwebapi.decorators-module.html#decorate" class="summary-sig-name">decorate</a>(<span class="summary-sig-arg">decorator</span>)</span><br />
+      Apply a decorator, but also copy the WSGIWebAPI properties across.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#decorate">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="allow_GET"></a><span class="summary-name">allow_GET</span> = <code title="allow_method('GET')">allow_method('GET')</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="allow_HEAD"></a><span class="summary-name">allow_HEAD</span> = <code title="allow_method('HEAD')">allow_method('HEAD')</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="allow_GETHEAD"></a><span class="summary-name">allow_GETHEAD</span> = <code title="allow_method('GET', 'HEAD')">allow_method('GET', 'HEAD')</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="allow_POST"></a><span class="summary-name">allow_POST</span> = <code title="allow_method('POST')">allow_method('POST')</code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="jsonreturning"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">jsonreturning</span>(<span class="sig-arg">fn</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#jsonreturning">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Decorator to wrap function's return value as JSON.</p>
+<p>Before the decorator is applied, the function should return a structure to
+be converted to JSON.  The decorator will set the content_type
+automatically (to text/javascript).</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="jsonpreturning"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">jsonpreturning</span>(<span class="sig-arg">paramname</span>=<span class="sig-default">'jsonp'</span>,
+        <span class="sig-arg">valid</span>=<span class="sig-default">r'^[a-zA-Z._\[\]]*$'</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#jsonpreturning">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Decorator to add JSONP support to an API function.</p>
+<p>This adds a query parameter (by default, <tt class="rst-docutils literal"><span class="pre">jsonp</span></tt>, but this may be altered
+with the <code class="link">paramname</code> parameter) to the function.  If the parameter is not
+supplied, the return value is a plain JSON object, otherwise the return
+value is preceded by the value in the parameter and an open bracket, and
+followed by a close bracket.  The parameter must not be specified multiple
+times in a single request.</p>
+<p>By default, the <tt class="rst-docutils literal"><span class="pre">jsonp</span></tt> parameter may only contain upper and lowercase
+ASCII alphabetic characters (A-Z, a-z), numbers (0-9), full stops (.),
+underscores (_), and brackets ([ and ]), but this may be altered by setting
+the <code class="link">valid</code> parameter to a string containing a regular expression matching
+the valid parameter values.  To avoid performing any validation of the
+value of the <tt class="rst-docutils literal"><span class="pre">jsonp</span></tt> parameter, set the <code class="link">valid</code> parameter to None.</p>
+<p>See <a class="rst-reference" href="http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/" target="_top">http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/</a> for
+some of the rationale behind JSONP support.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="allow_method"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">allow_method</span>(<span class="sig-arg">method_type</span>,
+        <span class="sig-arg">*other_methods</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#allow_method">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Decorator to restrict the methods allowed to a specific set.</p>
+<p>May be applied multiple times, to allow more than one method to be allowed.</p>
+<p>If applied at all, any methods other than those specified will result in a
+405 or 501 error (depending whether the exception is one of the standard
+known methods).</p>
+<p>(This stores the allowed methods in an attribute of the decorated function,
+so tht repeated application can allow</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="param"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">param</span>(<span class="sig-arg">paramname</span>,
+        <span class="sig-arg">minreps</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">maxreps</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">pattern</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">default</span>=<span class="sig-default">None</span>,
+        <span class="sig-arg">doc</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#param">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Decorator to add parameter validation.</p>
+<p>If this is used at all, the <tt class="rst-docutils literal"><span class="pre">noparams</span></tt> decorator may not also be used.</p>
+<p>This decorator may only be used once for each parameter name.</p>
+<blockquote>
+<ul class="rst-simple">
+<li><code class="link">paramname</code> is required - the name of the parameter in
+<tt class="rst-docutils literal"><span class="pre">request.params</span></tt>.</li>
+<li><code class="link">minreps</code>: the minimum number of times the parameter must be specified.
+If omitted or None, the parameter need not be specified.  (Note that, if
+default is specified, it is always valid to supply the parameter exactly
+0 times, regardless of the setting of this parameter.)</li>
+<li><code class="link">maxreps</code>: the maximum number of times the parameter may be specified.
+If omitted or None, there is no limit on the number of times the
+parameter may be specified.</li>
+<li><code class="link">pattern</code>: a (python regular expression) pattern which the parameter
+must match.  If None, no validation is performed.</li>
+<li><code class="link">default</code>: a default value for the parameter list.  Note - this is used
+only if the parameter doesn't occur at all, and is simply entered into
+<tt class="rst-docutils literal"><span class="pre">request.params</span></tt> instead of the parameter (it should usually be a
+sequence, to make the normal values placed into <tt class="rst-docutils literal"><span class="pre">request.params</span></tt>).</li>
+<li><code class="link">doc</code>: a documentation string for the parameter.</li>
+</ul>
+</blockquote>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="copyprops"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">copyprops</span>(<span class="sig-arg">original_fn</span>,
+        <span class="sig-arg">decorated_fn</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#copyprops">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Copy the WSGIWebAPI properties from a function to a decorated function.</p>
+<p>If you write your own decorators and apply them to WSGIWebAPI decorated
+functions, you should call this method in your decorator to copy the
+WSGIWebAPI properties into your decorated function.  If you don't do this,
+you may get confusing failures, such as pathinfo not being allowed.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="decorate"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">decorate</span>(<span class="sig-arg">decorator</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="wsgiwebapi.decorators-pysrc.html#decorate">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Apply a decorator, but also copy the WSGIWebAPI properties across.</p>
+<p>To use this, pass the decorator you wish to apply as a parameter to this
+decorator.  The returned decorator will apply this decorator, and then copy
+the WSGIWebAPI properties across.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="wsgiwebapi-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="../index.html">WSGIWebAPI</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sat Feb  7 12:46:00 2009
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

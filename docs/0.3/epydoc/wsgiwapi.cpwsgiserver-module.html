@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>wsgiwapi.cpwsgiserver</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="wsgiwapi-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="../index.html">WSGIWAPI</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        <a href="wsgiwapi-module.html">Package&nbsp;wsgiwapi</a> ::
+        Package&nbsp;cpwsgiserver
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="wsgiwapi.cpwsgiserver-module.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<!-- ==================== PACKAGE DESCRIPTION ==================== -->
+<h1 class="epydoc">Package cpwsgiserver</h1><p class="nomargin-top"><span class="codelink"><a href="wsgiwapi.cpwsgiserver-pysrc.html">source&nbsp;code</a></span></p>
+<pre class="literalblock">
+A high-speed, production ready, thread pooled, generic WSGI server.
+
+Simplest example on how to use this module directly
+(without using CherryPy's application machinery):
+
+    from cherrypy import wsgiserver
+    
+    def my_crazy_app(environ, start_response):
+        status = '200 OK'
+        response_headers = [('Content-type','text/plain')]
+        start_response(status, response_headers)
+        return ['Hello world!
+']
+    
+    server = wsgiserver.CherryPyWSGIServer(
+                ('0.0.0.0', 8070), my_crazy_app,
+                server_name='www.cherrypy.example')
+    
+The CherryPy WSGI server can serve as many WSGI applications 
+as you want in one instance by using a WSGIPathInfoDispatcher:
+    
+    d = WSGIPathInfoDispatcher({'/': my_crazy_app, '/blog': my_blog_app})
+    server = wsgiserver.CherryPyWSGIServer(('0.0.0.0', 80), d)
+    
+Want SSL support? Just set these attributes:
+    
+    server.ssl_certificate = &lt;filename&gt;
+    server.ssl_private_key = &lt;filename&gt;
+    
+    if __name__ == '__main__':
+        try:
+            server.start()
+        except KeyboardInterrupt:
+            server.stop()
+
+This won't call the CherryPy engine (application side) at all, only the
+WSGI server, which is independant from the rest of CherryPy. Don't
+let the name &quot;CherryPyWSGIServer&quot; throw you; the name merely reflects
+its origin, not its coupling.
+
+For those of you wanting to understand internals of this module, here's the
+basic call flow. The server's listening thread runs a very tight loop,
+sticking incoming connections onto a Queue:
+
+    server = CherryPyWSGIServer(...)
+    server.start()
+    while True:
+        tick()
+        # This blocks until a request comes in:
+        child = socket.accept()
+        conn = HTTPConnection(child, ...)
+        server.requests.put(conn)
+
+Worker threads are kept in a pool and poll the Queue, popping off and then
+handling each connection in turn. Each connection can consist of an arbitrary
+number of requests and their responses, so we run a nested loop:
+
+    while True:
+        conn = server.requests.get()
+        conn.communicate()
+        -&gt;  while True:
+                req = HTTPRequest(...)
+                req.parse_request()
+                -&gt;  # Read the Request-Line, e.g. &quot;GET /page HTTP/1.1&quot;
+                    req.rfile.readline()
+                    req.read_headers()
+                req.respond()
+                -&gt;  response = wsgi_app(...)
+                    try:
+                        for chunk in response:
+                            if chunk:
+                                req.write(chunk)
+                    finally:
+                        if hasattr(response, &quot;close&quot;):
+                            response.close()
+                if req.close_connection:
+                    return
+
+</pre>
+
+<!-- ==================== CLASSES ==================== -->
+<a name="section-Classes"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Classes</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.WSGIPathInfoDispatcher-class.html" class="summary-name">WSGIPathInfoDispatcher</a><br />
+      A WSGI dispatcher for dispatch based on the PATH_INFO.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.MaxSizeExceeded-class.html" class="summary-name">MaxSizeExceeded</a>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.SizeCheckWrapper-class.html" class="summary-name">SizeCheckWrapper</a><br />
+      Wraps a file-like object, raising MaxSizeExceeded if too large.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.HTTPRequest-class.html" class="summary-name">HTTPRequest</a><br />
+      An HTTP Request (and response).
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.NoSSLError-class.html" class="summary-name">NoSSLError</a><br />
+      Exception raised when a client speaks HTTP to an HTTPS socket.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.FatalSSLAlert-class.html" class="summary-name">FatalSSLAlert</a><br />
+      Exception raised when the SSL implementation signals a fatal alert.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.CP_fileobject-class.html" class="summary-name">CP_fileobject</a><br />
+      Faux file object attached to a socket object.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.SSL_fileobject-class.html" class="summary-name">SSL_fileobject</a><br />
+      SSL file object attached to a socket object.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.HTTPConnection-class.html" class="summary-name">HTTPConnection</a><br />
+      An HTTP connection (active socket).
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.WorkerThread-class.html" class="summary-name">WorkerThread</a><br />
+      Thread which continuously polls a Queue for Connection objects.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.ThreadPool-class.html" class="summary-name">ThreadPool</a><br />
+      A Request Queue for the CherryPyWSGIServer which pools threads.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.SSLConnection-class.html" class="summary-name">SSLConnection</a><br />
+      A thread-safe wrapper for an SSL.Connection.
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver.CherryPyWSGIServer-class.html" class="summary-name">CherryPyWSGIServer</a><br />
+      An HTTP server for WSGI.
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTIONS ==================== -->
+<a name="section-Functions"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Functions</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="wsgiwapi.cpwsgiserver-module.html#plat_specific_errors" class="summary-sig-name">plat_specific_errors</a>(<span class="summary-sig-arg">*errnames</span>)</span><br />
+      Return error numbers for all errors in errnames on this platform.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwapi.cpwsgiserver-pysrc.html#plat_specific_errors">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a href="wsgiwapi.cpwsgiserver-module.html#format_exc" class="summary-sig-name">format_exc</a>(<span class="summary-sig-arg">limit</span>=<span class="summary-sig-default">None</span>)</span><br />
+      Like print_exc() but return a string.</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwapi.cpwsgiserver-pysrc.html#format_exc">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="summary-sig"><a name="prevent_socket_inheritance"></a><span class="summary-sig-name">prevent_socket_inheritance</span>(<span class="summary-sig-arg">sock</span>)</span><br />
+      Mark the given socket fd as non-inheritable (POSIX).</td>
+          <td align="right" valign="top">
+            <span class="codelink"><a href="wsgiwapi.cpwsgiserver-pysrc.html#prevent_socket_inheritance">source&nbsp;code</a></span>
+            
+          </td>
+        </tr>
+      </table>
+      
+    </td>
+  </tr>
+</table>
+<!-- ==================== VARIABLES ==================== -->
+<a name="section-Variables"></a>
+<table class="summary" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables</span></td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="quoted_slash"></a><span class="summary-name">quoted_slash</span> = <code title="re.compile(&quot;(?i)%2F&quot;)">re.compile(&quot;(?i)%2F&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="SSL"></a><span class="summary-name">SSL</span> = <code title="None">None</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a name="socket_error_eintr"></a><span class="summary-name">socket_error_eintr</span> = <code title="plat_specific_errors(&quot;EINTR&quot;, &quot;WSAEINTR&quot;)">plat_specific_errors(&quot;EINTR&quot;, &quot;WSAEINTR&quot;)</code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver-module.html#socket_errors_to_ignore" class="summary-name">socket_errors_to_ignore</a> = <code title="plat_specific_errors(&quot;EPIPE&quot;, &quot;EBADF&quot;, &quot;WSAEBADF&quot;, &quot;ENOTSOCK&quot;, &quot;WSAENO\
+TSOCK&quot;, &quot;ETIMEDOUT&quot;, &quot;WSAETIMEDOUT&quot;, &quot;ECONNREFUSED&quot;, &quot;WSAECONNREFUSED&quot;\
+, &quot;ECONNRESET&quot;, &quot;WSAECONNRESET&quot;, &quot;ECONNABORTED&quot;, &quot;WSAECONNABORTED&quot;, &quot;E\
+NETRESET&quot;, &quot;WSAENETRESET&quot;, &quot;EHOSTDOWN&quot;, &quot;EHOSTUNREACH&quot;,)">plat_specific_errors(&quot;EPIPE&quot;, &quot;EBADF<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver-module.html#socket_errors_nonblocking" class="summary-name">socket_errors_nonblocking</a> = <code title="plat_specific_errors('EAGAIN', 'EWOULDBLOCK', 'WSAEWOULDBLOCK')">plat_specific_errors('EAGAIN', 'EW<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+<tr>
+    <td width="15%" align="right" valign="top" class="summary">
+      <span class="summary-type">&nbsp;</span>
+    </td><td class="summary">
+        <a href="wsgiwapi.cpwsgiserver-module.html#comma_separated_headers" class="summary-name">comma_separated_headers</a> = <code title="['ACCEPT', 'ACCEPT-CHARSET', 'ACCEPT-ENCODING', 'ACCEPT-LANGUAGE', 'AC\
+CEPT-RANGES', 'ALLOW', 'CACHE-CONTROL', 'CONNECTION', 'CONTENT-ENCODIN\
+G', 'CONTENT-LANGUAGE', 'EXPECT', 'IF-MATCH', 'IF-NONE-MATCH', 'PRAGMA\
+', 'PROXY-AUTHENTICATE', 'TE', 'TRAILER', 'TRANSFER-ENCODING', 'UPGRAD\
+E', 'VARY', 'VIA', 'WARNING', 'WWW-AUTHENTICATE']">['ACCEPT', 'ACCEPT-CHARSET', 'ACCEPT<code class="variable-ellipsis">...</code></code>
+    </td>
+  </tr>
+</table>
+<!-- ==================== FUNCTION DETAILS ==================== -->
+<a name="section-FunctionDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Function Details</span></td>
+</tr>
+</table>
+<a name="plat_specific_errors"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">plat_specific_errors</span>(<span class="sig-arg">*errnames</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="wsgiwapi.cpwsgiserver-pysrc.html#plat_specific_errors">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Return error numbers for all errors in errnames on this platform.</p>
+  <p>The 'errno' module contains different global constants depending on 
+  the specific platform (OS). This function will return the list of numeric
+  values for a given list of potential names.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<a name="format_exc"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr valign="top"><td>
+  <h3 class="epydoc"><span class="sig"><span class="sig-name">format_exc</span>(<span class="sig-arg">limit</span>=<span class="sig-default">None</span>)</span>
+  </h3>
+  </td><td align="right" valign="top"
+    ><span class="codelink"><a href="wsgiwapi.cpwsgiserver-pysrc.html#format_exc">source&nbsp;code</a></span>&nbsp;
+    </td>
+  </tr></table>
+  
+  <p>Like print_exc() but return a string. Backport for Python 2.3.</p>
+  <dl class="fields">
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== VARIABLES DETAILS ==================== -->
+<a name="section-VariablesDetails"></a>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr bgcolor="#70b0f0" class="table-header">
+  <td align="left" colspan="2" class="table-header">
+    <span class="table-header">Variables Details</span></td>
+</tr>
+</table>
+<a name="socket_errors_to_ignore"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">socket_errors_to_ignore</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+plat_specific_errors(&quot;EPIPE&quot;, &quot;EBADF&quot;, &quot;WSAEBADF&quot;, &quot;ENOTSOCK&quot;, &quot;WSAENO<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+TSOCK&quot;, &quot;ETIMEDOUT&quot;, &quot;WSAETIMEDOUT&quot;, &quot;ECONNREFUSED&quot;, &quot;WSAECONNREFUSED&quot;<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+, &quot;ECONNRESET&quot;, &quot;WSAECONNRESET&quot;, &quot;ECONNABORTED&quot;, &quot;WSAECONNABORTED&quot;, &quot;E<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+NETRESET&quot;, &quot;WSAENETRESET&quot;, &quot;EHOSTDOWN&quot;, &quot;EHOSTUNREACH&quot;,)
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="socket_errors_nonblocking"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">socket_errors_nonblocking</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+plat_specific_errors('EAGAIN', 'EWOULDBLOCK', 'WSAEWOULDBLOCK')
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<a name="comma_separated_headers"></a>
+<div>
+<table class="details" border="1" cellpadding="3"
+       cellspacing="0" width="100%" bgcolor="white">
+<tr><td>
+  <h3 class="epydoc">comma_separated_headers</h3>
+  
+  <dl class="fields">
+  </dl>
+  <dl class="fields">
+    <dt>Value:</dt>
+      <dd><table><tr><td><pre class="variable">
+['ACCEPT', 'ACCEPT-CHARSET', 'ACCEPT-ENCODING', 'ACCEPT-LANGUAGE', 'AC<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+CEPT-RANGES', 'ALLOW', 'CACHE-CONTROL', 'CONNECTION', 'CONTENT-ENCODIN<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+G', 'CONTENT-LANGUAGE', 'EXPECT', 'IF-MATCH', 'IF-NONE-MATCH', 'PRAGMA<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+', 'PROXY-AUTHENTICATE', 'TE', 'TRAILER', 'TRANSFER-ENCODING', 'UPGRAD<span class="variable-linewrap"><img src="crarr.png" alt="\" /></span>
+E', 'VARY', 'VIA', 'WARNING', 'WWW-AUTHENTICATE']
+</pre></td></tr></table>
+</dd>
+  </dl>
+</td></tr></table>
+</div>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+  <!-- Home link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="wsgiwapi-module.html">Home</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Project homepage -->
+      <th class="navbar" align="right" width="100%">
+        <table border="0" cellpadding="0" cellspacing="0">
+          <tr><th class="navbar" align="center"
+            ><a class="navbar" target="_top" href="../index.html">WSGIWAPI</a></th>
+          </tr></table></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Sun Mar 29 00:41:58 2009
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

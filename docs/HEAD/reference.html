@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>WSGIWAPI Reference Manual</title>
+<link rel="stylesheet" href="media/docs.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="wsgiwapi-reference-manual">
+<h1 class="title">WSGIWAPI Reference Manual</h1>
+
+<div class="warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This manual is not in any way complete yet, but the information contained in it should be accurate.</p>
+</div>
+<div class="section" id="design-philosophy">
+<h1>Design Philosophy</h1>
+<p>WSGIWAPI tries hard not to get in your way, and to let you do just those things
+you want to do, without forcing you to do anything you'd rather not.  Further,
+it aims to allow you to write clear and maintainable code, which is
+comprehensible to other developers.</p>
+<p>The main design principles used when designing WSGIWAPI have been:</p>
+<blockquote>
+<ul class="simple">
+<li>Don't force use of non-essential components.  (eg, if you're not using JSON,
+you don't need to have a python JSON library installed.)</li>
+<li>Don't make users repeat themselves.  For example, you don't need to provide
+a separate list of the parameters for a function for documentation purposes:
+the documentation functionality makes use of the same list as the validation
+functionality.</li>
+<li>Avoid gratuitous magic (or explicit is better than implicit).  For example,
+there's no magic encoding of result types into particular character sets, or
+serialisation formats - instead you must explicitly specify that results
+should be marshalled into JSON, if that's what you want.</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="uri-resolution">
+<h1>URI resolution</h1>
+<p>FIXME - document</p>
+<div class="note">
+<p class="first admonition-title">Note</p>
+<p class="last">arbitrary trailing path information is not accepted by default.  If you want to accept trailing path information, you need to decorate your callable with the <tt class="docutils literal"><span class="pre">&#64;pathinfo</span></tt> decorator.</p>
+</div>
+</div>
+<div class="section" id="request-objects">
+<h1>Request objects</h1>
+<p>WSGIWAPI will call your handler with a single argument of type
+<cite>wsgiwapi.Request</cite>, containing data from the HTTP request. The interesting
+attributes are:</p>
+<blockquote>
+<ul class="simple">
+<li><cite>Request.params</cite>: Parameters decoded from the query string combined with the
+POST body (if encoded as form data).  Parameter values are lists of strings,
+one for each instance of the parameter name in the request.</li>
+<li><cite>Request.GET</cite>: Parameters decoded from the GET query string.  Note that it
+is usually better to use the Request.params, since this will also</li>
+<li><cite>Request.POST</cite>: Parameters decoded from the POST body, if present and
+form-encoded (and if the <tt class="docutils literal"><span class="pre">&#64;rawinput</span></tt> decorator has not been used).</li>
+<li><cite>Request.json</cite>: JSON object decoded from the POST body, if supplied as type
+<cite>text/json</cite> (and if the <tt class="docutils literal"><span class="pre">&#64;rawinput</span></tt> decorator has not been used).</li>
+<li><cite>Request.method</cite>: The HTTP method used to make the request.</li>
+<li><cite>Request.content_length</cite>: The content length of the request body if any.
+Default is 0.</li>
+<li><cite>Request.input</cite>: A file descriptor open at the start of the request body, if
+the <tt class="docutils literal"><span class="pre">&#64;rawinput</span></tt> decorator has been used to suppress reading and
+decoding of the body.</li>
+<li><cite>Request.path_components</cite>: The request path components as a list of strings
+(not including any trailing path info).</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="response-objects">
+<h1>Response objects</h1>
+<p>Your callable must return a <cite>wsgiwapi.Response</cite> object (either explicitly, or
+by being decorated with a decorator like the <cite>jsonreturning</cite> decorator.</p>
+<div class="section" id="redirection">
+<h2>Redirection</h2>
+<p>WSGIWAPI currently has no explicit support for HTTP redirects.  For
+now, you can implement it yourself by setting the appropriate headers
+and returning the appropriate response code.</p>
+</div>
+<div class="section" id="setting-headers">
+<h2>Setting headers</h2>
+<p>FIXME - general description</p>
+<p>When adding a header, it is possible to add</p>
+<p>Note about problem with '-'s not being allowed as keyword argument names; use {} syntax if you need to specify arguments.</p>
+</div>
+<div class="section" id="returning-errors">
+<h2>Returning errors</h2>
+<p>The <cite>wsgiwapi.Response</cite> object allows the HTTP status code to be set
+(and knows some standard reason messages for all the standard HTTP 1.1
+status codes, so you can just set the numeric code if you're happy to
+use the standard reason messages).  This allows you to return any HTTP
+status code you like, to represent errors (or redirects, etc).</p>
+<p>However, it is often convenient to be able to use exceptions to report
+errors.  To enable this, WSGIWAPI provides <cite>wsgiwapi.HTTPError</cite>,
+which is a subclass of <cite>wsgiwapi.Response</cite>, and also of the standard
+<cite>Exception</cite> class.  This can be thrown, and provided with whatever
+status code and message body you like.</p>
+<p>For even greater convenience, there are also some subclasses for
+specific error conditions:</p>
+<blockquote>
+<ul class="simple">
+<li><cite>wsgiwapi.HTTPServerError</cite>: thrown to report &quot;500 Server Error&quot;</li>
+<li><cite>wsgiwapi.HTTPNotFound</cite>: thrown to report a &quot;404 Not Found&quot;
+error.</li>
+<li><cite>wsgiwapi.HTTPMethodNotAllowed</cite>: thrown to report a disallowed
+method.  Takes the method which was requested, and a list of the
+allowed methods for this URL.</li>
+</ul>
+</blockquote>
+<p>If your callable raises any other exception, the WSGI application will
+return a &quot;500 Server Error&quot;.</p>
+</div>
+</div>
+<div class="section" id="selecting-a-handler-by-request-method">
+<h1>Selecting a handler by request method</h1>
+<p>For convenience, the <cite>MethodSwitch</cite> class is provided to allow different handlers to be called for a particular URL depending on the request method. To use this, create an instance of <cite>MethodSwitch</cite> (providing your handlers), and supply this to <cite>wsgiwapi.make_application</cite>. For example:</p>
+<blockquote>
+<cite>wsgiwapi.make_application({'/foo': wsgiwapi.MethodSwitch(foo_get, foo_post)})</cite></blockquote>
+<p>The <cite>MethodSwitch</cite> constructor takes the following parameters: <cite>get, post, put, delete, head, options, trace, connect, default</cite>, which can be supplied as positional or named arguments. If a <cite>default</cite> handler is supplied, any request without an explicitly provided handler will use the default. If not, a &quot;405 Method Not Allowed&quot; error will be raised.</p>
+</div>
+<div class="section" id="decorators">
+<h1>Decorators</h1>
+<p>WSGIWAPI provides a set of useful decorators, to make it easy to
+produce certain types of API.  You don't need to use any of these, but
+they will often make it easier to produce a clean API.</p>
+<p>The WSGIWAPI decorators can be applied in any order: they all
+operate by adding some extra properties to the API, and replacing the
+API method with a special wrapper which interprets these properties.</p>
+<p>If you are using other (non WSGIWAPI) decorators which replace the
+callable by a decorated callable, you need to ensure that the
+properties used by WSGIWAPI are copied onto the decorated callable.
+If you do not do this, WSGIWAPI will raise an exception at runtime,
+to ensure that inconsistent behaviour doesn't result.</p>
+<p>Well-behaved decorators will copy the properties by default (by coping
+the contents of __dict__ from the original callable to the decorated
+callable), but it's best to use one of two approaches provided by
+wsgiwapi to ensure that</p>
+<blockquote>
+<ul>
+<li><p class="first">If you are writing the decorator yourself, include a call to
+<tt class="docutils literal"><span class="pre">wsgiwapi.copyprops</span></tt> at the end of the decorator: pass this the
+original callable, and the decorated callable, and it will copy all
+the appropriate properties across.</p>
+<p>FIXME - example.</p>
+</li>
+<li><p class="first">If you are using an existing decorator, wrap it in the
+<tt class="docutils literal"><span class="pre">wsgiwapi.decorate</span></tt> decorator (ie, pass it as an argument to
+this decorator).  This decorator first applies the decorator it is
+given, and then applies <tt class="docutils literal"><span class="pre">wsgiwapi.copyprops</span></tt> to fix up the
+properties.</p>
+<p>FIXME - example.</p>
+</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="validation">
+<h1>Validation</h1>
+<div class="section" id="restricting-http-methods">
+<h2>Restricting HTTP methods</h2>
+<p>By default, WSGIWAPI will allow any HTTP method to be used to call
+your API.  It is often desirable to restrict the set of methods which
+are allowed at a particular path.  To do this, you can use the
+<cite>allow_method</cite> decorator.  This decorator takes one or more parameters
+listing allowable methods.  If the decorator is used multiple times,
+any of the methods listed in any of its invocations will be allowed:</p>
+<pre class="literal-block">
+FIXME - example
+</pre>
+<p>Some convenient shortcuts are available:</p>
+<blockquote>
+<ul class="simple">
+<li>allow_GET: allow GET requests; equivalent to allow_method('GET')</li>
+<li>allow_HEAD: allow HEAD requests; equivalent to allow_method('HEAD')</li>
+<li>allow_GETHEAD: allow GET or HEAD requests; equivalent to
+allow_method('GET', 'HEAD')</li>
+<li>allow_POST: allow POST requests; equivalent to allow_method('POST')</li>
+</ul>
+</blockquote>
+<p>If any of these decorators have been used, and the method used is not
+listed, the request will return an HTTP 405 or 501 error (depending on
+whether the request method is one of the standard HTTP 1.1 methods),
+as suggested by the HTTP 1.1 specification.  In this case, the
+callable you specified for the URL will not be called.</p>
+</div>
+<div class="section" id="query-parameters">
+<h2>Query parameters</h2>
+<p>FIXME - document more</p>
+<p>By default, any query parameters can be supplied to a method - it is
+up to the method to check that they are valid.</p>
+<p>The parameters allowed at a particular path can be specified using the
+&quot;param&quot; decorator.  This performs validation of the parameters, and
+will raise a ValidationError if the parameters are not valid (the
+default validation error handler will translate this into an HTTP 400
+error, but you can override this behaviour with your own handler).</p>
+<p>This allows parameters to be taken from the query string part of the
+URL, or from POST request bodies (if both are specified, they are
+merged, and the POST ones are returned first).</p>
+</div>
+<div class="section" id="pathinfo">
+<h2>Pathinfo</h2>
+<p>FIXME - document</p>
+<div class="warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">if you've decorated with the &#64;pathinfo decorator, and also decorated with another (non-WSGIWAPI) decorator, you may find that the method still doesn't seem to accept trailing path information.  This is because ... to fix it call copyprops, or use the wsgiwapi.decorate decorator.</p>
+</div>
+</div>
+</div>
+<div class="section" id="json-output">
+<h1>JSON output</h1>
+<p>To use the JSON support, your python environment must contain the
+<tt class="docutils literal"><span class="pre">simplejson</span></tt> module.</p>
+<div class="section" id="returning-json">
+<h2>Returning JSON</h2>
+<p>Often, you will want to return JSON output from an API.  This can be done very
+simply by using the <cite>jsonreturning</cite> decorator.  The return type of a method
+wrapped in this decorator should be an object which is capable of being
+converted to JSON (typically, a string, integer, or a sequence or dictionary
+containing strings, integers, sequences or dictionaries).  The returned value
+will automatically be converted to JSON, and the content type will be set
+appropriately.</p>
+<p>Here's an example of this decorator (which you can see in a cherrypy wrapper at
+<a class="reference external" href="examples/jsonsumapp_cp.py">examples/jsonsumapp_cp.py</a>):</p>
+<pre class="literal-block">
+import wsgiwapi
+&#64;wsgiwapi.jsonreturning
+&#64;wsgiwapi.param(&quot;num&quot;, 1, None, &quot;^[0-9]+$&quot;, None, &quot;A number to be added&quot;)
+&#64;wsgiwapi.allow_GETHEAD
+def calc_sum(request):
+    &quot;&quot;&quot;Return the sum of the values supplied in the `num` parameter.
+
+    &quot;&quot;&quot;
+    res = sum(int(val) for val in request.params.get('num', []))
+    return res
+app = wsgiwapi.make_application({
+    'sum': calc_sum
+}, autodoc='doc')
+</pre>
+</div>
+<div class="section" id="returning-jsonp">
+<h2>Returning JSONP</h2>
+<p>FIXME - document, and add notes on why JSONP might be a bad idea in some cases.</p>
+</div>
+</div>
+<div class="section" id="unicode-issues">
+<h1>Unicode issues</h1>
+<p>Python supports two types of strings:</p>
+<blockquote>
+<ul class="simple">
+<li>byte string objects (ie, &quot;str&quot; objects in Python 2.x, &quot;bytes&quot;
+objects in Python 3.0 onwards)</li>
+<li>unicode string objects (ie, &quot;unicode&quot; objects in Python 2.x, &quot;str&quot;
+objects in Python 3.0 onwards)</li>
+</ul>
+</blockquote>
+<p>In general, if you're handling text data it is best to use unicode
+objects; text isn't generally meaningful unless you know what
+character set it is in, and things can get very messy if you work with
+text objects which don't know what character set they are in.</p>
+<p>If you're handling non-textual, binary data, you'll probably need to
+work with byte string objects.</p>
+<div class="section" id="getting-strings-from-wsgiwapi">
+<h2>Getting strings from WSGIWAPI</h2>
+<p>FIXME - Does WSGIWAPI always supply unicode strings in request
+objects?  What should it do if parameters aren't encodable as unicode?</p>
+</div>
+<div class="section" id="supplying-strings-to-wsgiwapi">
+<h2>Supplying strings to WSGIWAPI</h2>
+<p>In most situations, you should supply WSGIWAPI with unicode strings.
+If you do this, you don't generally need to worry about character
+encoding issues.  WSGIWAPI will also accept plain byte strings, but if
+you supply it with these, it is up to you to ensure that any necessary
+character set information is set.</p>
+<p>There are four main places where WSGIWAPI is supplied with strings by
+your code.</p>
+<blockquote>
+<ul class="simple">
+<li>URL components, as supplied to <tt class="docutils literal"><span class="pre">wsgiwapi.make_application</span></tt>.</li>
+<li>The status code and reason message.</li>
+<li>The HTTP response headers.</li>
+<li>The HTTP response body.</li>
+</ul>
+</blockquote>
+<p>There are various limitations on the data supplied in these locations:</p>
+<blockquote>
+<ul>
+<li><p class="first">The URL components must (currently) only contain US-ASCII
+characters.</p>
+<p>If you supply byte strings, they will be assumed to be US-ASCII
+strings - any non-US-ASCII characters in the strings supplied
+(whether byte strings or unicode strings) will cause an exception
+to be raised.</p>
+<p>Later releases of WSGIWAPI could add support for IRIs,
+which allow other characters to be encoded, but this is not yet
+implemented.  In the meantime, you could encode the URL components
+according to RFC 3987 yourself.</p>
+</li>
+<li><p class="first">Status codes and the associated reason messages must only use
+US-ASCII characters.</p>
+<p>If you supply byte strings, they will be assumed to be US-ASCII
+strings - any non-US-ASCII characters in the strings supplied
+(whether byte strings or unicode strings) will cause an exception
+to be raised.</p>
+</li>
+<li><p class="first">For headers, the header name and value must be composed of US-ASCII
+characters - though header values may take additional parameters whose
+values may contain arbitrary unicode characters.</p>
+<p>If you supply byte strings, they will be assumed to be US-ASCII strings -
+any non-US-ASCII characters in the strings supplied (whether byte strings or
+unicode strings) will cause an exception to be raised.</p>
+<p>If header values are supplied with additional parameters whose values are
+unicode objects which cannot be encoded in US-ASCII, the parameter values
+will be encoded according to the method described in RFC 2231.  Note that
+HTTP clients may not understand this correctly in all cases - anecdotal
+evidence at the time of writing suggests that many browsers only support
+this in the Conent-Disposition header's filename parameter, presently.
+Therefore, use such unicode values with caution.  If you're writing your own
+clients, you're probably safe.</p>
+</li>
+<li><p class="first">There is no restriction on the byte values which are supplied for
+the HTTP response body - if you supply a byte string, it will be
+transmitted exactly as-is.</p>
+<p>By default, if a unicode object is supplied for the response body,
+it will be converted to UTF-8 for transmission.  The character set
+to use can be altered with the <tt class="docutils literal"><span class="pre">response_charset</span></tt> decorator.  In
+addition, if the <tt class="docutils literal"><span class="pre">Content-Type</span></tt> HTTP header is set to any
+<tt class="docutils literal"><span class="pre">text/*</span></tt> mime type, an appropriate &quot;charset&quot; attribute will be
+added to the resulting decorator (unless one has already been set
+explicitly).</p>
+</li>
+</ul>
+</blockquote>
+</div>
+</div>
+<div class="section" id="extra-utilities">
+<h1>Extra utilities</h1>
+<div class="section" id="built-in-server">
+<h2>Built-in server</h2>
+</div>
+<div class="section" id="testing-framework">
+<h2>Testing framework</h2>
+</div>
+</div>
+<div class="section" id="undocumented-so-far">
+<h1>Undocumented so far</h1>
+<p>The following is a list of things which we've specifically noticed need more
+documentation:</p>
+<blockquote>
+<ul class="simple">
+<li>pathinfo support, in particular the tail parameter.</li>
+</ul>
+</blockquote>
+</div>
+</div>
+</body>
+</html>

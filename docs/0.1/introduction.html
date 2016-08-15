@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
+<title></title>
+<link rel="stylesheet" href="media/docs.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+<div class="section">
+<h1><a id="introduction-to-wsgiwebapi" name="introduction-to-wsgiwebapi">Introduction to WSGIWebAPI</a></h1>
+<p>WSGIWebAPI is intended to make it extremely easy to make web APIs based on
+Python programs.  With WSIGWebAPI, it should take only a few minutes to
+produce a working, and documented, API for your code.</p>
+<p>Here's a simple WSGIWebAPI application:</p>
+<pre class="literal-block">
+import wsgiwebapi
+app = wsgiwebapi.make_application({
+    '': lambda x: wsgiwebapi.Response('My First WSGIWebAPI application!'),
+})
+</pre>
+<p>The <tt class="docutils literal"><span class="pre">app</span></tt> object produced by this code is a class implementing the WSGI
+protocol, as defined by <a class="reference" href="http://www.python.org/dev/peps/pep-0333/">PEP 333</a>.
+This can be passed to any WSGI web server to publish the API, but for
+convenience WSGIWebAPI includes a copy of the standalone WSGI server from
+CherryPy.  A server for the application can be created and started by:</p>
+<pre class="literal-block">
+server = wsgiwebapi.make_server(app(), ('0.0.0.0', 8080))
+try:
+    server.start()
+except KeyboardInterrupt:
+    server.stop()
+</pre>
+<p>Note that the return value of <cite>make_application()</cite> is a class, but the server
+needs to be passed an instance of that class.</p>
+<p>See <a class="reference" href="examples/myfirstapp.py">examples/myfirstapp.py</a> for a ready-to-run copy of the code so far.
+If you run this application, and then visit <a class="reference" href="http://127.0.0.1:8080/">http://127.0.0.1:8080/</a> you
+will see the output of the application: a text/plain page containing &quot;My First
+WSGIWebAPI application!&quot;.</p>
+</div>
+<div class="section">
+<h1><a id="a-more-useful-application" name="a-more-useful-application">A more useful application</a></h1>
+<p>Starting with myfirstapp.py, replace the lines which create the app object
+with the following to produce a more &quot;useful&quot; application (this can be found as
+<a class="reference" href="examples/sumapp.py">examples/sumapp.py</a>):</p>
+<pre class="literal-block">
+import wsgiwebapi
+def calc_sum(request):
+    &quot;&quot;&quot;Return the sum of the values supplied in the `num` parameter.
+
+    &quot;&quot;&quot;
+    res = sum(int(val) for val in request.params.get('num', []))
+    return wsgiwebapi.Response(str(res))
+app = wsgiwebapi.make_application({
+    'sum': calc_sum
+}, autodoc='doc')
+</pre>
+<p>In this example, we've changed the lambda into a full function definition, for
+easier reading.  The <cite>request</cite> parameter is an object which provides easy
+access to the parameters passed in the request: one of the facilities it
+provides is the <cite>params</cite> member, which is a dictionary of the query parameters
+passed.  Each query parameter may occur multiple times, so the params
+dictionary contains a list of values for each parameter which was specified,
+even if the parameter was only specified once.  Our application adds up the
+values in the <cite>num</cite> query parameter, and returns their sum, as a string wrapped
+in a <cite>wsgiwebapi.Response</cite> object.</p>
+<p>All the callables listed in the dict supplied to <cite>make_application()</cite> must
+return <cite>wsgiwebapi.Response</cite> objects.  These provide a rich set of methods
+allowing the headers and status code of a response type to be controlled.
+However, here we're just setting the body of the response type, and leaving the
+response status as the default (&quot;200 OK&quot;), and the &quot;Content Type&quot; of the
+response as the default (&quot;text/plain&quot;).</p>
+<p>We've changed the key in the <cite>make_application()</cite> call from '' to 'sum'.  This
+key represents the path component used to address the callable.  If we run the
+application now, we'll find that <a class="reference" href="http://127.0.0.1:8080/">http://127.0.0.1:8080/</a> returns a &quot;404 Not
+Found&quot; error status; any path not listed in the dictionary passed to
+<cite>make_application()</cite> automatically returns a 404 error.  However,
+<a class="reference" href="http://127.0.0.1:8080/sum">http://127.0.0.1:8080/sum</a> returns 0, and
+<a class="reference" href="http://127.0.0.1:8080/sum?num=2&amp;num=3">http://127.0.0.1:8080/sum?num=2&amp;num=3</a> returns 5, as expected.</p>
+<p>The other new feature introduced in this example is the <cite>autodoc</cite> parameter
+supplied to the <cite>make_application()</cite> call.  This specifies a path at which
+documentation of the API will be made available.  If you look at
+<a class="reference" href="http://127.0.0.1:8080/doc">http://127.0.0.1:8080/doc</a>, you will be able to browse documentation of the
+API.  The description of the API methods is taken from the doccomments of the
+corresponding callables, which should make it easy to keep the documentation
+up-to-date as the API changes.</p>
+</div>
+<div class="section">
+<h1><a id="decorating-the-methods" name="decorating-the-methods">Decorating the methods</a></h1>
+<p>WSGIWebAPI provides a set of useful decorators, to make it easy to produce
+certain types of API.  You don't need to use any of these, but they will often
+make it easier to produce a clean API.  The WSGIWebAPI decorators can be
+applied in any order: they all operate by adding some extra properties to the
+API, and replacing the API method with a special wrapper which interprets these
+properties.</p>
+<p>Decorators are available to perform parameter validation, check the HTTP
+methods being used to access your API, and support different response formats
+(currently, JSON and &quot;JSONP&quot; are supported).  Here's an example similar to our
+previous example, but using decorators to return a JSON formatted result, check
+that the &quot;num&quot; parameter is valid and supplied at least once, and ensuring that
+the HTTP method used was GET or HEAD.  A complete ready-to-run script
+containing this example is available at <a class="reference" href="examples/jsonsumapp.py">examples/jsonsumapp.py</a>:</p>
+<pre class="literal-block">
+import wsgiwebapi
+&#64;wsgiwebapi.jsonreturning
+&#64;wsgiwebapi.param(&quot;num&quot;, 1, None, &quot;^[0-9]+$&quot;, None, &quot;A number to be added&quot;)
+&#64;wsgiwebapi.allow_GETHEAD
+def calc_sum(request):
+    &quot;&quot;&quot;Return the sum of the values supplied in the `num` parameter.
+
+    &quot;&quot;&quot;
+    res = sum(int(val) for val in request.params.get('num', []))
+    return res
+app = wsgiwebapi.make_application({
+    'sum': calc_sum
+}, autodoc='doc')
+</pre>
+</div>
+<div class="section">
+<h1><a id="accessing-path-information" name="accessing-path-information">Accessing path information</a></h1>
+<p>With the previous example, a request to <cite>&lt;http://127.0.0.1:8080/sum/foo&gt;</cite> would
+return a &quot;404 Not Found&quot; error.  By default, WSGIWebAPI applications will raise
+this error if there are any path components after a mapping to a callable has
+been found.  However, it is sometimes desirable to allow extra information to
+be passed on the URL path, so WSGIWebAPI provides a decorator (<tt class="docutils literal"><span class="pre">pathinfo</span></tt>)
+which makes the path information available in <tt class="docutils literal"><span class="pre">request.pathinfo</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">pathinfo</span></tt> decorator has support for validating the path information, for
+providing named access to the path information, and for default values.  This
+decorator also works with the autodoc feature to provide documentation of the
+path information supported.</p>
+<p>For example, if we wanted to change the previous example to allow a path
+component after &quot;/sum&quot; to specify whether to add or multiply the values, and
+then to read the numbers from subsequent path components rather than the query
+string, we could do the following (note that the <tt class="docutils literal"><span class="pre">tail</span></tt> argument to the
+pathinfo decorator, which describes the validation pattern to apply to training
+path components, is very similar to the arguments applied to the <tt class="docutils literal"><span class="pre">param</span></tt>
+decorator in the earlier example):</p>
+<pre class="literal-block">
+import wsgiwebapi
+&#64;wsgiwebapi.jsonreturning
+&#64;wsgiwebapi.allow_GETHEAD
+&#64;wsgiwebapi.pathinfo(
+                     (&quot;op&quot;, '^[a-z]+$', None,),
+                     tail=(1, None, &quot;^[0-9]+$&quot;, None, &quot;A number to be added&quot;)
+                    )
+def calc_sum(request):
+    &quot;&quot;&quot;Return the sum of the values supplied in the `num` parameter.
+
+    &quot;&quot;&quot;
+    op = request.pathinfo.get('op')
+    nums = request.pathinfo.tail
+    if op == 'add':
+        res = sum(int(val) for val in nums)
+    elif op == 'mul':
+        res = reduce(lambda x, y: x * y, (int(val) for val in nums))
+    else:
+        raise wsgiwebapi.HTTPNotFound(request.path)
+    return res
+app = wsgiwebapi.make_application({
+    'sum': calc_sum
+}, autodoc='doc')
+</pre>
+<p>With this code, <a class="reference" href="http://127.0.0.1:8080/sum/add/2/3">http://127.0.0.1:8080/sum/add/2/3</a> returns 5, and
+<a class="reference" href="http://127.0.0.1:8080/sum/mul/2/3">http://127.0.0.1:8080/sum/mul/2/3</a> returns 6.</p>
+</div>
+<div class="section">
+<h1><a id="returning-errors" name="returning-errors">Returning errors</a></h1>
+<p>The <cite>wsgiwebapi.Response</cite> object allows the HTTP status code to be set (and
+knows some standard reason messages for all the standard HTTP 1.1 status codes,
+so you can just set the numeric code if you're happy to use the standard reason
+messages).  This allows you to return any HTTP status code you like, to
+represent errors (or redirects, etc).</p>
+<p>However, it is often convenient to be able to use exceptions to report errors.
+To enable this, WSGIWebAPI provides <cite>wsgiwebapi.HTTPError</cite>, which is a subclass
+of <cite>wsgiwebapi.Response</cite>, and also of the standard <cite>Exception</cite> class.  This can
+be thrown, and provided with whatever status code and message body you like.</p>
+<p>For even greater convenience, there are also some subclasses for specific
+error conditions:</p>
+<blockquote>
+<ul class="simple">
+<li><cite>wsgiwebapi.HTTPServerError</cite>: thrown to report &quot;500 Server Error&quot;</li>
+<li><cite>wsgiwebapi.HTTPNotFound</cite>: thrown to report a &quot;404 Not Found&quot; error.</li>
+<li><cite>wsgiwebapi.HTTPMethodNotAllowed</cite>: thrown to report a disallowed method.
+Takes the method which was requested, and a list of the allowed methods for
+this URL.</li>
+</ul>
+</blockquote>
+<p>If your callable raises any other exception, the WSGI application will return a
+&quot;500 Server Error&quot;.</p>
+</div>
+<div class="section">
+<h1><a id="unicode-issues" name="unicode-issues">Unicode issues</a></h1>
+<p>Ideally, WSGIWebAPI would require all strings supplied to it to be unicode
+objects, so that users don't need to worry about character set issues.
+However, HTTP has various limitations on the character sets used, and it is
+sometimes desirable to pass through data which cannot be represented as valid
+unicode strings, so the API provided by WSGIWebAPI isn't quite as
+straightforward as this.</p>
+<p>WSGIWebAPI allows byte string objects (ie, &quot;str&quot; objects in Python 2.x, &quot;bytes&quot;
+objects in Python 3.0 onwards) to be supplied in all places where a string is
+supplied by your application.  WSGIWebAPI will also accept unicode objects in
+all places where a string is supplied.  These unicode objects will be encoded
+appropriately for passing over HTTP: if this encoding is not possible due to
+restrictions in HTTP, an exception will be raised.  In particular:</p>
+<blockquote>
+<ul class="simple">
+<li>Status codes and the associated reason messages must only use characters
+which can be translated into US-ASCII.</li>
+<li>For headers, the header name must also be composed of characters which can
+be translated into US-ASCII.  The header value must currently also be
+composed of such characters.
+Note - some HTTP clients now support encoding parameter values using
+RFC2231, which allows arbitrary unicode values to be supplied in parameters.
+WSGIWebAPI doesn't yet support this.</li>
+</ul>
+</blockquote>
+<p>If a unicode object is supplied for the response body, it will be converted to
+UTF-8 for transmission.</p>
+</div>
+</div>
+</body>
+</html>
