@@ -39,7 +39,7 @@ support for easily running your application as a standalone server.
 """
 
 setup(name = "WSGIWebAPI",
-      version = "0.1",
+      version = "0.1.1",
       description = "Framework for building web APIs",
       long_description = long_description,
       author = "Richard Boulton",
@@ -48,7 +48,7 @@ setup(name = "WSGIWebAPI",
       maintainer_email = "richard@tartarus.org",
       url = "http://wsgiwebapi.tartarus.org/",
       #test_suite = "wsgiwebapi.testsupport.makesuite.make_suite",
-      download_url = "http://wsgiwebapi.googlecode.com/files/wsgiwebapi-0.1.tar.gz",
+      download_url = "http://wsgiwebapi.googlecode.com/files/WSGIWebAPI-0.1.tar.gz",
 
       classifiers = [
           'Development Status :: 3 - Alpha',

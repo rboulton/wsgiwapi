@@ -1,5 +1,15 @@
 Things to do when making a release:
 
- - generate the documentation for the release.
- - update docs/index.html to list the version number of the release (instead of
-   "development version").
+ - ensure that ./runtests.py passes.
+ - generate the documentation for the release.  (./make_docs.sh)
+ - update setup.py and docs/index.html to list the version number of the
+   release (instead of "development version").  Commit the change.
+ - "svn cp trunk tags/release-X.Y.Z".  Commit the tagged copy.
+ - change website/index.html to list the documentation for the released
+   version.  Commit.
+ - update the website, and copy the current documentation to a release
+   directory.
+ - change docs/index.html to say "development version" instead of the release
+   number.
+ - run "./setup.py sdist upload"
+ - upload the package to google code, too.

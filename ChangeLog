@@ -1,3 +1,22 @@
+Tue Feb 03 09:17:48 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/index.html,maintainer/release-checklist,setup.py: Update for
+	  release 0.1.1.
+
+Tue Feb 03 09:15:29 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwebapi/unittests/apps.py,wsgiwebapi/unittests/validation.py,
+	  wsgiwebapi/validation.py: Fix bug with default parameters, and
+	  add regression test.
+
+Mon Feb 02 16:28:51 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* maintainer/release-checklist: Update checklist for next time.
+
+Mon Feb 02 15:37:09 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* setup.py: Update download path.
+
 Mon Feb 02 15:06:37 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
 
 	* README: Update name of introductory documentation file.

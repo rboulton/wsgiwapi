@@ -60,6 +60,32 @@ class ValidationTest(TestCase):
         self.assertEqual(r.body, u'Validation Error: This resource does '
                          'not accept parameters')
 
+    def test_defaulting(self):
+        """Test behaviour of default parameters.
+
+        """
+        app = wsgiwebapi.make_application(apps.simple(),
+                                          logger = wsgiwebapi.SilentLogger)
+        r = simulate_get(app, '/8')
+        self.assertEqual(r.status, u'200 OK')
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
+        self.assertEqual(r.body, u'bar')
+
+        r = simulate_get(app, '/8?foo=baz')
+        self.assertEqual(r.status, u'400 Bad Request')
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
+        self.assertEqual(r.body, u'Validation Error: Too few instances of '
+                         '\'foo\' supplied (needed 2, got 1)')
+
+        r = simulate_get(app, '/8?foo=baz&foo=bong')
+        self.assertEqual(r.status, u'200 OK')
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
+        self.assertEqual(r.body, u'baz,bong')
+
+        r = simulate_get(app, '/8?foo=bong&foo=baz')
+        self.assertEqual(r.status, u'200 OK')
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
+        self.assertEqual(r.body, u'bong,baz')
 
     def test_inconsistent_decorators(self):
         """Test for inconsistent decorators.

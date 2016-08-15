@@ -79,9 +79,9 @@ def validate_params(requestobj, constraints):
     # an error.
     missing_params = set()
     for key, constraint in constraints.iteritems():
-        if constraint[3] is not None:
+        if constraint[4] is not None:
             if key not in requestobj:
-                p[key] = constraint[3]
+                p[key] = constraint[4]
         else:
             # check for missing params
             if constraint[0] > 0 and key not in requestobj:

@@ -46,9 +46,14 @@ def simple():
     @wsgiwebapi.noparams
     def staticreturn6(request):
         return wsgiwebapi.Response('Static6')
+
     @wsgiwebapi.param('foo', 2, 2, None, None)
     def staticreturn7(request):
         return wsgiwebapi.Response('Static7')
+
+    @wsgiwebapi.param('foo', 2, 2, None, ['bar'])
+    def mirror8(request):
+        return wsgiwebapi.Response(u','.join(request.params['foo']))
     return {
                 '': staticreturn,
                 '2': staticreturn2,
@@ -57,4 +62,5 @@ def simple():
                 '5': staticreturn5,
                 '6': staticreturn6,
                 '7': staticreturn7,
+                '8': mirror8,
     }
