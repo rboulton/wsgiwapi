@@ -2,36 +2,38 @@
 Introduction to WSGIWAPI
 ========================
 
-WSGIWAPI is intended to make it extremely easy to make web APIs based on
-Python programs.  With WSGIWAPI, it should take only a few minutes to
-produce a working, and documented, API for your code.
+Overview
+========
+
+WSGIWAPI is intended to make it extremely easy to make web APIs based
+on Python programs.  With WSGIWAPI, it should take only a few minutes
+to produce a working, and documented, API for your code.
 
 Here's a simple WSGIWAPI application::
 
     import wsgiwapi
     app = wsgiwapi.make_application({
-        '': lambda x: wsgiwapi.Response('My First WSGIWAPI application!'),
+        '': lambda x: wsgiwapi.Response(u'My First WSGIWAPI application!'),
     })
 
-The ``app`` object produced by this code is a class implementing the WSGI
-protocol, as defined by `PEP 333 <http://www.python.org/dev/peps/pep-0333/>`_.
-This can be passed to any WSGI web server to publish the API, but for
-convenience WSGIWAPI includes a copy of the standalone WSGI server from
-CherryPy.  A server for the application can be created and started by::
+The ``app`` object produced by this code is an object implementing the
+WSGI protocol, as defined by `PEP 333
+<http://www.python.org/dev/peps/pep-0333/>`_.  This can be passed to
+any WSGI web server to publish the API, but for convenience WSGIWAPI
+includes a copy of the standalone WSGI server from CherryPy.  A server
+for the application can be created and started by::
 
-    server = wsgiwapi.make_server(app(), ('0.0.0.0', 8080))
+    server = wsgiwapi.make_server(app, ('0.0.0.0', 8080))
     try:
         server.start()
     except KeyboardInterrupt:
         server.stop()
 
-Note that the return value of `make_application()` is a class, but the server
-needs to be passed an instance of that class.
-
-See `<examples/myfirstapp.py>`_ for a ready-to-run copy of the code so far.
-If you run this application, and then visit `<http://127.0.0.1:8080/>`_ you
-will see the output of the application: a text/plain page containing "My First
-WSGIWAPI application!".
+See `<examples/myfirstapp.py>`_ for a ready-to-run copy of the code so
+far.  If you run this application, and then visit
+`<http://127.0.0.1:8080/>`_ you will see the output of the
+application: a text/plain page containing "My First WSGIWAPI
+application!".
 
 A more useful application
 =========================
@@ -46,7 +48,7 @@ with the following to produce a more "useful" application (this can be found as
 
         """
         res = sum(int(val) for val in request.params.get('num', []))
-        return wsgiwapi.Response(str(res))
+        return wsgiwapi.Response(unicode(res))
     app = wsgiwapi.make_application({
         'sum': calc_sum
     }, autodoc='doc')
@@ -191,33 +193,3 @@ error conditions:
 
 If your callable raises any other exception, the WSGI application will return a
 "500 Server Error".
-
-Unicode issues
-==============
-
-Ideally, WSGIWAPI would require all strings supplied to it to be unicode
-objects, so that users don't need to worry about character set issues.
-However, HTTP has various limitations on the character sets used, and it is
-sometimes desirable to pass through data which cannot be represented as valid
-unicode strings, so the API provided by WSGIWAPI isn't quite as
-straightforward as this.
-
-WSGIWAPI allows byte string objects (ie, "str" objects in Python 2.x, "bytes"
-objects in Python 3.0 onwards) to be supplied in all places where a string is
-supplied by your application.  WSGIWAPI will also accept unicode objects in
-all places where a string is supplied.  These unicode objects will be encoded
-appropriately for passing over HTTP: if this encoding is not possible due to
-restrictions in HTTP, an exception will be raised.  In particular:
-
- - Status codes and the associated reason messages must only use characters
-   which can be translated into US-ASCII.
-
- - For headers, the header name must also be composed of characters which can
-   be translated into US-ASCII.  The header value must currently also be
-   composed of such characters.
-   Note - some HTTP clients now support encoding parameter values using
-   RFC2231, which allows arbitrary unicode values to be supplied in parameters.
-   WSGIWAPI doesn't yet support this.
-
-If a unicode object is supplied for the response body, it will be converted to
-UTF-8 for transmission.

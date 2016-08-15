@@ -2,21 +2,28 @@
 WSGIWAPI Reference Manual
 =========================
 
-.. Warning:: This manual is not in any way complete - don't trust it for information yet!
+.. Warning:: This manual is not in any way complete yet, but the information contained in it should be accurate.
 
 Design Philosophy
 =================
 
-WSGIWAPI tries hard not to get in your way.  The intention is that it should
-be possible to use only those bits of WSGIWAPI which are useful to you,
-without having to know about those parts which you are not using.  In addition,
-you shouldn't need to install dependencies for parts of WSGIWAPI which you're
-not using - for example, if you're not using JSON, you don't need to have a
-python JSON library installed.
+WSGIWAPI tries hard not to get in your way, and to let you do just those things
+you want to do, without forcing you to do anything you'd rather not.  Further,
+it aims to allow you to write clear and maintainable code, which is
+comprehensible to other developers.
 
-It should be possible to make code using WSGIWAPI concise and clear, so we've
-tried to embrace the "Don't Repeat Yourself" principle.  As an example, document
+The main design principles used when designing WSGIWAPI have been:
 
+ - Don't force use of non-essential components.  (eg, if you're not using JSON,
+   you don't need to have a python JSON library installed.)
+ - Don't make users repeat themselves.  For example, you don't need to provide
+   a separate list of the parameters for a function for documentation purposes:
+   the documentation functionality makes use of the same list as the validation
+   functionality.
+ - Avoid gratuitous magic (or explicit is better than implicit).  For example,
+   there's no magic encoding of result types into particular character sets, or
+   serialisation formats - instead you must explicitly specify that results
+   should be marshalled into JSON, if that's what you want.
 
 URI resolution
 ==============
@@ -28,8 +35,33 @@ FIXME - document
 Request objects
 ===============
 
+WSGIWAPI will call your handler with a single argument of type
+`wsgiwapi.Request`, containing data from the HTTP request. The interesting
+attributes are:
+
+ - `Request.params`: Parameters decoded from the query string combined with the
+   POST body (if encoded as form data).  Parameter values are lists of strings,
+   one for each instance of the parameter name in the request.
+ - `Request.GET`: Parameters decoded from the GET query string.  Note that it
+   is usually better to use the Request.params, since this will also 
+ - `Request.POST`: Parameters decoded from the POST body, if present and
+   form-encoded (and if the ``@rawinput`` decorator has not been used).
+ - `Request.json`: JSON object decoded from the POST body, if supplied as type
+   `text/json` (and if the ``@rawinput`` decorator has not been used).
+ - `Request.method`: The HTTP method used to make the request.
+ - `Request.content_length`: The content length of the request body if any.
+   Default is 0.
+ - `Request.input`: A file descriptor open at the start of the request body, if
+   the ``@rawinput`` decorator has been used to suppress reading and
+   decoding of the body. 
+ - `Request.path_components`: The request path components as a list of strings
+   (not including any trailing path info).
+
 Response objects
 ================
+
+Your callable must return a `wsgiwapi.Response` object (either explicitly, or
+by being decorated with a decorator like the `jsonreturning` decorator.
 
 Redirection
 -----------
@@ -37,6 +69,15 @@ Redirection
 WSGIWAPI currently has no explicit support for HTTP redirects.  For
 now, you can implement it yourself by setting the appropriate headers
 and returning the appropriate response code.
+
+Setting headers
+---------------
+
+FIXME - general description
+
+When adding a header, it is possible to add
+
+Note about problem with '-'s not being allowed as keyword argument names; use {} syntax if you need to specify arguments.
 
 Returning errors
 ----------------
@@ -66,6 +107,14 @@ specific error conditions:
 If your callable raises any other exception, the WSGI application will
 return a "500 Server Error".
 
+Selecting a handler by request method
+=====================================
+
+For convenience, the `MethodSwitch` class is provided to allow different handlers to be called for a particular URL depending on the request method. To use this, create an instance of `MethodSwitch` (providing your handlers), and supply this to `wsgiwapi.make_application`. For example:
+
+    `wsgiwapi.make_application({'/foo': wsgiwapi.MethodSwitch(foo_get, foo_post)})`
+
+The `MethodSwitch` constructor takes the following parameters: `get, post, put, delete, head, options, trace, connect, default`, which can be supplied as positional or named arguments. If a `default` handler is supplied, any request without an explicitly provided handler will use the default. If not, a "405 Method Not Allowed" error will be raised.
 
 Decorators
 ==========
@@ -201,33 +250,95 @@ FIXME - document, and add notes on why JSONP might be a bad idea in some cases.
 Unicode issues
 ==============
 
-Ideally, WSGIWAPI would require all strings supplied to it to be
-unicode objects, so that users don't need to worry about character set
-issues.  However, HTTP has various limitations on the character sets
-used, and it is sometimes desirable to pass through data which cannot
-be represented as valid unicode strings, so the API provided by
-WSGIWAPI isn't quite as straightforward as this.
+Python supports two types of strings:
 
-WSGIWAPI allows byte string objects (ie, "str" objects in Python
-2.x, "bytes" objects in Python 3.0 onwards) to be supplied in all
-places where a string is supplied by your application.  WSGIWAPI
-will also accept unicode objects in all places where a string is
-supplied.  These unicode objects will be encoded appropriately for
-passing over HTTP: if this encoding is not possible due to
-restrictions in HTTP, an exception will be raised.  In particular:
+ - byte string objects (ie, "str" objects in Python 2.x, "bytes"
+   objects in Python 3.0 onwards)
+ - unicode string objects (ie, "unicode" objects in Python 2.x, "str"
+   objects in Python 3.0 onwards)
+
+In general, if you're handling text data it is best to use unicode
+objects; text isn't generally meaningful unless you know what
+character set it is in, and things can get very messy if you work with
+text objects which don't know what character set they are in.
+
+If you're handling non-textual, binary data, you'll probably need to
+work with byte string objects.
+
+Getting strings from WSGIWAPI
+-----------------------------
+
+FIXME - Does WSGIWAPI always supply unicode strings in request
+objects?  What should it do if parameters aren't encodable as unicode?
+
+Supplying strings to WSGIWAPI
+-----------------------------
+
+In most situations, you should supply WSGIWAPI with unicode strings.
+If you do this, you don't generally need to worry about character
+encoding issues.  WSGIWAPI will also accept plain byte strings, but if
+you supply it with these, it is up to you to ensure that any necessary
+character set information is set.
+
+There are four main places where WSGIWAPI is supplied with strings by
+your code.
+
+ - URL components, as supplied to ``wsgiwapi.make_application``.
+ - The status code and reason message.
+ - The HTTP response headers.
+ - The HTTP response body.
+
+There are various limitations on the data supplied in these locations:
+
+ - The URL components must (currently) only contain US-ASCII
+   characters.
+
+   If you supply byte strings, they will be assumed to be US-ASCII
+   strings - any non-US-ASCII characters in the strings supplied
+   (whether byte strings or unicode strings) will cause an exception
+   to be raised.
+
+   Later releases of WSGIWAPI could add support for IRIs,
+   which allow other characters to be encoded, but this is not yet
+   implemented.  In the meantime, you could encode the URL components
+   according to RFC 3987 yourself.
 
  - Status codes and the associated reason messages must only use
-   characters which can be translated into US-ASCII.
+   US-ASCII characters.
 
- - For headers, the header name must also be composed of characters
-   which can be translated into US-ASCII.  The header value must
-   currently also be composed of such characters.  Note - some HTTP
-   clients now support encoding parameter values using RFC2231, which
-   allows arbitrary unicode values to be supplied in parameters.
-   WSGIWAPI doesn't yet support this.
+   If you supply byte strings, they will be assumed to be US-ASCII
+   strings - any non-US-ASCII characters in the strings supplied
+   (whether byte strings or unicode strings) will cause an exception
+   to be raised.
 
-If a unicode object is supplied for the response body, it will be
-converted to UTF-8 for transmission.
+ - For headers, the header name and value must be composed of US-ASCII
+   characters - though header values may take additional parameters whose
+   values may contain arbitrary unicode characters.
+
+   If you supply byte strings, they will be assumed to be US-ASCII strings -
+   any non-US-ASCII characters in the strings supplied (whether byte strings or
+   unicode strings) will cause an exception to be raised.
+
+   If header values are supplied with additional parameters whose values are
+   unicode objects which cannot be encoded in US-ASCII, the parameter values
+   will be encoded according to the method described in RFC 2231.  Note that
+   HTTP clients may not understand this correctly in all cases - anecdotal
+   evidence at the time of writing suggests that many browsers only support
+   this in the Conent-Disposition header's filename parameter, presently.
+   Therefore, use such unicode values with caution.  If you're writing your own
+   clients, you're probably safe.
+
+ - There is no restriction on the byte values which are supplied for
+   the HTTP response body - if you supply a byte string, it will be
+   transmitted exactly as-is.
+
+   By default, if a unicode object is supplied for the response body,
+   it will be converted to UTF-8 for transmission.  The character set
+   to use can be altered with the ``response_charset`` decorator.  In
+   addition, if the ``Content-Type`` HTTP header is set to any
+   ``text/*`` mime type, an appropriate "charset" attribute will be
+   added to the resulting decorator (unless one has already been set
+   explicitly).
 
 Extra utilities
 ===============
@@ -238,3 +349,11 @@ Built-in server
 Testing framework
 -----------------
 
+
+Undocumented so far
+===================
+
+The following is a list of things which we've specifically noticed need more
+documentation:
+
+ - pathinfo support, in particular the tail parameter.

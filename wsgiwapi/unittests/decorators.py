@@ -19,39 +19,49 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-r"""Test a simple API built with wsgiwapi.
+r"""Test the wsgiwapi decorators.
 
 """
 __docformat__ = "restructuredtext en"
 
 from harness import *
-import apps
 import wsgiwapi
 
-class SimpleApiTest(TestCase):
-    """Test a simple API build with wsgiwapi.
+class DecoratorTest(TestCase):
+    """Test some decorators.
 
     """
-    def test_simple(self):
-        """Test basic use of the simple API.
+    def test_decorate(self):
+        """Test the decorate decorator.
 
         """
-        app = makeapp(apps.simple(), autodoc = 'doc')
+        def mydecor(fn):
+            def myreq(request):
+                return wsgiwapi.Response(fn(request))
+            return myreq
+
+        @wsgiwapi.allow_GET
+        @wsgiwapi.decorate(mydecor)
+        @wsgiwapi.noparams
+        def foo(request):
+            return u'foo'
+
+        app = wsgiwapi.make_application({'': foo},
+                                        logger=wsgiwapi.SilentLogger)
+
         r = simulate_get(app, '/')
         self.assertEqual(r.status, u'200 OK')
         self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
-        self.assertEqual(r.body, u'Static')
+        self.assertEqual(r.body, u'foo')
 
-        r = simulate_post(app, '/doc', {})
+        r = simulate_post(app, '/', {})
         self.assertEqual(r.status, u'405 Method Not Allowed')
-        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
-        self.assertEqual(dict(r.headers)[u'Allow'], u'GET')
-        self.assertEqual(r.body, u'405 Method Not Allowed')
 
-        r = simulate_get(app, '/doc')
-        self.assertEqual(r.status, u'200 OK')
-        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/html')
-        self.assertNotEqual(r.body.find(u'Display documentation about the API'), -1)
+        r = simulate_get(app, '/?a=1')
+        self.assertEqual(r.status, u'400 Bad Request')
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
+        self.assertEqual(r.body, u'Validation Error: This resource does not '
+                         'accept parameters')
 
 if __name__ == '__main__': main()
 # vim: set fileencoding=utf-8 :

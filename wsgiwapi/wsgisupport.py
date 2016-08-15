@@ -25,8 +25,8 @@ __docformat__ = "restructuredtext en"
 import cgi
 import re
 import StringIO
-import overlaydict
 import pathinfo
+import urllib
 
 import reason_phrases
 
@@ -66,31 +66,18 @@ class Request(object):
         # FIXME - set method
         self.method = environ['REQUEST_METHOD'].upper()
 
+        self.content_length = 0
+        self.input = None
+        if self.method in ('POST', 'PUT'):
+            # FIXME - probably need to do something with chunked encoding here
+            self.content_length = int(environ.get('CONTENT_LENGTH', 0))
+            if self.content_length > 0:
+                self.input = environ['wsgi.input']
+            self.content_type = environ.get('CONTENT_TYPE', '')
+
         self.GET = cgi.parse_qs(environ.get('QUERY_STRING', ''))
-        self.POST = {}
-
-        if self.method == 'POST':
-            try:
-                content_length = int(environ.get('CONTENT_LENGTH', 0))
-            except (ValueError, TypeError):
-                content_length = 0
-            if content_length > 0:
-                fd = environ['wsgi.input']
-                buf = StringIO.StringIO()
-                while content_length > 0:
-                    chunk = fd.read(min(content_length, 65536))
-                    if not chunk:
-                        break
-                    buf.write(chunk)
-                    content_length -= len(chunk)
-                self.raw_post_data = buf.getvalue()
-                buf.close()
-            else:
-                self.raw_post_data = ''
-            self.POST = cgi.parse_qs(self.raw_post_data)
-
-        self.params = overlaydict.OverlayDict(self.POST, self.GET)
-
+        self.params = self.GET
+        
     def _set_handler_props(self, handler_props):
         """Set the WSGIWAPI properties found on the handler.
 
@@ -128,11 +115,169 @@ class WSGIResponse(object):
 
     def __iter__(self):
         self.start_response(self.response.status,
-                            self.response.get_encoded_header_list())
+                            self.response.headers.items())
         yield self.response.body
 
     def __len__(self):
         return len(self.response.body)
+
+def _string_to_ascii(value, description):
+    """Convert a string to a byte string encoded in us-ascii.
+
+    If the input is a byte string, this simply checks that all characters in it
+    are us-ascii.
+
+     - `value` is the value to convert.
+     - `description` is a description of the string, used in error messages.
+
+    """
+    if isinstance(value, unicode):
+        try:
+            value = value.encode('us-ascii')
+        except UnicodeError, e:
+            e.reason += ", %s must be encodable as US-ASCII" % description
+            raise
+    else:
+        try:
+            value.decode('us-ascii')
+        except UnicodeError, e:
+            e.reason += ", %s must be encodable as US-ASCII" % description
+            raise
+    return value
+
+# tspecials are defined in RFC 2045 as any of: ()<>@,;:\"/[]?=
+_tspecials_pattern = re.compile(r'[\(\)<>@,;:\\"/\[\]\?=]')
+# tokens are composed of characters in usascii range 33-127 (inclusive).
+
+def _validate_token(token):
+    """Check that a token only contains characters which are in us-ascii range
+    33-127 inclusive, and are not in tspecials.
+
+    """
+    for char in token:
+        if ord(char) < 33 or ord(char) > 127:
+            return False
+        if _tspecials_pattern.match(char):
+            return False
+    return True
+
+def _encode_with_rfc2231(paramname, paramvalue):
+    # FIXME - allow the language to be set, somehow.
+
+    paramvalue = paramvalue.encode('utf-8')
+
+    # percent encode all parameter values other than
+    # ALPHA / DIGIT / "-" / "." / "_" / "~" / ":" / "!" / "$" / "&" / "+"
+    paramvalue = urllib.quote(paramvalue, safe='-._~:!$&+')
+
+    return paramname + "*", "utf-8''" + paramvalue
+
+class Headers(object):
+    def __init__(self):
+        self._headers = []
+
+    def set(self, header, value, params={}, **kwargs):
+        """Set the value of a header.
+
+        If any values for the header already exist in the list of headers, they
+        are first removed.  The comparison of header names is performed case
+        insensitively.
+
+        """
+        self.remove(header)
+        self.add(header, value, params, **kwargs)
+
+    def add(self, header, value, params={}, **kwargs):
+        """Add a header value.
+
+        FIXME - document
+
+        """
+        header = _string_to_ascii(header, "header name")
+        value = _string_to_ascii(value, "header value")
+
+        # Get parameter values, quote if possible, or encode using
+        formatted_params = []
+        def iteritems(a, b):
+            for k, v in a.iteritems():
+                yield k, v
+            for k, v in b.iteritems():
+                yield k, v
+        for paramname, paramvalue in iteritems(params, kwargs):
+            paramname = _string_to_ascii(paramname, "parameter name")
+            # Parameter names must only contain ascii characters which are
+            # not in tspecials, SPACE or CTLs.
+            if not _validate_token(paramname):
+                raise InvalidArgumentError("Parameter name contained "
+                                           "invalid characters")
+
+            # Parameter values should be unquoted if they don't contain any
+            # tspecials characters, quoted if they do, and encoded
+            # according to RFC2231 if they contain non-US-ASCII characters.
+            try:
+                paramvalue = _string_to_ascii(paramvalue, "parameter value")
+            except UnicodeError, e:
+                if not isinstance(paramvalue, unicode):
+                    raise
+                # Encode according to RFC2231, if it's unicode
+                # FIXME - implement
+                paramname, paramvalue = _encode_with_rfc2231(paramname, paramvalue)
+            else:
+                if not _validate_token(paramvalue):
+                    # Quote it
+                    paramvalue = '"' + paramvalue.replace('\\', '\\\\').\
+                                                  replace('"', '\\"') + '"'
+            formatted_params.append("%s=%s" % (paramname, paramvalue))
+        if len(formatted_params):
+            value = value + '; ' + '; '.join(formatted_params)
+        self._headers.append((header, value))
+
+    def get_first(self, header, default=None):
+        """Get the first value of a named header.
+
+        Returns `default` if no values of the named header exist.
+
+        """
+        header = _string_to_ascii(header, "header name").lower()
+        for key, value in self._headers:
+            if key.lower() == header:
+                return value
+        return default
+
+    def get_all(self, header):
+        """Get all values of a named header.
+
+        Returns the values in the order in which they were added.
+
+        Returns an empty list if no values of the named header are present.
+
+        """
+        header = _string_to_ascii(header, "header name").lower()
+        return [value for (key, value) in self._headers if key.lower() == header]
+
+    def remove(self, header):
+        """Remove any occurrences of the named header.
+
+        The comparison of header names is performed case insensitively.
+
+        """
+        self._headers = filter(lambda x: x[0].lower() != header.lower(), self._headers)
+
+    def items(self):
+        """Get the list of headers.
+
+        This returns a list of tuple pairs, ``(header, value)``, one for each
+        header, in the order added.  The strings in the tuples are byte
+        strings, encoded appropriately for HTTP transmission.
+
+        """
+        return self._headers
+
+    def __str__(self):
+        """Get a string representation of the headers.
+
+        """
+        return str(self.items())
 
 class Response(object):
     """Response object, used to return stuff via WSGI protocol.
@@ -162,27 +307,8 @@ class Response(object):
         """
         self.body = body
         self.status = status
-        self.headers = []
+        self.headers = Headers()
         self.set_content_type(content_type)
-
-    def get_encoded_header_list(self):
-        """Get the list of headers, encoded suitably for HTTP.
-
-        This converts the unicode headers to byte strings, suitable for passing
-        through HTTP.
-
-        """
-        result = []
-        for header, value in self.headers:
-            if not isinstance(header, str):
-                header = header.encode('iso-8859-1')
-            if not isinstance(value, str):
-                # FIXME - if the header value is not valid iso-8859-1, encode
-                # it according to rfc 2231.
-                # See: email.utils.encode_rfc2231
-                value = value.encode('iso-8859-1')
-            result.append((header, value))
-        return result
 
     VALID_STATUS_RE = re.compile(r'[12345][0-9][0-9]')
     def _set_status(self, status):
@@ -195,15 +321,7 @@ class Response(object):
                 if not Response.VALID_STATUS_RE.match(status[:3]):
                     raise ValueError(u"Supplied status (%r) is not valid" %
                                      status)
-                if isinstance(status, unicode):
-                    try:
-                        self._status = status.encode('us-ascii')
-                    except UnicodeError, e:
-                        e.reason += ", HTTP status line must be " \
-                                    "encodable as US-ASCII"
-                        raise
-                else:
-                    self._status = status
+                self._status = _string_to_ascii(status, 'HTTP status line')
                 return
 
         try:
@@ -230,7 +348,7 @@ class Response(object):
         This may be set to either a string or a number.  If a string, it may
         either contain only the status code, or may contain a reason phrase
         following the status code (separated by a space).
-        
+
         If there is no reason phrase, or the status code is a number, an
         appropriate reason phrase will be used, as long as the status code is
         one of the standard HTTP 1.1 codes.  For non-standard codes, the reason
@@ -242,22 +360,11 @@ class Response(object):
 
         """)
 
-    def set_unique_header(self, header, value):
-        """Set the value of a header which should only occur once.
-
-        If any values for the header already exist in the list of headers, they
-        are first removed.  The comparison of header names is performed case
-        insensitively.
-
-        """
-        self.headers = filter(lambda x: x[0].lower() != header.lower(), self.headers)
-        self.headers.append((header, value))
-
     def set_content_type(self, content_type):
         """Set the content type to return.
 
         """
-        self.set_unique_header(u'Content-Type', content_type)
+        self.headers.set(u'Content-Type', content_type)
 
     def __str__(self):
         return "Response(%s, %s, %s)" % (
@@ -292,7 +399,7 @@ class HTTPMethodNotAllowed(HTTPError):
             # Return the list of allowed methods in sorted order
             allow = list(allowed_methods)
             allow.sort()
-            self.set_unique_header(u'Allow', u', '.join(allow))
+            self.headers.set(u'Allow', u', '.join(allow))
         else:
             raise HTTPError(501, "Request method %s is not implemented" %
                             request_method)

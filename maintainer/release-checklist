@@ -15,3 +15,4 @@ Things to do when making a release:
    number.
  - run "./make_docs.sh" and "./setup.py sdist upload" in tagged copy.
  - upload the package to google code, too.
+ - upload updated documentation to pypi.

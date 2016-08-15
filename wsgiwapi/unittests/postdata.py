@@ -19,39 +19,58 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-r"""Test a simple API built with wsgiwapi.
+r"""Test postdata support.
 
 """
 __docformat__ = "restructuredtext en"
 
 from harness import *
-import apps
 import wsgiwapi
 
-class SimpleApiTest(TestCase):
-    """Test a simple API build with wsgiwapi.
+class PostdataTest(TestCase):
+    """Test validation support.
 
     """
-    def test_simple(self):
-        """Test basic use of the simple API.
+    def test_default(self):
+        """Test basic use of the default postdata handler.
 
         """
-        app = makeapp(apps.simple(), autodoc = 'doc')
-        r = simulate_get(app, '/')
+        def app_fn1(request):
+            return str(request.params.get('foo'))
+        
+        app = makeapp({'': app_fn1})
+        r = simulate_post(app, '/', {'foo': 'some data'})
         self.assertEqual(r.status, u'200 OK')
         self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
-        self.assertEqual(r.body, u'Static')
+        self.assertEqual(r.body, u"['some data']")
 
-        r = simulate_post(app, '/doc', {})
-        self.assertEqual(r.status, u'405 Method Not Allowed')
-        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
-        self.assertEqual(dict(r.headers)[u'Allow'], u'GET')
-        self.assertEqual(r.body, u'405 Method Not Allowed')
+    def test_json(self):
+        """Test use of the default postdata handler with JSON body.
 
-        r = simulate_get(app, '/doc')
+        """
+        def app_fn1(request):
+            return request.json[0] + request.json[1]
+
+        app = makeapp({'': app_fn1})
+        r = simulate_post(app, '/', ['cat', 'dog'], 'text/json')
         self.assertEqual(r.status, u'200 OK')
-        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/html')
-        self.assertNotEqual(r.body.find(u'Display documentation about the API'), -1)
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
+        self.assertEqual(r.body, u'catdog')
+
+    def test_stream(self):
+        """Test the rawinput decorator.
+
+        """
+        @wsgiwapi.rawinput
+        def app_fn1(request):
+            return request.input.read(request.content_length).upper()
+
+        app = makeapp({'': app_fn1})
+        data = 'and now for something completely different'
+        r = simulate_post(app, '/', data, 'text/plain')
+        self.assertEqual(r.status, u'200 OK')
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
+        self.assertEqual(r.body, data.upper())
 
 if __name__ == '__main__': main()
 # vim: set fileencoding=utf-8 :

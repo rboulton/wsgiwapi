@@ -112,11 +112,10 @@ def get_coverage():
         if len(stmtlines) == 0:
             continue
         filename = canonical_path(filename)
+        lines = open(filename).readlines()
+
         if filename.startswith(topdir):
             filename = filename[len(topdir) + 1:]
-
-        lines = open(filename).readlines()
-        linenum = len(lines)
 
         # Sort the lines (probably already in order, but let's double-check)
         stmtlines.sort()

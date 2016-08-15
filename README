@@ -14,8 +14,13 @@ All changes are logged in the ChangeLog.
 Prerequisites
 =============
 
-WSGIWAPI should work with python versions 2.5 and 2.6.  Support for
-python 3.0 is not yet implemented, but it is not expected to be difficult.
+WSGIWAPI should work with python versions 2.5 and 2.6.  Older versions (ie,
+2.4 or earlier) are not supported - the main obstacle is that the exception
+classes in WSGIWAPI are new-style classes, which are not allowed as
+exceptions in python 2.4.
 
-To use JSON support (eg, the "jsonreturning" decorator), you will need the
-"simplejson" module.
+Support for python 3.0 is not yet implemented, but it is not expected to be
+difficult.
+
+To use JSON support with python 2.5 (eg, the "jsonreturning" decorator),
+you will need the "json" or "simplejson" module.

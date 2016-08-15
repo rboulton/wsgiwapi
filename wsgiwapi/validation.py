@@ -24,18 +24,7 @@ __docformat__ = "restructuredtext en"
 
 import re
 from wsgisupport import HTTPNotFound
-
-class ValidationError(Exception):
-    """Exception used to indicate that parameters failed validation.
-
-    """
-    def __init__(self, message):
-        self.message = message
-
-    def __str__(self):
-        return "ValidationError(\"%s\")" % self.message.\
-            replace('\\', '\\\\').\
-            replace('"', '\"')
+from application import ValidationError
 
 def validate_param(key, vals, minreps, maxreps, pattern,
                    compiled_pattern, default, doc):
@@ -124,7 +113,7 @@ def validate_pathinfo_params(request, param_rules):
     for name, pattern, compiled_pattern, default, required in param_rules:
         if len(request.pathinfo.tail) <= index:
             if required:
-                raise HTTPNotFound(request.path)
+                raise ValidationError("Required pathinfo component missing")
             # Put default value into dictionary.
             request.pathinfo[name] = default
             index += 1
@@ -134,7 +123,8 @@ def validate_pathinfo_params(request, param_rules):
         # Validate the param, and put it into the dictionary.
         if compiled_pattern is not None:
             if not compiled_pattern.match(param):
-                raise HTTPNotFound(request.path)
+                raise ValidationError("Pathinfo component does not match "
+                                      "allowed pattern")
         request.pathinfo[name] = param
     request.pathinfo.tail = request.pathinfo.tail[index:]
 
@@ -144,7 +134,7 @@ def validate_pathinfo_tail(request, tail_rules):
     """
     if tail_rules is None:
         if len(request.pathinfo.tail) > 0:
-            raise HTTPNotFound(request.path)
+            raise ValidationError("Unexpected trailing pathinfo")
         else:
             return
     minreps, maxreps, pattern, compiled_pattern, default, doc = tail_rules
@@ -187,11 +177,12 @@ def parse_pathinfo_rules(pathinfo_items, tail_rules):
             if not previous_required:
                 raise TypeError("required parameter in pathinfo decorator"
                                 " following non-required parameter")
-            previous_required = True
+        else:
+            previous_required = False
         name, pattern, default = _pad_none(pathinfo_item, 3)
         compiled_pattern = None
         if pattern is not None:
-            compiled_pattern = re.compile(pattern)
+            compiled_pattern = re.compile(pattern, re.UNICODE)
         param_rules.append((name, pattern, compiled_pattern, default, required))
 
     # Check the "tail" keyword argument.
@@ -204,7 +195,7 @@ def parse_pathinfo_rules(pathinfo_items, tail_rules):
         pattern = tail_rules[2]
         compiled_pattern = None
         if pattern is not None:
-            compiled_pattern = re.compile(pattern)
+            compiled_pattern = re.compile(pattern, re.UNICODE)
         tail_rules = tail_rules[:2] + [compiled_pattern] + tail_rules[2:]
 
     return param_rules, tail_rules

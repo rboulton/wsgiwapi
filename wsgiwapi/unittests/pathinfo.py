@@ -48,7 +48,9 @@ class PathComponentTest(TestCase):
         self.assertEqual(r.status, u'404 Not Found')
 
         r = simulate_get(app, '/bar')
-        self.assertEqual(r.status, u'404 Not Found')
+        self.assertEqual(r.status, u'400 Bad Request')
+        self.assertEqual(r.body, u'Validation Error: '
+                         'Required pathinfo component missing')
         r = simulate_get(app, '/bar/')
         self.assertEqual(r.status, u'200 OK')
         r = simulate_get(app, '/bar/foo')
@@ -58,12 +60,18 @@ class PathComponentTest(TestCase):
         r = simulate_get(app, '/bar/foo/baz')
         self.assertEqual(r.status, u'200 OK')
         r = simulate_get(app, '/bar/foo/baz/')
-        self.assertEqual(r.status, u'404 Not Found')
+        self.assertEqual(r.status, u'400 Bad Request')
+        self.assertEqual(r.body, u'Validation Error: '
+                         'Unexpected trailing pathinfo')
         r = simulate_get(app, '/bar/foo/baz/oink')
-        self.assertEqual(r.status, u'404 Not Found')
+        self.assertEqual(r.status, u'400 Bad Request')
+        self.assertEqual(r.body, u'Validation Error: '
+                         'Unexpected trailing pathinfo')
 
         r = simulate_get(app, '/baz')
-        self.assertEqual(r.status, u'404 Not Found')
+        self.assertEqual(r.status, u'400 Bad Request')
+        self.assertEqual(r.body, u'Validation Error: '
+                         'Required pathinfo component missing')
         r = simulate_get(app, '/baz/')
         self.assertEqual(r.status, u'200 OK')
         r = simulate_get(app, '/baz/foo')
@@ -157,7 +165,7 @@ class PathComponentTest(TestCase):
         """Test extra path components with members of an old-style class.
 
         """
-        class zab():
+        class zab:
             def foo(self, request):
                 return "foo"
 
@@ -258,6 +266,54 @@ class PathComponentTest(TestCase):
                          'Handler properties do not match decorated '
                          'properties.  Probably missing call to '
                          'wsgiwapi.copyprops.')
+
+    def test_root_pathinfo(self):
+        """Test that we can access pathinfo for a handler mounted on the root path.
+        
+        """
+        @wsgiwapi.pathinfo(('foo', '^\w+$', 'default'),)
+        def fn1(request):
+            return request.pathinfo['foo']
+        
+        app = wsgiwapi.make_application({'': fn1}, logger=wsgiwapi.SilentLogger)
+        r = simulate_get(app, '/bar')
+        self.assertEqual(r.status, u'200 OK')
+        self.assertEqual(r.body, u'bar')
+
+    def test_required_pathinfo(self):
+        """Test that required pathinfo things can't come after optional ones.
+        
+        """
+        def make_broken_handler():
+            @wsgiwapi.pathinfo(
+                ('foo', '^\w+$', 'foodefault'),
+                ('bar', '^\w+$'), # Required parameter
+            )
+            def fn1(request):
+                return "%s:%s" % (request.pathinfo['foo'],
+                                  request.pathinfo['bar'])
+
+        self.assertRaisesMessage(TypeError, "required parameter in pathinfo "
+                                 "decorator following non-required parameter",
+                                 make_broken_handler)
+
+    def test_wildcard_pathinfo(self):
+        """Test that we can access pathinfo for a wildcard in the path.
+        
+        """
+        @wsgiwapi.pathinfo(
+            ('foo', '^\w+$', 'foodefault'),
+            ('bar', '^\w+$', 'bardefault'),
+        )
+        def fn1(request):
+            return "%s:%s" % (request.pathinfo['foo'],
+                              request.pathinfo['bar'])
+        
+        app = wsgiwapi.make_application({'*': {'': fn1}}, logger=wsgiwapi.SilentLogger)
+        r = simulate_get(app, '/foz/baz')
+        self.assertEqual(r.status, u'200 OK')
+        self.assertEqual(r.body, u'foz:baz')
+
 
 if __name__ == '__main__': main()
 # vim: set fileencoding=utf-8 :

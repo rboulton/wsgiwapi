@@ -29,7 +29,7 @@ import os
 import re
 import StringIO
 import sys
-import unittest 
+import unittest
 from unittest import main
 import urllib
 import wsgiref.util
@@ -54,6 +54,14 @@ class SimulationResult(object):
 
     def __str__(self):
         return '<SimulationResult(status=%r, headers=%r, body=%r)>' % (self.status, self.headers, self.body)
+
+def makeapp(*args, **kwargs):
+    """Make an application for testing.
+
+    """
+    if 'logger' not in kwargs:
+        kwargs['logger'] = wsgiwapi.SilentLogger
+    return wsgiwapi.make_application(*args, **kwargs)
 
 def perform_simulation(environ, app):
     """Perform a simulation, given a WSGI environment and application.
@@ -88,18 +96,23 @@ def simulate_get(app, urlpath):
         'QUERY_STRING': queryargs,
     }
     wsgiref.util.setup_testing_defaults(environ)
-    return perform_simulation(environ, app())
+    return perform_simulation(environ, app)
 
-def simulate_post(app, url, data, encoding='url'):
-    """Simulate a GET request.
+def simulate_post(app, url, data, encoding='application/x-www-form-urlencoded'):
+    """Simulate a POST request.
 
      - `url` is the URL path.
      - `data` is the post data.
      - `encoding` is the encoding to use for the post data.
 
     """
-    if encoding == 'url':
+    if encoding == 'application/x-www-form-urlencoded':
         data = urllib.urlencode(data)
+    elif encoding == 'text/json':
+        import wsgiwapi.jsonsupport
+        data = wsgiwapi.jsonsupport.json.dumps(data)
+    elif encoding == 'text/plain':
+        pass
     else:
         raise ValueError("Unknown value %r for encoding" % encoding)
 
@@ -110,10 +123,11 @@ def simulate_post(app, url, data, encoding='url'):
         'QUERY_STRING': '',
         'wsgi.input': StringIO.StringIO(data),
         'CONTENT_LENGTH': str(len(data)),
+        'CONTENT_TYPE': encoding,
     }
     wsgiref.util.setup_testing_defaults(environ)
 
-    return perform_simulation(environ, app())
+    return perform_simulation(environ, app)
 
 class TestCase(unittest.TestCase):
     def assertRaisesMessage(self, excClass, excMessageRe, callableObj,

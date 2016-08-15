@@ -1,0 +1,24 @@
+Documentation
+=============
+
+The reference manual needs completion.  In particular, there is a list of items
+which need documentation at the end of reference.rst
+
+Add documentation for request object, including POST handling and decorators.
+
+Tests
+=====
+
+MethodSwitch.  Particularly in the presence of decorators on the switched
+methods.
+
+
+If there is a handler for post data, does Request.params get set?  It should be
+set to containg the query string parameters, I think.  Perhaps.
+
+Don't include simplejson by default in postdata.py
+
+Fixes
+=====
+
+Set jsonreturning and jsonpreturning mime-types appropriately.

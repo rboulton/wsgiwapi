@@ -25,6 +25,8 @@ __docformat__ = "restructuredtext en"
 from application import (
                          make_application,
                          make_server,
+                         MethodSwitch,
+                         ValidationError,
                         )
 from decorators import (
                         jsonreturning,
@@ -34,11 +36,14 @@ from decorators import (
                         allow_HEAD,
                         allow_GETHEAD,
                         allow_POST,
+                        allow_PUT,
+                        allow_DELETE,
                         param,
                         noparams,
                         pathinfo,
                         copyprops,
                         decorate,
+                        rawinput,
                        )
 from wsgisupport import (
                          Response,

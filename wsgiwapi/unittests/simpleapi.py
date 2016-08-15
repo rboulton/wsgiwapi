@@ -36,8 +36,7 @@ class SimpleApiTest(TestCase):
         """Test basic use of the simple API.
 
         """
-        app = wsgiwapi.make_application(apps.simple(),
-                                        logger = wsgiwapi.SilentLogger)
+        app = makeapp(apps.simple())
         r = simulate_get(app, '/')
         self.assertEqual(r.status, u'200 OK')
         self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')

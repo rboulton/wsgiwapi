@@ -1,3 +1,297 @@
+Sat Mar 28 19:44:27 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/index.html,setup.py: Update version number for 0.3 release.
+
+Sat Mar 28 01:06:45 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/autodoc.py: Fix autodoc description of validated
+	  parameters.
+
+Fri Mar 27 19:06:38 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py: Avoid deprecation warning in 2.6
+
+Fri Mar 20 09:44:32 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/unittests/pathinfo.py,wsgiwapi/validation.py:
+	  Return ValidationError for pathinfo not being valid, rather than
+	  HTTPNotFound (which can be rather confusing when debugging).
+
+Tue Mar 17 18:00:06 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/__init__.py: Expose ValidationError.
+
+Tue Mar 17 17:59:24 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py,wsgiwapi/validation.py: Remove some
+	  debugging, and move ValidationError to application.py
+
+Tue Mar 17 16:49:22 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/validation.py: Some more re.UNICODE options.
+
+Tue Mar 17 16:48:05 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py: Compare to None, rather than generic
+	  truth test.
+
+Tue Mar 17 16:47:32 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/decorators.py: Use UNICODE for patterns, to allow
+	  unicode characters in \w.
+
+Tue Mar 17 15:15:28 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/testsupport/makesuite.py: Fix coverage output when not
+	  run from top dir.
+
+Tue Mar 17 14:54:02 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/__init__.py,wsgiwapi/decorators.py: Add allow_PUT and
+	  allow_DELETE decorators.
+
+Tue Mar 17 08:41:22 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py,wsgiwapi/unittests/flaturls.py: Allow
+	  None to be used as a key in the dict to match the current path
+	  without a trailing '/'.  Support this in the url unflattening
+	  code, so that an application can support, say, both 'foo' and
+	  'foo/'.  Not sure if this is really the right approach yet (it's
+	  more code than I'd like, mainly), so not planning to document it
+	  yet.
+
+Mon Mar 16 12:50:52 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/decorators.py,wsgiwapi/html_entity_names.py: Warn if
+	  HTML entity names are used as parameter names: doing so is
+	  technically valid, but it means that users who cut and paste urls
+	  without properly escaping them are likely to end up with invalid
+	  urls in their pages.  Better to avoid using the troublesome names
+	  at all.
+
+Sun Mar 15 23:22:05 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/examples/,docs/introduction.rst,wsgiwapi/application.py,
+	  wsgiwapi/unittests/harness.py: Change make_application() to
+	  return an instance of the application class, rather than the
+	  class; there's really no use that I can see for the class, other
+	  than to instantiate it once, so it's better to just return an
+	  instantiated object.
+
+Tue Mar 10 07:18:21 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* README: Update about python2.4 (non-supported).
+
+Tue Mar 10 07:10:13 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/jsonsupport.py,wsgiwapi/postdata.py,wsgiwapi/unittests/:
+	  Update some comments, and some code tidying.  Use makeapp in more
+	  of the unittests (allows easier control of the logger, and will
+	  allow me to improve test error reporting in future by using a
+	  custom logger).  Don't require simplejson in testsuite.
+
+Tue Mar 10 07:01:05 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/jsonsupport.py: Check that the "json" module has the
+	  "dumps" function - a third-party json module for python2.5
+	  doesn't have it, so we need to fall back to simplejson if we end
+	  up with that.
+
+Sun Mar 08 09:15:20 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/reference.rst: Updates.
+	* wsgiwapi/__init__.py,wsgiwapi/decorators.py,
+	  wsgiwapi/unittests/postdata.py: Rename post_stream decorator to
+	  rawinput.
+
+Sun Mar 08 09:14:40 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/postdata.py: Use jsonsupport, lazily imported, instead
+	  of simplejson always imported.
+
+Sun Mar 08 09:13:02 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/wsgisupport.py: Remove unneccessary import.
+
+Sun Mar 08 09:11:34 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* README: mention that the json module can be used instead of
+	  simplejson.
+
+Sun Mar 08 00:25:10 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py: Reformat for readability.
+
+Sat Mar 07 17:14:34 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* TODO: Add note about mime-types of json returning decorators.
+
+Sat Mar 07 17:12:09 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/jsonsupport.py: Use json instead of simplejson if it's
+	  available.  Add method to parse a json post body.
+
+Sat Mar 07 00:42:07 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/unittests/flaturls.py: Add test of supplying flat urls
+	  to the urls.
+
+Fri Mar 06 22:41:07 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/unittests/harness.py: Add utility function "makeapp()"
+	  to make applications for testing.
+
+Fri Mar 06 21:13:08 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py: Allow multiple url pieces to be
+	  specified together.
+
+Fri Mar 06 15:14:15 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py,wsgiwapi/unittests/pathinfo.py: Add
+	  support for '*' as a wildcard for a path component.
+
+Fri Mar 06 15:02:01 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/validation.py: Fix bug in checking for optional
+	  parameters preceding required ones.
+
+Fri Mar 06 11:49:53 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py: If a '' handler is specified as well as
+	  a 'foo' handler - 'foo' wins, but '' is used for fallback.  If
+	  the 'foo' handler is a subtree, the '' handler is also used if
+	  that subtree fails to match.
+
+Fri Mar 06 11:47:46 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/unittests/pathinfo.py: Turn off VerboseLogger.
+
+Thu Mar 05 12:34:50 GMT 2009  Tom Mortimer <tom@lemurconsulting.com>
+
+	* wsgiwapi/__init__.py: Exposed new post_stream decorator.
+	* wsgiwapi/decorators.py: Added post_stream decorator, which
+	  prevents default POST data processing.
+	* wsgiwapi/unittests/postdata.py: Added test for post_stream
+	  decorator.
+	* wsgiwapi/unittests/harness.py: Added text/plain type to
+	  simulate_post.
+
+Thu Mar 05 11:53:33 GMT 2009  Tom Mortimer <tom@lemurconsulting.com>
+
+	* wsgiwapi/application.py: Changed postdata default function name.
+	* wsgiwapi/wsgisupport.py: Added content_type attribute. Plus a
+	  FIXME reminder for chunked encoding.
+	* wsgiwapi/postdata.py: Split out _read_raw_post_data. Added JSON
+	  handling.
+	* wsgiwapi/unittests/postdata.py: Added JSON test.
+	* wsgiwapi/unittests/harness.py: Added JSON encoding to
+	  simulate_post.
+	* wsgiwapi/unittests/methodswitch.py: Removed VerboseLogger.
+
+Thu Mar 05 10:58:55 GMT 2009  Tom Mortimer <tom@lemurconsulting.com>
+
+	* wsgiwapi/application.py: Added code to do default postdata handling.
+	* wsgiwapi/wsgisupport.py: Removed postdata handling from here.
+	* wsgiwapi/postdata.py: Moved default postdata code to new module.
+	* wsgiwapi/unittests/postdata.py: Added simple postdata test.
+
+Wed Mar 04 18:06:37 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py: Remove traceback printing debugging
+	  code, add a FIXME about something I'd previously overlooked, and
+	  add a documentation comment.
+
+Wed Mar 04 17:39:37 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* ChangeLog,wsgiwapi/application.py,wsgiwapi/decorators.py,
+	  wsgiwapi/unittests/harness.py,wsgiwapi/unittests/methodswitch.py,
+	  wsgiwapi/wsgisupport.py: Tidy up whitespace in various places,
+	  and fix a couple of comments.
+
+Wed Mar 04 17:17:26 GMT 2009  Tom Mortimer <tom@lemurconsulting.com>
+
+	* wsgiwapi/unittests/methodswitch.py: tests for MethodSwitch.
+	* wsgiwapi/__init__.py: exposed MethodSwitch from application.py.
+	* wsgiwapi/application.py: moved MethodSwitch here, changed
+	  _do_call to ensure that MethodSwitch handlers are handled the
+	  same way as standard handlers.
+	* wsgiwapi/wsgisupport.py: removed MethodSwitch.
+
+Wed Mar 04 13:55:44 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/unittests/decorators.py: Add basic test of the
+	  "decorate" decorator.
+
+Wed Mar 04 13:11:19 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* TODO: Start todo list for documentation and tests.
+
+Wed Mar 04 12:22:10 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/reference.rst: Start a list of specific things which need
+	  more documentation.
+
+Wed Mar 04 08:21:24 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/wsgisupport.py: Make MethodSwitch into a new-style
+	  class.
+
+Tue Mar 03 10:49:53 GMT 2009  Tom Mortimer <tom@lemurconsulting.com>
+
+	* wsgiwapi/wsgisupport.py: added class MethodSwitch to allow
+	  different callables to be selected for a particular resource
+	  based on request method.
+	* wsgiwapi/__init__.py: exposed MethodSwitch in API.
+
+Tue Feb 10 00:32:19 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/application.py,wsgiwapi/decorators.py: Rework the
+	  decorators - the pre and post checks are now called by the
+	  calling code in application.py, rather than in the decorator's
+	  wrapper function.  The wrapper function could possibly be removed
+	  now, but I need to ensure that this couldn't lead to security
+	  issues first (as described in a code comment).
+
+Tue Feb 10 00:20:50 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/wsgisupport.py: Add encoding with rfc2231 for parameter
+	  values if they contain non US-ASCII characters.
+
+Mon Feb 09 14:18:38 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* maintainer/TODO: Add a note about making the decorators better.
+
+Sun Feb 08 23:56:44 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* maintainer/TODO,maintainer/release-checklist: Updates with latest
+	  work.
+
+Sun Feb 08 23:55:33 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/reference.rst: Updates to the "philosophy" section, and some
+	  tweaks elsewhere.
+
+Sun Feb 08 23:54:54 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/wsgisupport.py: Much improved handling of response
+	  headers.
+
+Sun Feb 08 00:01:08 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/wsgisupport.py: Raise an error if the status line is set
+	  to a bytes string which is not a valid us-ascii value.
+
+Sun Feb 08 00:00:22 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/introduction.rst,docs/reference.rst: Updates, mainly about
+	  unicode issues.
+
+Sat Feb 07 22:59:42 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/media/base.css,docs/media/rst.css: Remove centered text,
+	  don't really want this anywhere.
+
 Sat Feb 07 13:07:40 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
 
 	* docs/index.html: Update version number.

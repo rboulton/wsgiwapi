@@ -1,13 +1,19 @@
 Known problems:
 
- - Reference manual isn't written.
+ - decorators change argument signature of functions
+   (look at using decorator module (from pypy) to fix)
+ - Reference manual is largely not written.
+ - non ascii header parameter values not supported.
+ - setting the charset on the content-type for text/* content types doesn't
+   happen automatically.
 
 Tests to write:
 
 (Incomplete list of untested functionality)
 
  - test that supplying non US-ASCII unicode data as header keys or values
-   raises exceptions at the time the header is set.
+   raises exceptions at the time the header is set.  Test parameter quoting,
+   and unicode handling in header value parameters.
  - test parameter validation for jsonreturning and jsonpreturning decorators.
  - get coverage report for runtests up to 100% for all modules.
  - parameter display in autodoc documentation pages.
@@ -19,8 +25,6 @@ Tests to write:
 
 Investigate:
 
- - Use wsgiref.headers.Headers instead of our own implementation (but possibly
-   decorate it with some nicer accessors, too).
  - Possible bug in cherrypy: in cpwsgiserver: WSGIPathInfoDispatcher, it says:
    "Sort the apps by len(path), descending" but then sorts into lexicographic
    order.

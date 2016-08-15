@@ -55,7 +55,7 @@ app = wsgiwapi.make_application({
 }, autodoc='doc')
 
 # Use the built-in cherrypy WSGI server to run the application.
-server = wsgiwapi.make_server(app(), ('0.0.0.0', 8080))
+server = wsgiwapi.make_server(app, ('0.0.0.0', 8080))
 
 # Start the server.
 if __name__ == '__main__':

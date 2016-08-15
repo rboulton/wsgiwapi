@@ -22,26 +22,44 @@ r"""Support for converting responses to JSON formats.
 """
 __docformat__ = "restructuredtext en"
 
-import simplejson
+have_json = False
+try:
+    # json is a built-in module from python 2.6 onwards
+    import json
+    if hasattr(json, 'dumps'):
+        have_json = True
+    else:
+        del json
+except ImportError:
+    pass
+if not have_json:
+    import simplejson as json
+
 from wsgisupport import Response
 
 def convert_to_json(request, response, props):
     """Convert a response to JSON.
 
     """
-    return Response(simplejson.dumps(response),
+    return Response(json.dumps(response),
                     content_type="text/javascript")
 
 def convert_to_jsonp(request, response, props):
     """Convert a response to JSONP, according to the props.
 
     """
-    response = Response(simplejson.dumps(response),
+    response = Response(json.dumps(response),
                         content_type="text/javascript")
     paramname = props['return_JSONP_paramname']
     jsonp = request.validated.get(paramname)
     if jsonp != '':
         response.body = jsonp + '(' + response.body + ')'
     return response
+
+def parse_json_body(request):
+    """Parse json in a request body.
+
+    """
+    request.json = json.loads(request.raw_post_data)
 
 # vim: set fileencoding=utf-8 :

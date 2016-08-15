@@ -83,7 +83,7 @@ def make_doc(appurls, base_doc_url):
             return "No parameters allowed"
         result = []
         for name, values in constraints.iteritems():
-            min, max, pattern, default, doc = values
+            min, max, pattern, compiled_pattern, default, doc = values
             required = (default is None and min > 0)
             desc = []
             desc += name

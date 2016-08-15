@@ -22,35 +22,17 @@ r"""Decorators of WSGIWAPI callables.
 """
 __docformat__ = "restructuredtext en"
 
-from wsgisupport import Request, Response, HTTPMethodNotAllowed, HTTPError
+from html_entity_names import entities
 import re
-
-def _apply_request_checks_and_transforms(request, props):
-    """Apply all the checks and transforms listed in props to a request.
-
-    This is typically called from a decorator, and the props are read from the
-    decorated function.
-
-    """
-    request_filters = props.get('request_filters', [])
-    for request_filter in request_filters:
-        request = request_filter(request, props)
-    return request
-
-def _apply_response_checks_and_transforms(request, response, props):
-    """Apply all the checks and transforms listed in props to a response.
-
-    This is typically called from a decorator, and the props are read from the
-    decorated function.
-
-    """
-    response_filters = props.get('response_filters', [])
-    for response_filter in response_filters:
-        response = response_filter(request, response, props)
-    return response
+import warnings
+from wsgisupport import Request, Response, HTTPMethodNotAllowed, HTTPError
 
 def _decorate_once(fn):
-    """Decorate a function with the standard decorator pair, if not already decorated.
+    """Ensure that a function is decorated with the standard decorator.
+
+    Returns a tuple (decorated_function, properties), where decorated_function
+    is the function with the decorator applied, and properties is the WSGIWAPI
+    properties stored on the function.
 
     """
     if hasattr(fn, '_wsgiwapi_props'):
@@ -58,29 +40,34 @@ def _decorate_once(fn):
         if props.get('decorated', False) == True:
             return fn, props
     props = {'decorated': True}
+
+    # Note: the following wrapper function just checks that the properties on
+    # the callable passed to application match those set here.  I think this
+    # will always be true unless a later applied decorator has failed to copy
+    # the properties.
+
+    # It is tempting to remove this check, and just set the properties on the
+    # original callable object, but there is a potential security issue in
+    # doing so: if a later applied decorator _has_ failed to copy the
+    # properties, this would lead to decorators getting lost, which could mean
+    # that code which looks like it is validating parameters is actually
+    # failing to do the validation.
+
+    # Perhaps the best fix would be to make parameters unavailable unless
+    # they've been validated.
+
+    # FIXME - review this.
     def res(*args, **kwargs):
+        # Check that the decorator has not been applied and then the properties
+        # have been lost (probably by a second decorator which doesn't copy the
+        # properties being applied).
         if isinstance(args[0], Request):
             request = args[0]
-            have_self = False
         else:
-            assert isinstance(args[1], Request)
             request = args[1]
-            have_self = True
-
         if request._handler_props is not props:
             raise RuntimeError("Handler properties do not match decorated properties.  Probably missing call to wsgiwapi.copyprops.")
-
-        request = _apply_request_checks_and_transforms(request, props)
-
-        if not have_self:
-            args = [request]
-            args.extend(args[1:])
-        else:
-            args = [args[0], request]
-            args.extend(args[2:])
-
-        response = fn(*args, **kwargs)
-        return _apply_response_checks_and_transforms(request, response, props)
+        return fn(*args, **kwargs)
     res.__doc__ = fn.__doc__
     res.__name__ = fn.__name__
     res.__dict__.update(fn.__dict__)
@@ -126,7 +113,7 @@ def jsonpreturning(paramname='jsonp', valid=r'^[a-zA-Z._\[\]]*$'):
     the `valid` parameter to a string containing a regular expression matching
     the valid parameter values.  To avoid performing any validation of the
     value of the ``jsonp`` parameter, set the `valid` parameter to None.
-    
+
     See http://bob.pythonmac.org/archives/2005/12/05/remote-json-jsonp/ for
     some of the rationale behind JSONP support.
 
@@ -161,7 +148,8 @@ def allow_method(method_type, *other_methods):
     known methods).
 
     (This stores the allowed methods in an attribute of the decorated function,
-    so tht repeated application can allow 
+    so that repeated application of the decorator can add to the allowed
+    methods.)
 
     """
 
@@ -185,10 +173,14 @@ allow_GETHEAD = allow_method('GET', 'HEAD')
 allow_GETHEAD.__doc__ = "Directly equivalent to allow_method('GET', 'HEAD')."
 allow_POST = allow_method('POST')
 allow_POST.__doc__ = """Directly equivalent to allow_method('POST')."""
+allow_PUT = allow_method('PUT')
+allow_PUT.__doc__ = """Directly equivalent to allow_method('PUT')."""
+allow_DELETE = allow_method('DELETE')
+allow_DELETE.__doc__ = """Directly equivalent to allow_method('DELETE')."""
 
 def param(paramname, minreps=None, maxreps=None, pattern=None, default=None, doc=None):
     """Decorator to add parameter validation.
-    
+
     If this is used at all, the ``noparams`` decorator may not also be used.
 
     This decorator may only be used once for each parameter name.
@@ -220,12 +212,18 @@ def param(paramname, minreps=None, maxreps=None, pattern=None, default=None, doc
         if validation.check_valid_params not in request_filters:
             request_filters.append(validation.check_valid_params)
         constraints = props.setdefault('valid_params', {})
+        if paramname in entities:
+            warnings.warn('Parameter name %s is also an HTML entity name.  '
+                          'This may lead to problems if resulting URLs are '
+                          'not correctly escaped when copied into HTML.  It '
+                          'may be better to use a different parameter name.'
+                          % paramname, UserWarning)
         if paramname in constraints:
             raise RuntimeError("Already set validation constraints for "
                                "parameter '%s'" % paramname)
         compiled_pattern = None
         if pattern is not None:
-            compiled_pattern = re.compile(pattern)
+            compiled_pattern = re.compile(pattern, re.UNICODE)
         constraints[paramname] = (minreps, maxreps, pattern,
                                   compiled_pattern, default, doc)
         return fn
@@ -288,6 +286,18 @@ def pathinfo(*args, **kwargs):
 
         return fn
     return deco
+
+def rawinput(fn):
+    """Decorator to prevent POST/PUT data being read and parsed.
+    
+    If this is used, the request body will not be read by WSGIWAPI.  The
+    application code can read it from the `request.input` attribute.  This is
+    useful for handling large files.
+    
+    """
+    fn, props = _decorate_once(fn)
+    props['postdata_is_processed'] = True
+    return fn
 
 def copyprops(original_fn, decorated_fn):
     """Copy the WSGIWAPI properties from a function to a decorated function.
