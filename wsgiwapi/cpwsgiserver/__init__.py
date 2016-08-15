@@ -364,8 +364,11 @@ class HTTPRequest(object):
         # But note that "...a URI must be separated into its components
         # before the escaped characters within those components can be
         # safely decoded." http://www.ietf.org/rfc/rfc2396.txt, sec 2.4.2
-        atoms = [unquote(x) for x in quoted_slash.split(path)]
-        path = "%2F".join(atoms)
+
+        # Lemur: experimental hack: leave path in raw form to be processed
+        # by WSGIWAPI
+#        atoms = [unquote(x) for x in quoted_slash.split(path)]
+#        path = "%2F".join(atoms)        
         environ["PATH_INFO"] = path
         
         # Note that, like wsgiref and most other WSGI servers,

@@ -76,7 +76,7 @@ class SimpleApiTest(TestCase):
 
         r = simulate_get(app, '/5')
         self.assertEqual(r.status, u'200 OK')
-        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/javascript')
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'application/json')
         self.assertEqual(r.body, u'"Static5"')
 
         r = simulate_get(app, '/5/')

@@ -53,7 +53,8 @@ def process_default(request):
     if request.content_type == 'application/x-www-form-urlencoded':
         request.POST = cgi.parse_qs(request.raw_post_data)
         request.params = overlaydict.OverlayDict(request.POST, request.GET)
-    elif request.content_type == 'text/json':
+    elif (request.content_type == 'text/json' or
+          request.content_type == 'application/json'):
         import jsonsupport
         jsonsupport.parse_json_body(request)
 

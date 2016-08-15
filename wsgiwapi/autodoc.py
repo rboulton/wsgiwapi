@@ -25,7 +25,7 @@ __docformat__ = "restructuredtext en"
 import inspect
 from decorators import allow_GET, pathinfo
 from wsgisupport import Response, HTTPNotFound
-from application import MethodSwitch
+from application import Resource
 
 def get_properties(obj):
     if not hasattr(obj, '_wsgiwapi_props'):
@@ -52,7 +52,7 @@ def make_doc(appurls, base_doc_url):
                 if doc is None:
                     doc = ''
                 else:
-                    doc = doc.partition('\n')[0]
+                    doc = doc.split('\n', 1)[0]
                 result.append(' ')
                 props = get_properties(value)
                 rettype = props.get('return_type', '')
@@ -69,7 +69,7 @@ def make_doc(appurls, base_doc_url):
         """Generate a description of the subsequent path items.
 
         """
-        if isinstance(callable, MethodSwitch):
+        if isinstance(callable, Resource):
             # Hack - this just returns the path description for the GET method.
             args, varargs, varkw, defaults = inspect.getargspec(callable.methods['GET'])
         else:

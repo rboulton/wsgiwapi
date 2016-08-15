@@ -79,8 +79,9 @@ Found" error status; any path not listed in the dictionary passed to
 `<http://127.0.0.1:8080/sum?num=2&num=3>`_ returns 5, as expected.
 
 The other new feature introduced in this example is the `autodoc` parameter
-supplied to the `make_application()` call.  This specifies a path at which
-documentation of the API will be made available.  If you look at
+supplied to the `make_application()` call.  This specifies a base URL (relative
+to the server's roo) at which documentation of the API will be made available;
+so, with this set to a value of 'doc', if you look at
 `<http://127.0.0.1:8080/doc>`_, you will be able to browse documentation of the
 API.  The description of the API methods is taken from the doccomments of the
 corresponding callables, which should make it easy to keep the documentation

@@ -34,7 +34,8 @@ from wsgisupport import Request, \
          HTTPServerError, \
          HTTPMethodNotAllowed, \
          WSGIResponse, \
-         Response
+         Response, \
+         method_known
 
 class JsonResponse(object):
     """A class used to return a JSON response with a specific status code.
@@ -227,7 +228,7 @@ def make_application(urls,
                     raise HTTPNotFound(request.path)
 
                 pathinfo.extend(request.path_components[i + 1:])
-                if isinstance(handler, MethodSwitch):
+                if isinstance(handler, Resource):
                     response = handler(request, pathinfo)
                 elif hasattr(handler, '__call__'):
                     response = _process_request(handler, request, pathinfo)
@@ -327,35 +328,47 @@ def _process_request(handler, request, pathinfo):
 
     return response
 
-class MethodSwitch(object):
-    """Class for switching callables by request method.
+class Resource(object):
+    """A resource, used to support a set of different methods at a given URI.
 
-    In wsgiwapi.make_application, instances of this class can be substituted for
+    In wsgiwapi.make_application, instances of this class can be used as
     callables, e.g.:
 
-        make_application({'foo': MethodSwitch(foo_get, foo_post, default=foo_other)})
+        make_application({'foo': Resource(foo_get, foo_post)})
 
-    If the default handler is supplied, it will be called for any request method not
-    explicitly specified.
+    You can also make subclasses, and implement the desired methods in the
+    subclasses.
 
     """
-    def __init__(self, get=None, post=None, put=None, delete=None,
-                 head=None, options=None, trace=None, connect=None,
-                 default=None):
-        self.methods = {
-            'GET': get, 'POST': post, 'PUT': put, 'DELETE': delete,
-            'HEAD': head, 'OPTIONS': options, 'TRACE': trace, 'CONNECT': connect
-            }
-        self.default = default
+    get = None
+    post = None
+    put = None
+    delete = None
+    head = None
+
+    # All the possibly valid methods.
+    # To support more methods in a subclass, add to this set in your subclass.
+    valid_methods = set(('get', 'post', 'put', 'delete', 'head',))
+
+    def __init__(self, get=None, post=None, put=None, delete=None, head=None):
+
+        # Override methods with callables supplied to constructor.
+        if get is not None: self.get = get
+        if post is not None: self.post = post
+        if put is not None: self.put = put
+        if delete is not None: self.delete = delete
+        if head is not None: self.head = head
+
+        self.allowed_methods = set([method for method in self.valid_methods
+                                   if getattr(self, method, None) is not None])
 
     def __call__(self, request, pathinfo):
-        handler = self.methods.get(request.method)
-        if handler is not None:
-            return _process_request(handler, request, pathinfo)
-        elif self.default is not None:
-            return _process_request(self.default, request, pathinfo)
-        else:
-            allowed_methods = [x[0] for x in self.methods.iteritems() if x[1]]
-            raise HTTPMethodNotAllowed(request.method, allowed_methods)
+        methodname = request.method.lower()
+        if methodname not in self.allowed_methods:
+            raise HTTPMethodNotAllowed(request.method, self.allowed_methods)
+        m = getattr(self, methodname, None)
+        return _process_request(m, request, pathinfo)
+
+MethodSwitch = Resource
 
 # vim: set fileencoding=utf-8 :

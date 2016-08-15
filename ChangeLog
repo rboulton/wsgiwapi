@@ -1,3 +1,56 @@
+Thu Jun 11 12:41:18 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/__init__.py,wsgiwapi/application.py,wsgiwapi/autodoc.py,
+	  wsgiwapi/unittests/methodswitch.py: Rename MethodSwitch to
+	  Resource (keeping old name for backward compat, for now).  Remove
+	  pointless support for "options", "trace", and "connect" methods.
+	  Remove default handler (you really shouldn't be making default
+	  method handlers, anyway!).  Allow definition of Resource
+	  subclasses, with get(), post(), etc, methods, instead of just
+	  passing stuff to the constructor.
+
+Thu Jun 11 12:33:08 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/autodoc.py: work with python2.4 - use split instead of
+	  partition.
+
+Fri May 22 13:42:20 BST 2009  Tom Mortimer <tom@lemurconsulting.com>
+
+	* wsgiwapi/cpwsgiserver/__init__.py: Rather than decoding path info,
+	  pass the raw string to WSGIWAPI. This allows arbitrary characters
+	  in path components, but avoids confusion re "/" vs "%2f".
+
+Thu May 21 11:04:52 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* docs/introduction.rst: Hopefully make the documentation of
+	  autodoc clearer.
+
+Thu May 21 10:54:20 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/jsonsupport.py,wsgiwapi/unittests/simpleapi.py: Default
+	  content type for json responses should be application/json.  This
+	  carries an implied "utf8" character encoding with it, and is
+	  generally good for the soul.  The default type for jsonp remains
+	  text/javascript, since that's what's needed for a script tag.  We
+	  need to do something about character encoding there (at least, we
+	  need to declare it, but I believe we probably need to encode as
+	  ascii with escapes).
+
+Mon May 18 15:41:09 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/wsgisupport.py: Add unicode conversion for HTTPErrors.
+
+Thu May 14 21:34:17 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/wsgisupport.py: Backwards compatibility for 2.4 - don't
+	  try and do multiple inheritance for HTTPError from Exception and
+	  Response - Exception is an old-style class in 2.4, so this fails
+	  to work.
+
+Thu May 14 15:13:26 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
+
+	* wsgiwapi/postdata.py: Handle application/json too.
+
 Sun Apr 19 22:19:39 GMT 2009  Richard Boulton <richard@lemurconsulting.com>
 
 	* wsgiwapi/application.py,wsgiwapi/wsgisupport.py: Allow the path

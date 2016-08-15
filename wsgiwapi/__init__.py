@@ -26,6 +26,7 @@ from application import (
                          make_application,
                          make_server,
                          MethodSwitch,
+                         Resource,
                          ValidationError,
                          JsonResponse
                         )

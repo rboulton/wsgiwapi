@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-r"""Test the MethodSwitch functionality.
+r"""Test the Resource functionality.
 
 """
 __docformat__ = "restructuredtext en"
@@ -27,12 +27,12 @@ __docformat__ = "restructuredtext en"
 from harness import *
 import wsgiwapi
 
-class MethodSwitchTest(TestCase):
-    """Test the MethodSwitch class.
+class ResourceTest(TestCase):
+    """Test the Resource class.
 
     """
-    def test_methodswitch(self):
-        """Test that it switches on request method.
+    def test_constructor_args(self):
+        """Test a Resource constructed using constructor arguments.
 
         """
         def foo(request):
@@ -41,8 +41,7 @@ class MethodSwitchTest(TestCase):
         def bar(request):
             return u'bar'
 
-        app = wsgiwapi.make_application({'': wsgiwapi.MethodSwitch(foo, bar)},
-                                        logger=wsgiwapi.SilentLogger)
+        app = makeapp({'': wsgiwapi.Resource(foo, bar)})
 
         r = simulate_get(app, '/')
         self.assertEqual(r.status, u'200 OK')
@@ -54,44 +53,51 @@ class MethodSwitchTest(TestCase):
         self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
         self.assertEqual(r.body, u'bar')
 
-    def test_default(self):
-        """Test that default handler works.
+    def test_constructor_args(self):
+        """Test a Resource subclass.
 
         """
-        def foo(request):
-            return u'foo'
+        class myres(wsgiwapi.Resource):
+            def get(self, request):
+                return u'foo'
+            def post(self, request):
+                return u'bar'
 
-        app = wsgiwapi.make_application({'': wsgiwapi.MethodSwitch(None, default=foo)},
-                                        logger=wsgiwapi.SilentLogger)
+        app = makeapp({'': myres()})
 
         r = simulate_get(app, '/')
         self.assertEqual(r.status, u'200 OK')
         self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
         self.assertEqual(r.body, u'foo')
 
+        r = simulate_post(app, '/', {})
+        self.assertEqual(r.status, u'200 OK')
+        self.assertEqual(dict(r.headers)[u'Content-Type'], u'text/plain')
+        self.assertEqual(r.body, u'bar')
+
+
     def test_nodefault(self):
-        """Test that absense of a default handler works.
+        """Test that absense of a handler works.
 
         """
         def foo(request):
             return u'foo'
 
-        app = wsgiwapi.make_application({'': wsgiwapi.MethodSwitch(foo)},
-                                        logger=wsgiwapi.SilentLogger)
+        app = makeapp({'': wsgiwapi.Resource(foo)})
+                      
 
         r = simulate_post(app, '/', {})
         self.assertEqual(r.status, u'405 Method Not Allowed')
 
     def test_pathinfo(self):
-        """Test that pathinfo decorator works with MethodSwitch.
+        """Test that pathinfo decorator works with Resource.
 
         """
         @wsgiwapi.pathinfo(('arg1', '^[a-z]+$', None,),)
         def foo(request):
             return request.pathinfo.get('arg1') or ''
 
-        app = wsgiwapi.make_application({'foo': wsgiwapi.MethodSwitch(foo)},
-                                        logger=wsgiwapi.SilentLogger)
+        app = makeapp({'foo': wsgiwapi.Resource(foo)})
 
         r = simulate_get(app, '/foo')
         self.assertEqual(r.status, u'200 OK')

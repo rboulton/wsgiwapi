@@ -38,13 +38,16 @@ if not have_json:
 from application import JsonResponse
 from wsgisupport import Response
 
-def convert_to_json(request, response, props):
+def convert_to_json(request, response, props,
+                    content_type="application/json"):
     """Convert a response to JSON.
+
+    The supplied content type will be overridden by any type set in the
+    response object.
 
     """
     jsonobj = response
     status = 200
-    content_type="text/javascript"
 
     if isinstance(response, JsonResponse):
         jsonobj = response.jsonobj
@@ -59,7 +62,11 @@ def convert_to_jsonp(request, response, props):
     """Convert a response to JSONP, according to the props.
 
     """
-    response = convert_to_json(request, response, props)
+    # FIXME - do something about the character set.
+    # First comment on http://simonwillison.net/2009/Feb/6/json/ implies that
+    # it needs to be ascii to work correctly with IE.
+    response = convert_to_json(request, response, props,
+                               content_type='text/javacsript')
 
     paramname = props['return_JSONP_paramname']
     jsonp = request.validated.get(paramname)

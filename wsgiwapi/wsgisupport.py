@@ -373,14 +373,22 @@ class Response(object):
             self.body
         )
 
-class HTTPError(Exception, Response):
+# Once we drop support for python2.4, this should simply multiply-inherit from
+# Exception and from Response.
+class HTTPError(Exception):
     def __init__(self, status=500, message=None):
         Exception.__init__(self)
-        Response.__init__(self, status=status)
+        self._response = Response(status=status)
         if message is None:
-            self.body = self.status
+            self._response.body = self._response.status
         else:
-            self.body = self.status + "\n" + message
+            self._response.body = self._response.status + "\n" + message
+
+    def __getattr__(self, name):
+        return getattr(self._response, name)
+
+    def __unicode__(self):
+        return unicode(self._response.body)
 
 class HTTPNotFound(HTTPError):
     """Raise this exception if a requested resource is not found.
